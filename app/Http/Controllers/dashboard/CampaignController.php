@@ -103,7 +103,8 @@ class CampaignController extends Controller
                     ->exists(); //  أفضل من pluck
 
                 if ($usedProjects) {
-                    throw new \Exception('بعض المشاريع مرتبطة بحملات أخرى');
+                    //throw new \Exception('بعض المشاريع مرتبطة بحملات أخرى');
+                    return $this->requiredField('بعض المشاريع مرتبطة بحملات أخرى');
                 }
                 $campaign->projects()->sync($projectIds);
             }
@@ -209,7 +210,7 @@ class CampaignController extends Controller
     try{
         $campaign = Campaign::where('uuid', $uuid)->firstOrFail();
 
-        if( $campaign->status == 'مسودة'){
+        if( $campaign->status == 'مسودة' && $campaign->status == 'ملغاة'){
             $campaign->delete();
            return $this->index();
         }elseif( $campaign->status == 'مكتملة'){

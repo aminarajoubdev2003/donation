@@ -14,10 +14,12 @@ class Donation extends Model
         'campaign_id',
         'contribution_amount',
         'contribution_details',
+        'currency_type',
         'pledge_to_donate',
         'donate_directly',
         'status',
-        'image'
+        'image',
+        'pending'
     ];
 
     public function campaign(): BelongsTo

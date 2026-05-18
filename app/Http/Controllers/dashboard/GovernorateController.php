@@ -85,9 +85,17 @@ class GovernorateController extends Controller
     }
 
     public function index(){
+        try{
         $governorates = Governorate::all();
         $governorates = GovernorateResource::collection($governorates);
-        return $this->apiResponse( $governorates );
+        if( $governorates ){
+            return $this->apiResponse( $governorates );
+        }else{
+            return $this->apiResponse([]);
+        }
+        } catch (\Exception $ex) {
+        return $this->apiResponse(null, false, $ex->getMessage(), 500);
+    }
     }
 
     public function show( $uuid ){
