@@ -112,10 +112,10 @@ class GovernorateController extends Controller
         return $this->requiredField($validate->errors()->first());
         }
 
-        $governorate = Governorate::where('governorate_name', $request->governorate_name)->firstOrFail();
+        $governorates = Governorate::where('governorate_name', $request->governorate_name)->get();
 
-        if( $governorate ){
-        $governorate = GovernorateResource::make($governorate);
+        if( $governorates ){
+        $governorate = GovernorateResource::collection($governorates);
         return $this->apiResponse($governorate);
         }
         else{

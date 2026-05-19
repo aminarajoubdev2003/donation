@@ -22,11 +22,13 @@ class DonationController extends Controller
     public function donate_directly( Request $request)
     {
         try{
+        $currency_type = ['USD', 'SYP', 'EUR'];
 
         $validate = Validator::make($request->all(),[
             "campaign_uuid" => "required|string|exists:campaigns,uuid",
             "contribution_amount" => "required|numeric",
-            "contribution_details" => "required|string|regex:/^[^\p{Latin}]+$/u",
+            "contribution_details" => "nullable|string|regex:/^[^\p{Latin}]+$/u",
+            "currency_type" => [ Rule::in($currency_type)],
             "image" => "required|image|mimes:jpg,jpeg,png",
         ]);
 
@@ -45,7 +47,8 @@ class DonationController extends Controller
             'contribution_details' => $request->contribution_details,
             'donate_directly' => 1,
             'image' => $image,
-            'status'=> 'قيد التدقيق'
+            'status'=> 'قيد التدقيق',
+            'pending' => 0
         ]);
         return $this->apiResponse( DonationResource::make($donation));
         }catch (\Exception $ex) {

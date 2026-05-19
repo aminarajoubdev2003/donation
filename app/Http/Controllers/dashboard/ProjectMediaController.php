@@ -129,6 +129,7 @@ class ProjectMediaController extends Controller
             "cost" => "required|numeric",
         ],[
             'detail.unique' => 'تمت إضافة هذا التفصيل إلى المشروع مسبقا',
+            'detail.regex' => 'هذه الصيغة غير صالحة'
         ]);
 
         if ($validate->fails()) {
@@ -168,6 +169,9 @@ class ProjectMediaController extends Controller
         })
         ],
             "cost" => "numeric",
+        ],[
+            'detail.unique' => 'تمت إضافة هذا التفصيل إلى المشروع مسبقا',
+            'detail.regex' => 'هذه الصيغة غير صالحة'
         ]);
 
         if ($validate->fails()) {

@@ -90,9 +90,9 @@ class Campaign extends Model
         $this->update(['status' => 'نشطة']);
     }
 
-    /*elseif ($now->lessThan($start)) {
+    elseif ($now->lessThan($start)) {
         $this->update(['status' => 'متوقفة']);
-    }*/
+    }
     }
 
 }

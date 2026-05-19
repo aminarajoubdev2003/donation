@@ -19,23 +19,9 @@ class DonationObserver
      */
     public function updated(Donation $donation): void
     {
-        /*if (
-            $donation->isDirty('status') &&
-            $donation->status === 'متوافق'
-        ) {
 
-            $campaign = $donation->campaign;
-
-            if ($campaign) {
-
-                $campaign->increment(
-                    'collected_amount',
-                    $donation->contribution_amount
-                );
-            }
-        }*/
         if (
-            $donation->isDirty('status') &&
+            $donation->wasChanged('status') &&
             $donation->status === 'متوافق'
         ) {
 

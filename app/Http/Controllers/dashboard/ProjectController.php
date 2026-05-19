@@ -45,6 +45,9 @@ class ProjectController extends Controller
             "funding_source" => ["required", Rule::in($funding_sources)],
             "Implementing_party" => "required|string|min:3|max:50",
             "status" => ["required", Rule::in($status)]
+        ],[
+            'name.unique' => 'هذا المشروع موجود مسبقا',
+            //'requirements.regex' => ''
         ]);
 
         if ($validate->fails()) {
@@ -231,10 +234,10 @@ class ProjectController extends Controller
         return $this->requiredField($validate->errors()->first());
         }
 
-        $project = Project::where('name', $request->name)->firstOrFail();
+        $projects = Project::where('name', $request->name)->get();
 
-        if( $project ){
-        $project = ProjectResource::make($project);
+        if( $projects ){
+        $project = ProjectResource::collection($projects);
         return $this->apiResponse($project);
         }
         else{

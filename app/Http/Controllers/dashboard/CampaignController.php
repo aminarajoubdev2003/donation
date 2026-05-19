@@ -35,6 +35,7 @@ class CampaignController extends Controller
             'start_date.after'       =>' تاريخ البداية غير صالح.',
             'end_date.after'         => ' تاريخ النهاية غير صالح.',
             'end_time.after'        => 'وقت النهاية يجب أن يكون بعد وقت البداية.',
+            'name.regex'            => 'هذه الصيغة غير صالحة'
         ]);
 
         if ($validate->fails()) {
@@ -82,6 +83,7 @@ class CampaignController extends Controller
             'start_date.after'       =>' تاريخ البداية غير صالح.',
             'end_date.after'         => ' تاريخ النهاية غير صالح.',
             'end_time.after'        => 'وقت النهاية يجب أن يكون بعد وقت البداية.',
+            'name.regex'            => 'هذه الصيغة غير صالحة'
         ]);
 
         if ($validate->fails()) {
@@ -156,10 +158,10 @@ class CampaignController extends Controller
         return $this->requiredField($validate->errors()->first());
         }
 
-        $campaign = Campaign::where('name', $request->name)->firstOrFail();
+        $campaigns = Campaign::where('name', $request->name)->get();
 
-        if( $campaign ){
-        $campaign = CampaignResource::make($campaign);
+        if( $campaigns ){
+        $campaign = CampaignResource::collection($campaigns);
         $campaign->refreshStatus();
         return $this->apiResponse($campaign);
         }
@@ -210,7 +212,8 @@ class CampaignController extends Controller
     try{
         $campaign = Campaign::where('uuid', $uuid)->firstOrFail();
 
-        if( $campaign->status == 'مسودة' && $campaign->status == 'ملغاة'){
+        if( $campaign->status == 'مسودة' && $campaign->status == 'ملغاة'
+        && $campaign->status == 'متوقفة'){
             $campaign->delete();
            return $this->index();
         }elseif( $campaign->status == 'مكتملة'){
