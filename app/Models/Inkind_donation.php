@@ -11,6 +11,7 @@ class Inkind_donation extends Model
     protected $fillable = [
         'uuid',
         'governorate_id',
+        'user_id',
         'name_of_material',
         'amount',
         'type',
@@ -21,7 +22,16 @@ class Inkind_donation extends Model
         'status'
     ];
 
+    protected $casts = [
+    'images' => 'array',
+    ];
+
+
     public function governorate():BelongsTo{
         return $this->belongsTo(Governorate::class);
+    }
+
+    public function user():BelongsTo{
+        return $this->belongsTo(User::class);
     }
 }

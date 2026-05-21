@@ -26,7 +26,7 @@ class DistrictController extends Controller
                 "required",
                 "string",
                 "min:3",
-                "max:40",
+                "max:100",
                 "regex:/^[\p{Arabic}\s]+$/u",
                 Rule::unique('districts', 'district_name')
                 ->where(function ($query) use ($city_id) {
@@ -68,7 +68,7 @@ class DistrictController extends Controller
             "district_name" => [
                 "string",
                 "min:3",
-                "max:20",
+                "max:100",
                 "regex:/^[\p{Arabic}\s]+$/u",
                 Rule::unique('districts', 'district_name')
                 ->where(function ($query) use ($city_id) {
@@ -117,7 +117,7 @@ class DistrictController extends Controller
     public function searchByname( Request $request){
 
         $validate = Validator::make($request->all(), [
-        "district_name" => [ "string","min:3","max:20","regex:/^[\p{Arabic}\s]+$/u",] ]);
+        "district_name" => [ "string","min:3","max:100","regex:/^[\p{Arabic}\s]+$/u",] ]);
 
         if ($validate->fails()) {
         return $this->requiredField($validate->errors()->first());

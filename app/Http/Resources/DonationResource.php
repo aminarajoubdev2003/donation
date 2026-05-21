@@ -3,6 +3,7 @@
 namespace App\Http\Resources;
 
 use App\Models\Campaign;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
@@ -19,13 +20,16 @@ class DonationResource extends JsonResource
         return[
             'uuid' => $this->uuid,
             'campaign' => CampaignResource::make(Campaign::findOrFail($this->campaign_id)),
-            'contribution_amount' => $this->contribution_amount.' ' .'$',
+            'user' => UserResource::make(User::findOrFail($this->user_id)),
+            'contribution_amount' => $this->contribution_amount,
+            'currency_type' => $this->currency_type,
             'contribution_details' => $this->contribution_details,
             'image' => new ImageResource([
             'index' => 0,
             'path' => $this->image
             ]),
-            'status' => $this->status
+            'status' => $this->status,
+            'pending' => $this->pending
         ];
     }
 }

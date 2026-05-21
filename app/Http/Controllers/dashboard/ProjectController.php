@@ -22,7 +22,7 @@ class ProjectController extends Controller
     try {
         $district_id = District::where('uuid', $request->district_uuid)->value('id');
         $sectors = ['تعليمي', 'صحي', 'إغاثي', 'إعمار', 'غير ذلك'];
-        $funding_sources = ['رجال أعمال', 'منظمات'];
+        $funding_sources = ['رجال أعمال', 'منظمات', 'تبرعات'];
         $status = ['متوقف','قيد التنفيذ','مكتمل','مخطط له'];
 
         $validate = Validator::make($request->all(), [
@@ -44,7 +44,8 @@ class ProjectController extends Controller
             "on_the_other_hand" => "nullable|string|min:0|max:20|regex:/^[\p{Arabic}\s]+$/u",
             "funding_source" => ["required", Rule::in($funding_sources)],
             "Implementing_party" => "required|string|min:3|max:50",
-            "status" => ["required", Rule::in($status)]
+            "status" => ["required", Rule::in($status)],
+            "progress_percentage" => "nullable|integer|min:0|max:100",
         ],[
             'name.unique' => 'هذا المشروع موجود مسبقا',
             //'requirements.regex' => ''
@@ -70,7 +71,8 @@ class ProjectController extends Controller
             'on_the_other_hand' => $request->on_the_other_hand,
             'funding_source' => $request->funding_source,
             'Implementing_party' => $request->Implementing_party,
-            'status' => $request->status
+            'status' => $request->status,
+            'progress_percentage' => $request->progress_percentage ?? 0,
         ]);
 
         return $this->apiResponse(ProjectResource::make($project));
@@ -84,7 +86,7 @@ class ProjectController extends Controller
     public function update( Request $request , $uuid){
     try{
         $sectors = ['تعليمي', 'صحي', 'إغاثي', 'إعمار', 'غير ذلك'];
-        $funding_sources = ['رجال أعمال', 'منظمات'];
+        $funding_sources = ['رجال أعمال', 'منظمات', 'تبرعات'];
         $status = ['متوقف','قيد التنفيذ','مكتمل','مخطط له'];
 
         $validate = Validator::make($request->all(), [

@@ -31,6 +31,7 @@ class CampaignResource extends JsonResource
 
         'purposes' => $this->purposes,
         'status' => $this->status,
+        'total' => $this->total . ' $',
         'projects' => ProjectResource::collection($this->projects)
         ];
     }

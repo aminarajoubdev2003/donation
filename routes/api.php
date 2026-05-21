@@ -5,11 +5,13 @@ use App\Http\Controllers\dashboard\CampaignController;
 use App\Http\Controllers\dashboard\CampaignProjectController;
 use App\Http\Controllers\dashboard\CityController;
 use App\Http\Controllers\dashboard\DistrictController;
+use App\Http\Controllers\dashboard\FinancialController;
 use App\Http\Controllers\dashboard\GovernorateController;
 use App\Http\Controllers\dashboard\ProjectController;
 use App\Http\Controllers\dashboard\ProjectMediaController;
 use App\Http\Controllers\FcmTokenController;
 use App\Http\Controllers\Mobile\DonationController;
+use App\Http\Controllers\mobile\Inkind_donationController;
 use App\Http\Controllers\Web\DonatersController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -101,28 +103,21 @@ Route::middleware(['auth:sanctum', 'admin'])->controller(DonatersController::cla
 
 Route::post('/save-fcm-token', [FcmTokenController::class, 'saveFcmToken'])->middleware('auth:sanctum');
 
-Route::get('/test-firebase', function () {
-
-    $firebase = new \App\Services\FirebaseService();
-
-    try {
-        $response = $firebase->sendNotification(
-            "fake_token",
-            "اختبار 🔥",
-            "تجربة"
-        );
-
-        return $response;
-
-    } catch (\Exception $e) {
-        return $e->getMessage();
-    }
-});
-
-/*MobileRoute*/
+/*webRoute*/
 Route::post('/donate/directly', [DonationController::class, 'donate_directly'])->middleware('auth:sanctum');
 Route::get('/donation/qr', [DonationController::class, 'showQR'])->middleware('auth:sanctum');
 Route::post('/verify/{uuid}', [DonationController::class, 'verify'])->middleware('auth:sanctum');
 Route::post('/pledge', [DonationController::class, 'pledge_to_donate'])->middleware('auth:sanctum');
 Route::post('/donate/pledge/{uuid}', [DonationController::class, 'donate_for_pledge'])->middleware('auth:sanctum');
 Route::get('/show/image/{uuid}', [DonationController::class, 'show_img'])->middleware('auth:sanctum');
+Route::post('/donation/add' , [Inkind_donationController::class, 'store'])->middleware('auth:sanctum');
+
+Route::middleware(['auth:sanctum', 'admin'])->controller(Inkind_donationController::class)->group(function (){
+   Route::get('/donation/all','index');
+   Route::post('/donation/update/{uuid}','update');
+});
+
+Route::middleware(['auth:sanctum', 'admin'])->controller(FinancialController::class)->group(function (){
+   Route::get('/exchange_rates/all','index');
+   Route::post('/exchange_rate/update/{uuid}','update');
+});

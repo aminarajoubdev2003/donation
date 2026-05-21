@@ -3,6 +3,7 @@
 namespace App\Http\Resources;
 
 use App\Models\Governorate;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
@@ -18,6 +19,7 @@ class Inkind_donationResource extends JsonResource
         //return parent::toArray($request);
         return[
             'uuid' => $this->uuid,
+            'user' => UserResource::make(User::findOrFail($this->user_id)),
             'governorate' => GovernorateResource::make(Governorate::findOrFail($this->governorate_id)),
             'name_of_material' => $this->name_of_material,
             'amount' => $this->amount,

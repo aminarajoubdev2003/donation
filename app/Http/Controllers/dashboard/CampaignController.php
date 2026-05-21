@@ -152,7 +152,7 @@ class CampaignController extends Controller
     public function searchByname( Request $request){
     try{
         $validate = Validator::make($request->all(), [
-        "name"=> [ "string","min:3","max:20","regex:/^[\p{Arabic}\s]+$/u",] ]);
+        "name" => "required|string|min:3|max:100|regex:/^[\p{Arabic}\s]+$/u" ]);
 
         if ($validate->fails()) {
         return $this->requiredField($validate->errors()->first());
@@ -162,7 +162,6 @@ class CampaignController extends Controller
 
         if( $campaigns ){
         $campaign = CampaignResource::collection($campaigns);
-        $campaign->refreshStatus();
         return $this->apiResponse($campaign);
         }
         else{
@@ -212,16 +211,12 @@ class CampaignController extends Controller
     try{
         $campaign = Campaign::where('uuid', $uuid)->firstOrFail();
 
-        if( $campaign->status == 'مسودة' && $campaign->status == 'ملغاة'
+        if( $campaign->status == 'جديدة' && $campaign->status == 'ملغاة'
         && $campaign->status == 'متوقفة'){
             $campaign->delete();
            return $this->index();
-        }elseif( $campaign->status == 'مكتملة'){
-            return $this->requiredField('لا يمكن حذف حملة مكتملة');
-        }elseif( $campaign->status == 'منتهية'){
-            return $this->requiredField('لا يمكن حذف حملة منتهية');
-        }elseif( $campaign->status == 'نشطة'){
-            return $this->requiredField('لا يمكن حذف حملة نشطة ');
+        }else{
+            return $this->requiredField('لا يمكن حذف حملة .'. $campaign->status);
         }
     } catch (\Exception $ex) {
         return $this->apiResponse(null, false, $ex->getMessage(), 400);

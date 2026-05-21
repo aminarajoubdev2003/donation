@@ -26,7 +26,7 @@ return new class extends Migration
             $table->string('on_the_other_hand')->nullable();
             $table->json('images')->nullable();
             $table->json('videos')->nullable();
-            $table->enum('funding source',['رجال أعمال', 'منظمات']);
+            $table->enum('funding_source',['رجال أعمال', 'منظمات']);
             $table->string('Implementing_party');
             $table->enum('status',['متوقف','قيد التنفيذ','مكتمل','مخطط له']);
             $table->unique(['district_id','name']);

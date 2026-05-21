@@ -36,8 +36,8 @@ class CityController extends Controller
 
                 "governorate_uuid" => "required|string|exists:governorates,uuid"
             ],[
-                'city_name.unique' => 'هذه المدينة موجودة مسيقا',
-                'city_name.regex' =>  'صيغة حقل اسم المدينة غير صالحة',
+                'city_name.unique' => 'هذا الحي موجود مسيقا',
+                'city_name.regex' =>  'صيغة حقل اسم الحي غير صالحة',
             ]);
 
         if ($validate->fails()) {
@@ -79,8 +79,8 @@ class CityController extends Controller
 
                 "governorate_uuid" => "required|string|exists:governorates,uuid"
             ],[
-                'city_name.unique' => 'هذه المدينة موجودة مسيقا',
-                'city_name.regex' =>  'صيغة حقل اسم المدينة غير صالحة',
+                'city_name.unique' => 'هذا الحي موجود مسيقا',
+                'city_name.regex' =>  'صيغة حقل اسم الحي غير صالحة',
             ]);
 
         if ($validate->fails()) {

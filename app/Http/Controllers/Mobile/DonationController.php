@@ -23,6 +23,7 @@ class DonationController extends Controller
     {
         try{
         $currency_type = ['USD', 'SYP', 'EUR'];
+        $invalidStatuses = ['مسودة','ملغاة','متوقفة','منتهية'];
 
         $validate = Validator::make($request->all(),[
             "campaign_uuid" => "required|string|exists:campaigns,uuid",
@@ -36,21 +37,28 @@ class DonationController extends Controller
             return $this->requiredField($validate->errors()->first());
         }
 
-        $campaign_id = Campaign::where('uuid', $request->campaign_uuid)->value('id');
+        $campaign = Campaign::where('uuid', $request->campaign_uuid)->firstOrFail();
         $image = $this->upload_file($request->file('image'),'donations/images');
 
+        if (!in_array($campaign->status, $invalidStatuses))
+        {
         $donation = Donation::create([
             'uuid' => Str::uuid(),
             'user_id' => Auth::user()->id,
-            'campaign_id' => $campaign_id,
+            'campaign_id' => $campaign->id,
             'contribution_amount' => $request->contribution_amount,
             'contribution_details' => $request->contribution_details,
+            'currency_type' => $request->currency_type,
             'donate_directly' => 1,
             'image' => $image,
             'status'=> 'قيد التدقيق',
             'pending' => 0
         ]);
         return $this->apiResponse( DonationResource::make($donation));
+
+        }else{
+            return $this->requiredField('لا يمكن التبرع لحملة غير نشطة ');
+        }
         }catch (\Exception $ex) {
         return $this->apiResponse(null, false, $ex->getMessage(), 500);
         }
@@ -128,15 +136,21 @@ class DonationController extends Controller
     {
         try{
         $status = ['متوافق', 'غير متوافق'];
+        $pending = 0;
 
         $request->validate([
             "status" => ["required", Rule::in($status)]
         ]);
 
+        if( $request->status == 'متوافق'){
+            $pending = 1;
+        }
+
         $donation = Donation::where('uuid', $donation_uuid)->first();
 
         $donation->update([
-            'status' => $request->status
+            'status' => $request->status,
+            'pending' => $pending
         ]);
 
         return $this->apiResponse( DonationResource::make($donation));
