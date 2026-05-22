@@ -27,6 +27,10 @@ class Donation extends Model
         return $this->belongsTo(Campaign::class);
     }
 
+    public function user()
+    {
+    return $this->belongsTo(User::class);
+    }
     /*protected $appends = [
         'total_of_donations'
     ];

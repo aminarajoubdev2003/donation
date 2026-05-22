@@ -72,6 +72,10 @@ class Campaign extends Model
         return;
     }
 
+    if ($this->status === 'متوقفة') {
+        return;
+    }
+
     if (
         $this->target_amount &&
         $this->collected_amount >= $this->target_amount

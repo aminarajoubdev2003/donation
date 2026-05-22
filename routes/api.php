@@ -62,6 +62,8 @@ Route::middleware(['auth:sanctum', 'admin'])->controller(ProjectController::clas
    Route::get('/project/sectors','get_sector');
    Route::get('/project/status','get_status');
    Route::get('/project/show/{uuid}','show');
+   Route::get('/project/fundingsource','get_funding_source');
+   Route::get('/project/deleted','deleted');
 });
 
 
@@ -88,6 +90,9 @@ Route::middleware(['auth:sanctum', 'admin'])->controller(CampaignController::cla
    Route::post('/campaign/filter','filter');
    Route::get('/campaign/delete/{uuid}','delete');
    Route::get('/campaign/restore/{uuid}','restore');
+   Route::get('/campaign/stop/{uuid}','stop');
+   Route::get('/campaign/status','get_status');
+   Route::get('/campaign/deleted','deleted');
 });
 
 Route::middleware(['auth:sanctum', 'admin'])->controller(CampaignProjectController::class)->group(function (){

@@ -281,7 +281,7 @@ class ProjectController extends Controller
 
     public function show( $uuid ){
     try{
-        $project = Project::where('uuid', $uuid)->firstOrFail();
+        $project = Project::with('details')->where('uuid', $uuid)->firstOrFail();
         return $this->apiResponse(ProjectResource::make($project));
     } catch (\Exception $ex) {
         return $this->apiResponse(null,false,$ex->getMessage(),400);
@@ -302,6 +302,30 @@ class ProjectController extends Controller
     try{
         $status = ['متوقف','قيد التنفيذ','مكتمل','مخطط له'];
         return $this->apiResponse($status);
+    } catch (\Exception $ex) {
+        return $this->apiResponse(null,false,$ex->getMessage(),400);
+    }
+    }
+    public function get_funding_source(){
+    try{
+        $funding_source = ['رجال أعمال', 'منظمات', 'تبرعات'];
+        return $this->apiResponse($funding_source);
+    } catch (\Exception $ex) {
+        return $this->apiResponse(null,false,$ex->getMessage(),400);
+    }
+    }
+
+    public function deleted( ){
+    try{
+        $projects = Project::onlyTrashed()->get();
+
+        if( $projects ){
+        $projects = ProjectResource::collection($projects);
+        return $this->apiResponse( $projects );
+        }
+        else{
+            return $this->apiResponse([]);
+        }
     } catch (\Exception $ex) {
         return $this->apiResponse(null,false,$ex->getMessage(),400);
     }

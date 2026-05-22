@@ -239,4 +239,42 @@ class CampaignController extends Controller
         return $this->apiResponse(null,false,$ex->getMessage(),400);
     }
     }
+
+    public function stop( $uuid ){
+    try{
+        $campaign = Campaign::with('projects')->where('uuid', $uuid)->firstOrFail();
+        $campaign->update([
+            'status' => 'متوقفة',
+            ]);
+        return $this->apiResponse( CampaignResource::make($campaign) );
+        } catch (\Exception $ex) {
+        return $this->apiResponse(null, false, $ex->getMessage(), 400);
+    }
+    }
+
+    public function get_status(){
+    try{
+        $status = ['جديدة','نشطة','متوقفة','مكتملة','منتهية'];
+        return $this->apiResponse($status);
+    } catch (\Exception $ex) {
+        return $this->apiResponse(null,false,$ex->getMessage(),400);
+    }
+    }
+
+    public function deleted( ){
+    try{
+        $campaigns = Campaign::onlyTrashed()->get();
+
+        if( $campaigns ){
+        $campaigns = CampaignResource::collection($campaigns);
+        return $this->apiResponse( $campaigns );
+        }
+        else{
+            return $this->apiResponse([]);
+        }
+    } catch (\Exception $ex) {
+        return $this->apiResponse(null,false,$ex->getMessage(),400);
+    }
+    }
+
 }

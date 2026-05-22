@@ -60,4 +60,57 @@ class User extends Authenticatable
      public function inkinds(): HasMany{
         return $this->hasmany(Inkind_donation::class);
     }
+
+    public function getTotalDonationsAttribute()
+    {
+    $sypRate = ExchangeRate::where(
+        'currency',
+        'SYP'
+    )->value('rate');
+
+    $eurRate = ExchangeRate::where(
+        'currency',
+        'EUR'
+    )->value('rate');
+
+    $total = 0;
+
+    foreach ($this->donations as $donation) {
+
+        // فقط التبرعات المتوافقة
+        if ($donation->status !== 'متوافق') {
+            continue;
+        }
+
+        // الدولار
+        if ($donation->currency_type === 'USD') {
+
+            $total += $donation->contribution_amount;
+        }
+
+        // الليرة السورية
+        elseif ($donation->currency_type === 'SYP') {
+
+            if ($sypRate > 0) {
+
+                $total +=
+                    $donation->contribution_amount / $sypRate;
+            }
+        }
+
+        // اليورو
+        elseif ($donation->currency_type === 'EUR') {
+
+            if ($eurRate > 0) {
+
+                $total +=
+                    $donation->contribution_amount / $eurRate;
+            }
+        }
+    }
+
+    return round($total, 2);
+    }
+
+
 }
