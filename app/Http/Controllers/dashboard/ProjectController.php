@@ -39,8 +39,8 @@ class ProjectController extends Controller
             ],
             "district_uuid" => "required|string|exists:districts,uuid",
             "estimated_cost" => "required|numeric",
-            "requirements" => "required|string|regex:/^[^\p{Latin}]+$/u",
-            "sector" => ["nullable", Rule::in($sectors)],
+            "requirements" => "required|string|regex:^[\p{Arabic}\s0-9\p{P}\p{S}]+$",
+            "sector" => ["required", Rule::in($sectors)],
             "on_the_other_hand" => "nullable|string|min:0|max:20|regex:/^[\p{Arabic}\s]+$/u",
             "funding_source" => ["required", Rule::in($funding_sources)],
             "Implementing_party" => "required|string|min:3|max:50",
@@ -99,7 +99,7 @@ class ProjectController extends Controller
             "district_uuid" => "string|exists:districts,uuid",
             "estimated_cost" => "numeric",
             "progress_percentage" => "nullable|integer|min:0|max:100",
-            "requirements" => "string|regex:/^[^\p{Latin}]+$/u",
+            "requirements" => "string|regex:^[\p{Arabic}\s0-9\p{P}\p{S}]+$",
             "sector" => [ Rule::in($sectors)],
             "funding_source" => [ Rule::in($funding_sources)],
             "Implementing_party" => "string|regex:/^[\p{Arabic}\s]+$/u|min:3|max:50",
@@ -236,9 +236,9 @@ class ProjectController extends Controller
         return $this->requiredField($validate->errors()->first());
         }
 
-        $projects = Project::where('name', $request->name)->get();
+        $projects = Project::where('name', 'LIKE', '%' . $request->name . '%')->get();
 
-        if( $projects ){
+        if($projects->isNotEmpty()){
         $project = ProjectResource::collection($projects);
         return $this->apiResponse($project);
         }

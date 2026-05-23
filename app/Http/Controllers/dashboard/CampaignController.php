@@ -158,9 +158,9 @@ class CampaignController extends Controller
         return $this->requiredField($validate->errors()->first());
         }
 
-        $campaigns = Campaign::where('name', $request->name)->get();
+        $campaigns = Campaign::where('name', 'LIKE', '%' . $request->name . '%')->get();
 
-        if( $campaigns ){
+        if( $campaigns->isNotEmpty() ){
         $campaign = CampaignResource::collection($campaigns);
         return $this->apiResponse($campaign);
         }

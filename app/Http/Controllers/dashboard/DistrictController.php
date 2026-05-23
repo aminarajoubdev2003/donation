@@ -123,9 +123,9 @@ class DistrictController extends Controller
         return $this->requiredField($validate->errors()->first());
         }
 
-        $districts = District::where('district_name', $request->district_name)->get();
+        $districts = District::where('name', 'LIKE', '%' . $request->city_name . '%')->get();
 
-        if( $districts ){
+        if( $districts->isNotEmpty() ){
         $district = DistrictResource::collection($districts);
         return $this->apiResponse($district);
         }else{

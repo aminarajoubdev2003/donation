@@ -112,9 +112,9 @@ class GovernorateController extends Controller
         return $this->requiredField($validate->errors()->first());
         }
 
-        $governorates = Governorate::where('governorate_name', $request->governorate_name)->get();
+        $governorates = Governorate::where('name', 'LIKE', '%' . $request->governorate_name . '%')->get();
 
-        if( $governorates ){
+        if( $governorates->isNotEmpty() ){
         $governorate = GovernorateResource::collection($governorates);
         return $this->apiResponse($governorate);
         }
