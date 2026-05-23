@@ -123,7 +123,7 @@ class DistrictController extends Controller
         return $this->requiredField($validate->errors()->first());
         }
 
-        $districts = District::where('name', 'LIKE', '%' . $request->city_name . '%')->get();
+        $districts = District::where('district_name', 'LIKE', '%' . $request->city_name . '%')->get();
 
         if( $districts->isNotEmpty() ){
         $district = DistrictResource::collection($districts);

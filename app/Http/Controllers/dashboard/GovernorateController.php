@@ -106,13 +106,13 @@ class GovernorateController extends Controller
     public function searchByname( Request $request){
 
         $validate = Validator::make($request->all(), [
-        "governorate_name"=> [ "string","min:3","max:20","regex:/^[\p{Arabic}\s]+$/u",] ]);
+        "governorate_name"=> [ "string","regex:/^[\p{Arabic}\s]+$/u",] ]);
 
         if ($validate->fails()) {
         return $this->requiredField($validate->errors()->first());
         }
 
-        $governorates = Governorate::where('name', 'LIKE', '%' . $request->governorate_name . '%')->get();
+        $governorates = Governorate::where('governorate_name', 'LIKE', '%' . $request->governorate_name . '%')->get();
 
         if( $governorates->isNotEmpty() ){
         $governorate = GovernorateResource::collection($governorates);

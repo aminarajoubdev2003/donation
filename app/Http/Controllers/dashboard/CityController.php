@@ -128,7 +128,7 @@ class CityController extends Controller
         return $this->requiredField($validate->errors()->first());
         }
 
-        $cities = City::where('name', 'LIKE', '%' . $request->city_name . '%')->get();
+        $cities = City::where('city_name', 'LIKE', '%' . $request->city_name . '%')->get();
 
         if( $cities->isNotEmpty() ){
         $cities = CityResource::collection($cities);

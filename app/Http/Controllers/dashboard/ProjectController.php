@@ -230,7 +230,7 @@ class ProjectController extends Controller
     public function searchByname( Request $request){
     try{
         $validate = Validator::make($request->all(), [
-        "name"=> [ "string","min:3","max:100","regex:/^[\p{Arabic}\s]+$/u",] ]);
+        "name"=> [ "string","regex:/^[\p{Arabic}\s]+$/u",] ]);
 
         if ($validate->fails()) {
         return $this->requiredField($validate->errors()->first());
