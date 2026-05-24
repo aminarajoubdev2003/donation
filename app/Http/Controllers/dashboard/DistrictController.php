@@ -117,7 +117,7 @@ class DistrictController extends Controller
     public function searchByname( Request $request){
 
         $validate = Validator::make($request->all(), [
-        "district_name" => [ "string","min:3","max:100","regex:/^[\p{Arabic}\s]+$/u",] ]);
+        "district_name" => [ "string","regex:/^[\p{Arabic}\s]+$/u",] ]);
 
         if ($validate->fails()) {
         return $this->requiredField($validate->errors()->first());

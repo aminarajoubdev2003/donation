@@ -39,7 +39,7 @@ class ProjectController extends Controller
             ],
             "district_uuid" => "required|string|exists:districts,uuid",
             "estimated_cost" => "required|numeric",
-            "requirements" => "required|string|regex:^[\p{Arabic}\s0-9\p{P}\p{S}]+$",
+            "requirements" => "required|string|regex:/^[\p{Arabic}\s0-9\p{P}\p{S}]+$/u",
             "sector" => ["required", Rule::in($sectors)],
             "on_the_other_hand" => "nullable|string|min:0|max:20|regex:/^[\p{Arabic}\s]+$/u",
             "funding_source" => ["required", Rule::in($funding_sources)],
@@ -99,7 +99,7 @@ class ProjectController extends Controller
             "district_uuid" => "string|exists:districts,uuid",
             "estimated_cost" => "numeric",
             "progress_percentage" => "nullable|integer|min:0|max:100",
-            "requirements" => "string|regex:^[\p{Arabic}\s0-9\p{P}\p{S}]+$",
+            "requirements" => "string|regex:/^[\p{Arabic}\s0-9\p{P}\p{S}]+$/u",
             "sector" => [ Rule::in($sectors)],
             "funding_source" => [ Rule::in($funding_sources)],
             "Implementing_party" => "string|regex:/^[\p{Arabic}\s]+$/u|min:3|max:50",
@@ -127,7 +127,7 @@ class ProjectController extends Controller
                 }
             $cover_image = $this->upload_file($request->file('cover_image'), 'projects/cover_images');
             }else{
-                $cover_image = null;
+                $cover_image = $project->cover_image;
             }
 
             // تحديث الصور المتعددة
@@ -138,14 +138,14 @@ class ProjectController extends Controller
                 }
             $images = $this->upload_files($request->file('images'), 'projects/images');
             }else{
-                $images = null;
+                $images = $project->images;
             }
 
             // تحديث الفيديوهات
             if ($request->filled('videos')) {
             $videos = $request->videos;
             }else{
-                $videos = null;
+                $videos = $request->videos;
             }
 
             $data = [
@@ -290,10 +290,11 @@ class ProjectController extends Controller
 
     public function get_sector(){
     try{
-        $sectors = Project::whereNotNull('sector')->pluck('sector');
+        /*$sectors = Project::whereNotNull('sector')->pluck('sector');
         $onTheOtherHand = Project::whereNotNull('on_the_other_hand')->pluck('on_the_other_hand');
-        $allData = $sectors->merge($onTheOtherHand)->unique() ->values();
-        return $this->apiResponse($allData);
+        $allData = $sectors->merge($onTheOtherHand)->unique() ->values();*/
+        $sectors = ['تعليمي', 'صحي', 'إغاثي', 'إعمار', 'غير ذلك'];
+        return $this->apiResponse($sectors);
     } catch (\Exception $ex) {
         return $this->apiResponse(null,false,$ex->getMessage(),400);
     }

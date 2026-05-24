@@ -28,6 +28,7 @@ class Campaign extends Model
         'end_time',
         'purposes',
         'status',
+        'image',
     ];
 
     /**

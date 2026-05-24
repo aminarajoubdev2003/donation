@@ -122,7 +122,7 @@ class CityController extends Controller
     public function searchByname( Request $request){
 
         $validate = Validator::make($request->all(), [
-        "city_name" => [ "string","min:3","max:20","regex:/^[\p{Arabic}\s]+$/u",] ]);
+        "city_name" => [ "string","regex:/^[\p{Arabic}\s]+$/u",] ]);
 
         if ($validate->fails()) {
         return $this->requiredField($validate->errors()->first());

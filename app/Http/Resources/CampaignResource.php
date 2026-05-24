@@ -5,6 +5,7 @@ namespace App\Http\Resources;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
+use Illuminate\Support\Facades\Storage;
 
 class CampaignResource extends JsonResource
 {
@@ -32,6 +33,7 @@ class CampaignResource extends JsonResource
         'purposes' => $this->purposes,
         'status' => $this->status,
         'total' => $this->total . ' $',
+        'image' => Storage::url($this->image),
         'projects' => ProjectResource::collection($this->projects)
         ];
     }

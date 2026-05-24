@@ -6,12 +6,13 @@ use App\Http\Controllers\Controller;
 use App\Http\Resources\CampaignResource;
 use App\Http\Traits\GeneralTrait;
 use App\Http\Traits\UploadTrait;
-use App\Models\Campaign;
 use App\Models\Campaign_project;
+use App\Models\Campaign;
 use App\Models\Project;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Str;
 
 class CampaignProjectController extends Controller
 {
@@ -47,7 +48,12 @@ class CampaignProjectController extends Controller
                 if ($usedProjects->isNotEmpty()) {
                     return $this->apiResponse(null,false,'المشاريع التي تضيفها إلى هذه الحملة موجودة في حملات أخرى',400);
                 }
-                $campaign->projects()->attach($projectIds);
+
+                foreach ($projectIds as $projectId) {
+                $campaign->projects()->attach($projectId, [
+                'uuid' => Str::uuid()
+                ]);
+                }
             }
 
             return $campaign;

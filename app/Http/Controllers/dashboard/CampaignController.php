@@ -29,18 +29,23 @@ class CampaignController extends Controller
             "start_time" => "required|date_format:H:i",
             "end_time" => "required|date_format:H:i|after:start_time",
             "purposes" => "required|string|regex:/^[^\p{Latin}]+$/u",
+            "image" => "required|image|mimes:jpg,jpeg,png",
         ],[
             'start_time.date_format' => 'تنسيق وقت البداية غير صحيح.',
             'end_time.date_format'   => 'تنسيق وقت النهاية غير صحيح.',
             'start_date.after'       =>' تاريخ البداية غير صالح.',
             'end_date.after'         => ' تاريخ النهاية غير صالح.',
-            'end_time.after'        => 'وقت النهاية يجب أن يكون بعد وقت البداية.',
             'name.regex'            => 'هذه الصيغة غير صالحة'
         ]);
 
         if ($validate->fails()) {
             return $this->requiredField($validate->errors()->first());
         }
+
+        if ($request->hasFile('image')) {
+            $image = $this->upload_file($request->file('image'),'campaigns/images');
+        }
+
 
         $campaign = Campaign::create([
                 'uuid' => Str::uuid(),
@@ -51,6 +56,7 @@ class CampaignController extends Controller
                 'start_time' => $request->start_time,
                 'end_time' => $request->end_time,
                 'purposes' => $request->purposes,
+                'image' => $image
         ]);
 
         return $this->apiResponse(CampaignResource::make($campaign) );
@@ -75,6 +81,7 @@ class CampaignController extends Controller
             "start_time" => "date_format:H:i",
             "end_time" => "date_format:H:i|after:start_time",
             "purposes" => "string|regex:/^[^\p{Latin}]+$/u",
+            "image" => "image|mimes:jpg,jpeg,png",
             "project_uuid" => "array",
             "project_uuid.*" => "nullable|string|exists:projects,uuid",
         ],[
@@ -82,7 +89,6 @@ class CampaignController extends Controller
             'end_time.date_format'   => 'تنسيق وقت النهاية غير صحيح.',
             'start_date.after'       =>' تاريخ البداية غير صالح.',
             'end_date.after'         => ' تاريخ النهاية غير صالح.',
-            'end_time.after'        => 'وقت النهاية يجب أن يكون بعد وقت البداية.',
             'name.regex'            => 'هذه الصيغة غير صالحة'
         ]);
 
@@ -90,7 +96,16 @@ class CampaignController extends Controller
             return $this->requiredField($validate->errors()->first());
         }
 
-        DB::transaction(function () use ($request, $campaign) {
+        if ($request->hasFile('image')) {
+                if ($campaign->image) {
+                    $this->delete_file($campaign->image);
+                }
+            $image = $this->upload_file($request->file('image'), 'campaigns/images');
+            }else{
+                $image = $campaign->image;
+            }
+
+        DB::transaction(function () use ($request, $campaign, $image) {
 
             //  تحقق أولاً قبل أي تعديل
             if ($request->filled('project_uuid')) {
@@ -119,6 +134,7 @@ class CampaignController extends Controller
                 'start_time' => $request->start_time,
                 'end_time' => $request->end_time,
                 'purposes' => $request->purposes,
+                'image' => $image,
             ]);
         });
 
@@ -152,7 +168,7 @@ class CampaignController extends Controller
     public function searchByname( Request $request){
     try{
         $validate = Validator::make($request->all(), [
-        "name" => "required|string|min:3|max:100|regex:/^[\p{Arabic}\s]+$/u" ]);
+        "name" => "string|regex:/^[\p{Arabic}\s]+$/u" ]);
 
         if ($validate->fails()) {
         return $this->requiredField($validate->errors()->first());
