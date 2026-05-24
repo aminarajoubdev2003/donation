@@ -27,14 +27,17 @@ class ProjectController extends Controller
 
         $validate = Validator::make($request->all(), [
             "name" => [
-                "required",
-                "string",
-                "min:3",
-                "max:100",
-                "regex:/^[\p{Arabic}\s]+$/u",
-                Rule::unique('projects', 'name')
+            "required",
+            "string",
+            "min:3",
+            "max:100",
+            "regex:/^[\p{Arabic}\s]+$/u",
+            Rule::unique('projects', 'name')
                 ->where(function ($query) use ($district_id) {
-                return $query->where('district_id', $district_id);
+                    return $query->where(
+                        'district_id',
+                        $district_id
+                    );
                 }),
             ],
             "district_uuid" => "required|string|exists:districts,uuid",
@@ -47,8 +50,7 @@ class ProjectController extends Controller
             "status" => ["required", Rule::in($status)],
             "progress_percentage" => "nullable|integer|min:0|max:100",
         ],[
-            'name.unique' => 'هذا المشروع موجود مسبقا',
-            //'requirements.regex' => ''
+            'name.unique' => 'هذا المشروع موجود مسبقًا ضمن نفس المنطقة.',
         ]);
 
         if ($validate->fails()) {
@@ -88,13 +90,22 @@ class ProjectController extends Controller
         $sectors = ['تعليمي', 'صحي', 'إغاثي', 'إعمار', 'غير ذلك'];
         $funding_sources = ['رجال أعمال', 'منظمات', 'تبرعات'];
         $status = ['متوقف','قيد التنفيذ','مكتمل','مخطط له'];
+        $district_id = District::where('uuid', $request->district_uuid)->value('id');
 
         $validate = Validator::make($request->all(), [
             "name" => [
-                "string",
-                "min:3",
-                "max:100",
-                "regex:/^[\p{Arabic}\s]+$/u",
+            "required",
+            "string",
+            "min:3",
+            "max:100",
+            "regex:/^[\p{Arabic}\s]+$/u",
+            Rule::unique('projects', 'name')
+                ->where(function ($query) use ($district_id) {
+                    return $query->where(
+                        'district_id',
+                        $district_id
+                    );
+                }),
             ],
             "district_uuid" => "string|exists:districts,uuid",
             "estimated_cost" => "numeric",
@@ -110,6 +121,8 @@ class ProjectController extends Controller
             "images.*" => "image|mimes:jpg,jpeg,png",
             "videos" => "nullable|array",
             "videos.*" => "nullable|url",
+        ],[
+            'name.unique' => 'هذا المشروع موجود مسبقًا ضمن نفس المنطقة.',
         ]);
 
         if ($validate->fails()) {
