@@ -49,6 +49,7 @@ class ProjectController extends Controller
             "Implementing_party" => "required|string|min:3|max:50",
             "status" => ["required", Rule::in($status)],
             "progress_percentage" => "nullable|integer|min:0|max:100",
+            "cover_image" => "required|image|mimes:jpg,jpeg,png",
         ],[
             'name.unique' => 'هذا المشروع موجود مسبقًا ضمن نفس المنطقة.',
         ]);
@@ -58,6 +59,10 @@ class ProjectController extends Controller
         }
 
         $district_id = District::where('uuid', $request->district_uuid)->value('id');
+
+        if ($request->hasFile('cover_image')) {
+            $cover_image = $this->upload_file($request->file('cover_image'),'projects/cover_images');
+        }
 
         if ( !$request->on_the_other_hand ){
             $on_the_other_hand = null;
@@ -75,6 +80,7 @@ class ProjectController extends Controller
             'Implementing_party' => $request->Implementing_party,
             'status' => $request->status,
             'progress_percentage' => $request->progress_percentage ?? 0,
+            'cover_image' => $cover_image
         ]);
 
         return $this->apiResponse(ProjectResource::make($project));

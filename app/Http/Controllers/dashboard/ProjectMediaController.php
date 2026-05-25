@@ -21,7 +21,6 @@ class ProjectMediaController extends Controller
     public function uploadMedia( Request $request , $uuid){
     try {
         $validate = Validator::make($request->all(), [
-            "cover_image" => "nullable|image|mimes:jpg,jpeg,png",
             "images" => "nullable|array",
             "images.*" => "image|mimes:jpg,jpeg,png",
             "videos" => "nullable|array",
@@ -36,10 +35,6 @@ class ProjectMediaController extends Controller
 
         $project = Project::where('uuid', $uuid)->firstOrFail();
         $data = [];
-
-        if ($request->hasFile('cover_image')) {
-            $data['cover_image'] = $this->upload_file($request->file('cover_image'),'projects/cover_images');
-        }
 
         if ($request->hasFile('images')) {
             $oldImages = $project->images ?? [];

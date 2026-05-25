@@ -126,10 +126,11 @@ class Inkind_donationController extends Controller
 
     public function get_type(){
     try{
-        $type = Inkind_donation::whereNotNull('type')->pluck('type');
+        /*$type = Inkind_donation::whereNotNull('type')->pluck('type');
         $onTheOtherHand = Inkind_donation::whereNotNull('on_the_other_hand')->pluck('on_the_other_hand');
-        $allData = $type->merge($onTheOtherHand)->unique() ->values();
-        return $this->apiResponse($allData);
+        $allData = $type->merge($onTheOtherHand)->unique() ->values();*/
+        $type = ['أثاث' ,'أدوات منزلية', 'أجهزة طبية', 'أجهزة إلكترونية', 'ملابس', 'أدوات مدرسية', 'غير ذلك'];
+        return $this->apiResponse($type);
     } catch (\Exception $ex) {
         return $this->apiResponse(null,false,$ex->getMessage(),400);
     }
@@ -161,5 +162,27 @@ class Inkind_donationController extends Controller
         return $this->apiResponse(null,false,$ex->getMessage(),400);
     }
     }
+
+    public function filter(Request $request){
+    try{
+    $donations = Inkind_donation::query()
+    ->when($request->governorate_uuid, function ($q) use ($request) {
+            $q->where('governorate_uuid', $request->governorate_uuid);
+        })
+        ->when($request->type, function ($q) use ($request) {
+            $q->where('type', $request->type);
+        })
+        ->when($request->status, function ($q) use ($request) {
+            $q->where('status', $request->status);
+        })
+        ->when($request->status_of_materail, function ($q) use ($request) {
+            $q->where('status_of_materail', $request->status_of_materail);
+        })
+        ->get();
+
+    return $this->apiResponse(Inkind_donationResource::collection($blogs));
+    } catch (\Exception $ex) {
+        return $this->apiResponse(null,false,$ex->getMessage(),400);
+    }}
 
 }
