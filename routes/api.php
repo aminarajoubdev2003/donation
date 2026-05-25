@@ -99,6 +99,7 @@ Route::middleware(['auth:sanctum', 'admin'])->controller(CampaignProjectControll
    Route::post('/campaign/project/add/{uuid}','store');
    Route::get('/campaign/project/delete/{uuidc}/{uuidp}','delete');
    Route::get('/campaign/project/restore/{uuidc}/{uuidp}','restore');
+   Route::post('/project/campaign/{uuid}', 'addCampaignToProject');
 });
 
 Route::middleware(['auth:sanctum', 'admin'])->controller(DonatersController::class)->group(function (){

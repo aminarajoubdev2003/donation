@@ -13,60 +13,143 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
+use RuntimeException;
 
 class CampaignProjectController extends Controller
 {
     use GeneralTrait , UploadTrait;
 
-    public function store( Request $request , $uuid){
+    public function store(Request $request, $uuid)
+    {
     try {
-        $validate = Validator::make($request->all(),[
-            "project_uuid" => "array",
-            "project_uuid.*" => "required|string|exists:projects,uuid",
+
+        $validate = Validator::make($request->all(), [
+        "project_uuid" => "array",
+        "project_uuid.*" => "required|string|exists:projects,uuid",
         ]);
 
         if ($validate->fails()) {
-        return $this->requiredField($validate->errors()->first());
+
+        return $this->apiResponse(null,false,$validate->errors()->first(),400);
         }
-        else{
 
-        $campaign = DB::transaction(function () use ($request,$uuid) {
+        $campaign = DB::transaction(function () use ($request, $uuid) {
 
-        $campaign = Campaign::where('uuid', $uuid)->firstOrFail();
+            $campaign = Campaign::where('uuid',$uuid)->firstOrFail();
 
             if ($request->filled('project_uuid')) {
 
-                $projectIds = Project::whereIn('uuid', $request->project_uuid)
-                ->pluck('id');
+                $projectIds = Project::whereIn('uuid',$request->project_uuid)->pluck('id');
 
                 $usedProjects = DB::table('campaign_projects')
-                    ->join('campaigns', 'campaign_projects.campaign_id', '=', 'campaigns.id')
-                    ->whereIn('campaign_projects.project_id', $projectIds)
-                    ->where('campaigns.status', '!=', 'ملغاة')
-                    ->pluck('campaign_projects.project_id');
 
-                if ($usedProjects->isNotEmpty()) {
-                    return $this->apiResponse(null,false,'المشاريع التي تضيفها إلى هذه الحملة موجودة في حملات أخرى',400);
+                    ->join('campaigns','campaign_projects.campaign_id','=','campaigns.id')
+
+                    ->whereIn(
+                        'campaign_projects.project_id',$projectIds)
+
+                    ->where('campaigns.status', '!=','ملغاة')->exists();
+
+                if ($usedProjects) {
+
+                    throw new \RuntimeException(
+                        'المشاريع التي تضيفها إلى هذه الحملة موجودة في حملات أخرى'
+                    );
                 }
 
                 foreach ($projectIds as $projectId) {
-                $campaign->projects()->attach($projectId, [
-                'uuid' => Str::uuid()
-                ]);
+
+                    $campaign->projects()->attach($projectId, [
+                        'uuid' => Str::uuid()
+                    ]);
                 }
             }
 
             return $campaign;
         });
-        return $this->apiResponse(CampaignResource::make($campaign));
+
+        return $this->apiResponse( CampaignResource::make($campaign));
+
+    }
+
+    catch (\RuntimeException $ex) {
+        return $this->apiResponse(null,false,$ex->getMessage(),409);
+    }
+
+    catch (\Exception $ex) {
+        return $this->apiResponse(null,false,$ex->getMessage(),500);
+    }
+}
+
+
+    public function addCampaignToProject(Request $request,$project_uuid)
+    {
+    try {
+
+        $validate = Validator::make($request->all(), [
+            'campaign_uuid' =>'required|string|exists:campaigns,uuid',
+        ]);
+
+        if ($validate->fails()) {
+
+            return $this->apiResponse(null,false,$validate->errors()->first(),400);
         }
 
-    } catch (\Exception $ex){
-        return $this->apiResponse(null, false, $ex->getMessage(), 500);
-    }
+        $project = Project::where('uuid',$project_uuid)->firstOrFail();
+
+        $campaign = Campaign::where('uuid', $request->campaign_uuid)->firstOrFail();
+
+        DB::transaction(function () use ($project,$campaign) {
+
+            $isUsed = DB::table('campaign_projects')
+
+                ->join(
+                    'campaigns',
+                    'campaign_projects.campaign_id',
+                    '=',
+                    'campaigns.id'
+                )
+
+                ->where(
+                    'campaign_projects.project_id',
+                    $project->id
+                )
+
+                ->where(
+                    'campaigns.status',
+                    '!=',
+                    'ملغاة'
+                )
+
+                ->exists();
+
+            if ($isUsed) {
+
+                throw new \RuntimeException(
+                    'هذا المشروع مرتبط مسبقًا بحملة أخرى'
+                );
+            }
+
+            $project->campaigns()->attach(
+                $campaign->id,
+                [
+                    'uuid' => Str::uuid()
+                ]);
+        });
+
+        return $this->apiResponse(CampaignResource::make($campaign));
     }
 
-    public function delete( $uuidc,$uuidp ){
+    catch (\RuntimeException $ex) {
+        return $this->apiResponse(null,false,$ex->getMessage(),409);
+    }
+
+    catch (\Exception $ex) {
+        return $this->apiResponse(null,false,$ex->getMessage(),500);
+    }
+}
+
+       public function delete( $uuidc,$uuidp ){
         try{
         $campaign_id = Campaign::where('uuid',$uuidc)->value('id');
         $project_id = Project::where('uuid', $uuidp)->value('id');
