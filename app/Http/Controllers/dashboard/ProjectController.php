@@ -96,6 +96,8 @@ class ProjectController extends Controller
         $sectors = ['تعليمي', 'صحي', 'إغاثي', 'إعمار', 'غير ذلك'];
         $funding_sources = ['رجال أعمال', 'منظمات', 'تبرعات'];
         $status = ['متوقف','قيد التنفيذ','مكتمل','مخطط له'];
+        
+        $project = Project::where('uuid', $uuid)->firstOrFail();
         $district_id = District::where('uuid', $request->district_uuid)->value('id');
 
         $validate = Validator::make($request->all(), [
@@ -105,13 +107,11 @@ class ProjectController extends Controller
             "min:3",
             "max:100",
             "regex:/^[\p{Arabic}\s]+$/u",
-            /*Rule::unique('projects', 'name')
-                ->where(function ($query) use ($district_id) {
-                    return $query->where(
-                        'district_id',
-                        $district_id
-                    );
-                }),*/
+            Rule::unique('projects', 'name')
+            ->where(function ($query) use ($request) {
+            $district_id = District::where('uuid', $request->district_uuid)->value('id');
+            return $query->where('district_id', $district_id);
+            })->ignore($project->id),
             ],
             "district_uuid" => "string|exists:districts,uuid",
             "estimated_cost" => "numeric",
