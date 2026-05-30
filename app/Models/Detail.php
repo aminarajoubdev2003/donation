@@ -21,4 +21,12 @@ class Detail extends Model
     public function project():BelongsTo{
         return $this->belongsTo(Project::class);
     }
+
+    public function pendings(){
+    return $this->hasMany(Pending::class);
+    }
+
+    public function latestPending(){
+    return $this->hasOne(Pending::class)->latestOfMany();
+    }
 }

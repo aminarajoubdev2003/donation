@@ -227,8 +227,8 @@ class CampaignController extends Controller
     try{
         $campaign = Campaign::where('uuid', $uuid)->firstOrFail();
 
-        if( $campaign->status == 'جديدة' && $campaign->status == 'ملغاة'
-        && $campaign->status == 'متوقفة'){
+        if( $campaign->status == 'جديدة' || $campaign->status == 'ملغاة'
+        || $campaign->status == 'متوقفة'){
             $campaign->delete();
            return $this->index();
         }else{

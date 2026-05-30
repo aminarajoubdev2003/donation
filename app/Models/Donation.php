@@ -3,11 +3,14 @@
 namespace App\Models;
 
 use App\Models\Campaign;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Donation extends Model
 {
+    use HasFactory;
+
     protected $fillable = [
         'uuid',
         'user_id',
@@ -15,6 +18,7 @@ class Donation extends Model
         'contribution_amount',
         'contribution_details',
         'currency_type',
+        'usd_amount',
         'pledge_to_donate',
         'donate_directly',
         'status',
@@ -31,12 +35,5 @@ class Donation extends Model
     {
     return $this->belongsTo(User::class);
     }
-    /*protected $appends = [
-        'total_of_donations'
-    ];
 
-    public function get total_of_donations Attribuit(){
-        $total = 0;
-
-    }*/
 }

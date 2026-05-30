@@ -78,7 +78,7 @@ class User extends Authenticatable
     foreach ($this->donations as $donation) {
 
         // فقط التبرعات المتوافقة
-        if ($donation->status !== 'متوافق') {
+        if ($donation->status !== 'متوافق'||$donation->pending != 1) {
             continue;
         }
 
@@ -93,8 +93,7 @@ class User extends Authenticatable
 
             if ($sypRate > 0) {
 
-                $total +=
-                    $donation->contribution_amount / $sypRate;
+                $total += $donation->contribution_amount / $sypRate;
             }
         }
 
@@ -110,6 +109,23 @@ class User extends Authenticatable
     }
 
     return round($total, 2);
+    }
+
+    public function getDonationsCountAttribute(){
+        return $this->donations()->count();
+    }
+
+    public function getAverageDonationsAttribute(){
+        $count = $this->donations()->count();
+
+        if ($count == 0) {
+             return 0;
+        }
+        return round( $this->total_donations / $count,2);
+    }
+
+    public function getLastDonationAttribute(){
+        return $this->donations()->latest()->first();
     }
 
 

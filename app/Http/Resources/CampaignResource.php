@@ -32,7 +32,7 @@ class CampaignResource extends JsonResource
 
         'purposes' => $this->purposes,
         'status' => $this->status,
-        'total' => $this->total . ' $',
+        'collected_amount' => $this->collected_amount . ' $',
         'image' => Storage::url($this->image),
         'projects' => ProjectResource::collection($this->projects)
         ];

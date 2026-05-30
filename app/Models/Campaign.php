@@ -18,10 +18,7 @@ class Campaign extends Model
         'uuid',
         'name',
         'target_amount',
-        'SYP_amount',
-        'USD_amount',
-        'EUR_amount',
-        'total',
+        'collected_amount',
         'start_date',
         'end_date',
         'start_time',
@@ -96,40 +93,6 @@ class Campaign extends Model
         $this->update(['status' => 'نشطة']);
     }
 
-    /*elseif ($now->lessThan($start)) {
-        $this->update(['status' => 'متوقفة']);
-    }*/
-    }
-
-
-    public function getTotalAttribute(){
-
-    $sypRate = ExchangeRate::where(
-        'currency',
-        'SYP'
-    )->value('rate');
-
-    $eurRate = ExchangeRate::where(
-        'currency',
-        'EUR'
-    )->value('rate');
-
-    $sypToUsd =
-        $sypRate > 0
-        ? $this->SYP_amount / $sypRate
-        : 0;
-
-    $eurToUsd =
-        $eurRate > 0
-        ? $this->EUR_amount / $eurRate
-        : 0;
-
-    return round(
-        $this->USD_amount +
-        $sypToUsd +
-        $eurToUsd,
-        2
-    );
     }
 
 }

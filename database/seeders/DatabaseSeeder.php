@@ -23,6 +23,7 @@ class DatabaseSeeder extends Seeder
         ]);*/
         //$this->call(AdminSeeder::class);
         //$this->call([ExchangeRateSeeder::class,]);
-        $this->call([UserSeeder::class,]);
+        //$this->call([UserSeeder::class,]);
+        $this->call([DonationSeeder::class,]);
     }
 }

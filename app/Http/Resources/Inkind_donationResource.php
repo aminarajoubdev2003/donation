@@ -26,7 +26,6 @@ class Inkind_donationResource extends JsonResource
             'type' => $this->type,
             'on_the_other_hand' => $this->on_the_other_hand,
             'status_of_materail' => $this->status_of_materail,
-            'delivery_method' => $this->delivery_method,
             'status' => $this->status,
             'images' => collect($this->images ?? [])
             ->values()

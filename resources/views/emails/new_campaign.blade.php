@@ -14,7 +14,7 @@
 
     <!-- Header -->
     <tr>
-        <td style="background:#4CAF50; color:#fff; padding:20px; text-align:center;">
+        <td style="background:#014a5b; color:#fff; padding:20px; text-align:center;">
             <h1>🎉 حملة جديدة</h1>
         </td>
     </tr>

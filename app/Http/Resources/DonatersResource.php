@@ -20,9 +20,11 @@ class DonatersResource extends JsonResource
        return[
         'user' => UserResource::make(User::findOrFail($this->user_id)),
         'last_donation' => $this->contribution_amount,
+        'currency_type' => $this->currency_type,
         'date' => Carbon::parse($this->created_at)->format('d M Y'),
         'method' => ($this->donate_directly==1) ? 'تبرع' : 'تعهد ',
-        'status' => ($this->pending==1) ? 'مدفوع' : 'غير مدفوع',
+        'status' => $this->status,
+        'pending' => ($this->pending==1) ? 'مدفوع' : 'غير مدفوع',
        ];
     }
 }

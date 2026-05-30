@@ -29,7 +29,8 @@ class DonationResource extends JsonResource
             'path' => $this->image
             ]),
             'status' => $this->status,
-            'pending' => $this->pending
+            'pending' => $this->pending,
+            'usd_amount' => $this->usd_amount.' '.'$'
         ];
     }
 }

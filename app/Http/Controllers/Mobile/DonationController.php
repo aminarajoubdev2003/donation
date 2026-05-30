@@ -14,6 +14,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
+use App\Services\CurrencyConverterService;
 
 class DonationController extends Controller
 {
@@ -131,6 +132,9 @@ class DonationController extends Controller
     }
     }
 
+    public function __construct(
+        private CurrencyConverterService $currencyService
+    ) {}
 
     public function verify(Request $request, $donation_uuid)
     {
@@ -147,6 +151,8 @@ class DonationController extends Controller
         }
 
         $donation = Donation::where('uuid', $donation_uuid)->first();
+        $donation->usd_amount = $this->currencyService->
+        convertToUsd($donation->contribution_amount,$donation->currency_type);
 
         $donation->update([
             'status' => $request->status,

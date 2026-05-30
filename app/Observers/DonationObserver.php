@@ -28,21 +28,8 @@ class DonationObserver
             $campaign = $donation->campaign;
 
             if ($campaign) {
-                if( $donation['currency_type'] == 'SYP'){
-                    $campaign->increment(
-                    'SYP_amount',
-                    $donation->contribution_amount);
-                }
-                elseif( $donation['currency_type'] == 'USD'){
-                    $campaign->increment(
-                    'USD_amount',
-                    $donation->contribution_amount);
-                }
-                else{
-                    $campaign->increment(
-                    'EUR_amount',
-                    $donation->contribution_amount);
-                }
+
+            $campaign->increment('collected_amount',$donation->usd_amount);
             }
         }
     }

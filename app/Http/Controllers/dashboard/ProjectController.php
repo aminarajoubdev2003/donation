@@ -105,13 +105,13 @@ class ProjectController extends Controller
             "min:3",
             "max:100",
             "regex:/^[\p{Arabic}\s]+$/u",
-            Rule::unique('projects', 'name')
+            /*Rule::unique('projects', 'name')
                 ->where(function ($query) use ($district_id) {
                     return $query->where(
                         'district_id',
                         $district_id
                     );
-                }),
+                }),*/
             ],
             "district_uuid" => "string|exists:districts,uuid",
             "estimated_cost" => "numeric",

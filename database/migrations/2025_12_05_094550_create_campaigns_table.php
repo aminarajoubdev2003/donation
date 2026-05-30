@@ -16,9 +16,6 @@ return new class extends Migration
             $table->uuid();
             $table->string('name')->unique();
             $table->decimal('target_amount', 15, 2);
-            $table->decimal('SYP_amount', 15, 2)->default(0);
-            $table->decimal('USD_amount', 15, 2)->default(0);
-            $table->decimal('EUR_amount', 15, 2)->default(0);
             $table->decimal('total', 15, 2)->default(0);
             $table->date('start_date');
             $table->date('end_date');

@@ -1,12 +1,16 @@
 <?php
 
 use App\Http\Controllers\Api\AuthController;
+use App\Http\Controllers\dashboard\BlogController;
 use App\Http\Controllers\dashboard\CampaignController;
 use App\Http\Controllers\dashboard\CampaignProjectController;
 use App\Http\Controllers\dashboard\CityController;
+use App\Http\Controllers\dashboard\DashboardController;
 use App\Http\Controllers\dashboard\DistrictController;
+use App\Http\Controllers\dashboard\DonaterController;
 use App\Http\Controllers\dashboard\FinancialController;
 use App\Http\Controllers\dashboard\GovernorateController;
+use App\Http\Controllers\dashboard\PendingController;
 use App\Http\Controllers\dashboard\ProjectController;
 use App\Http\Controllers\dashboard\ProjectMediaController;
 use App\Http\Controllers\FcmTokenController;
@@ -102,9 +106,14 @@ Route::middleware(['auth:sanctum', 'admin'])->controller(CampaignProjectControll
    Route::post('/project/campaign/{uuid}', 'addCampaignToProject');
 });
 
-Route::middleware(['auth:sanctum', 'admin'])->controller(DonatersController::class)->group(function (){
+Route::middleware(['auth:sanctum', 'admin'])->controller(DonaterController::class)->group(function (){
    Route::get('/donaters/all','Get_Donaters');
+   Route::get('/bussinessman/all','Get_bussinessman');
+   Route::get('/orgnasation/all','Get_orgnasation');
    Route::get('/campaign/project/restore/{uuidc}/{uuidp}','restore');
+   Route::post('/donaters/search','searchByname');
+   Route::post('/donaters/filter','filter');
+   Route::get('/donater/show/{uuid}','show');
 });
 
 Route::post('/save-fcm-token', [FcmTokenController::class, 'saveFcmToken'])->middleware('auth:sanctum');
@@ -121,9 +130,29 @@ Route::post('/donation/add' , [Inkind_donationController::class, 'store'])->midd
 Route::middleware(['auth:sanctum', 'admin'])->controller(Inkind_donationController::class)->group(function (){
    Route::get('/donation/all','index');
    Route::post('/donation/update/{uuid}','update');
+   Route::post('/donation/filter','filter');
+   Route::get('/donation/statusofmaterail','get_status_of_materail');
+   Route::get('/donation/status','get_status');
+   Route::get('/donation/type','get_type');
+   Route::post('/donation/search','searchByname');
 });
 
 Route::middleware(['auth:sanctum', 'admin'])->controller(FinancialController::class)->group(function (){
    Route::get('/exchange_rates/all','index');
    Route::post('/exchange_rate/update/{uuid}','update');
+});
+
+Route::middleware(['auth:sanctum', 'admin'])->controller(BlogController::class)->group(function (){
+   Route::post('/blog/store','store');
+   Route::post('/exchange_rate/update/{uuid}','update');
+});
+
+Route::middleware(['auth:sanctum', 'admin'])->controller(PendingController::class)->group(function (){
+   Route::post('/pending/store','store');
+   Route::post('/exchange_rate/update/{uuid}','update');
+});
+
+Route::middleware(['auth:sanctum', 'admin'])->controller(DashboardController::class)->group(function (){
+   Route::get('/dashboard','__invoke');
+   //Route::post('/exchange_rate/update/{uuid}','update');
 });
