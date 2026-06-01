@@ -46,7 +46,7 @@ class Project extends Model
         'campaign_projects',
         'project_id',
         'campaign_id'
-    );
+    )->wherePivotNull('deleted_at');
     }
 
     public function details(): HasMany{
