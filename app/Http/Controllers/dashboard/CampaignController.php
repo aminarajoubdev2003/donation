@@ -261,7 +261,19 @@ class CampaignController extends Controller
         $campaign = Campaign::with('projects')->where('uuid', $uuid)->firstOrFail();
         $campaign->update([
             'status' => 'متوقفة',
-            ]);
+        ]);
+        return $this->apiResponse( CampaignResource::make($campaign) );
+        } catch (\Exception $ex) {
+        return $this->apiResponse(null, false, $ex->getMessage(), 400);
+    }
+    }
+
+    public function appeal( $uuid ){
+    try{
+        $campaign = Campaign::with('projects')->where('uuid', $uuid)->firstOrFail();
+        $campaign->update([
+            'status' => 'جديدة',
+        ]);
         return $this->apiResponse( CampaignResource::make($campaign) );
         } catch (\Exception $ex) {
         return $this->apiResponse(null, false, $ex->getMessage(), 400);

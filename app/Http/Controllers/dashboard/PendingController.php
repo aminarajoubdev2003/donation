@@ -24,7 +24,6 @@ class PendingController extends Controller
 
         $validate = Validator::make($request->all(), [
         "detail_uuid" => ["required","string","exists:details,uuid"],
-        "cost" => "required|numeric",
         "pending_date" => ["required","date","before_or_equal:today",
         function ($attribute, $value, $fail) use ($currentYear, $previousYear) {
             $year = Carbon::parse($value)->year;
@@ -34,33 +33,127 @@ class PendingController extends Controller
         }
         ],
         "paid_amount" => "required|numeric",
-        "remaining_amount" => "required|numeric"
         ]);
 
         if ($validate->fails()) {
             return $this->requiredField($validate->errors()->first());
         }
 
-        $detail_id = Detail::where('uuid', $request->detail_uuid)->value('id');
-        $exists = Pending::where('detail_id',$detail_id)->where('pending_date',$request->pending_date)->exists();
-
+        $detail = Detail::where('uuid', $request->detail_uuid)->firstOrFail();
+        $exists = Pending::where('detail_id',$detail->id)->where('pending_date',$request->pending_date)->exists();
         if ($exists) {
-        return $this->requiredField( 'لا يمكن إضافة نفس التفصيل بنفس تاريخ الدفع أكثر من مرة.');
+            return $this->requiredField( 'لا يمكن إضافة نفس التفصيل بنفس تاريخ الدفع أكثر من مرة.');
+        }
+
+        $exists_befor = Pending::where('detail_id',$detail->id)->exists();
+        if($exists_befor){
+            $cost = Detail::where('id',$detail->id)->with('latestPending')->firstOrFail();
+            $latestPendingCost = $cost->latestPending?->remaining_amount;
+
+            $pending = Pending::create([
+            'uuid' => Str::uuid(),
+            'detail_id' => $detail->id,
+            'pending_date' => $request->pending_date,
+            'paid_amount' => $request->paid_amount,
+            'cost' => $latestPendingCost,
+            'remaining_amount' => max(round($latestPendingCost - $request->paid_amount, 2), 0),
+            ]);
+            return $this->apiResponse(PendingResource::make($pending));
         }
         else{
         $pending = Pending::create([
             'uuid' => Str::uuid(),
-            'detail_id' => $detail_id,
+            'detail_id' => $detail->id,
             'pending_date' => $request->pending_date,
             'paid_amount' => $request->paid_amount,
-            'cost' => $request->cost,
-            'remaining_amount' => round($request->cost - $request->paid_amount,2)
+            'cost' => $detail->cost,
+            'remaining_amount' => round($detail->cost - $request->paid_amount,2)
         ]);
         return $this->apiResponse(PendingResource::make($pending));
         }
+    } catch (\Exception $ex) {
+        return $this->apiResponse(null, false, $ex->getMessage(), 500);
+    }
+    }
+
+    public function update(Request $request, $uuid)
+    {
+    try {
+        $currentYear = now()->year;
+        $previousYear = now()->subYear()->year;
+
+        $validate = Validator::make($request->all(), [
+        "pending_date" => ["required","date","before_or_equal:today",
+        function ($attribute, $value, $fail) use ($currentYear, $previousYear) {
+            $year = Carbon::parse($value)->year;
+            if ( $year != $currentYear && $year != $previousYear ) {
+                $fail('يجب أن يكون التاريخ ضمن السنة الحالية أو السنة السابقة فقط.');
+            }
+        }
+        ],
+        "paid_amount" => "numeric",
+        ],[
+            "pending_date.before_or_equal:today" => 'تاريخ الدفع يجب أن يكون مماثل لتاريخ اليوم أوقبله'
+        ]);
+
+        if ($validate->fails()) {
+            return $this->requiredField($validate->errors()->first());
+        }
+
+        $pending = Pending::where('uuid', $uuid)->firstOrFail();
+        $exists = Pending::where('detail_id', $pending->detail_id)
+        ->where('pending_date', $request->pending_date)->whereNot('id', $pending->id)->exists();
+
+        if ($exists) {
+        return $this->requiredField( 'لا يمكن إضافة نفس التفصيل بنفس تاريخ الدفع أكثر من مرة.');
+        }
+
+        $data = [
+            'pending_date' => $request->pending_date,
+            'paid_amount' => $request->paid_amount,
+            'remaining_amount' => round($pending->cost - $request->paid_amount,2)
+        ];
+        $pending->update($data);
+        return $this->apiResponse(PendingResource::make($pending));
 
     } catch (\Exception $ex) {
         return $this->apiResponse(null, false, $ex->getMessage(), 500);
+    }
+    }
+
+    public function index(){
+    try{
+       $pendings = Pending::latest()->get();
+       if( $pendings->isNotEmpty()){
+            return $this->apiResponse( PendingResource::collection( $pendings ));
+        }else{
+            return $this->apiResponse([]);
+        }
+    } catch (\Exception $ex) {
+        return $this->apiResponse(null,false,$ex->getMessage(),400);
+    }
+    }
+
+    public function filter(Request $request){
+    try{
+    $pendings = Pending::query()
+    ->when($request->project_uuid, function ($q) use ($request) {
+            $q->whereHas('detail.project', function ($q2) use ($request) {
+                $q2->where('uuid', $request->project_uuid);
+            });
+        })
+        ->when($request->detail_uuid, function ($q) use ($request) {
+            $q->whereHas('detail', function ($q2) use ($request) {
+                $q2->where('uuid', $request->detail_uuid);
+            });
+        })
+        ->when($request->pending_date, function ($q) use ($request) {
+            $q->where('pending_date', $request->pending_date);
+        })
+        ->get();
+    return $this->apiResponse(PendingResource::collection($pendings));
+    } catch (\Exception $ex) {
+        return $this->apiResponse(null,false,$ex->getMessage(),400);
     }
     }
 }

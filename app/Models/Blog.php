@@ -15,4 +15,8 @@ class Blog extends Model
         'content',
         'images',
     ];
+
+    protected $casts = [
+        'images' => 'array',
+    ];
 }

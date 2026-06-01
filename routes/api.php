@@ -95,6 +95,7 @@ Route::middleware(['auth:sanctum', 'admin'])->controller(CampaignController::cla
    Route::get('/campaign/delete/{uuid}','delete');
    Route::get('/campaign/restore/{uuid}','restore');
    Route::get('/campaign/stop/{uuid}','stop');
+   Route::get('/campaign/appeal/{uuid}','appeal');
    Route::get('/campaign/status','get_status');
    Route::get('/campaign/deleted','deleted');
 });
@@ -144,11 +145,18 @@ Route::middleware(['auth:sanctum', 'admin'])->controller(FinancialController::cl
 
 Route::middleware(['auth:sanctum', 'admin'])->controller(BlogController::class)->group(function (){
    Route::post('/blog/store','store');
-   Route::post('/exchange_rate/update/{uuid}','update');
+   Route::post('/blog/update/{uuid}','update');
+   Route::get('/blogs/all','index');
+   Route::post('/blog/search','searchBytitle');
+   Route::post('/blog/filter','filter');
+   Route::get('/blogs/old','getOldest');
+   Route::get('/blogs/last','getLatest');
+   Route::get('/blogs/category','getCategory');
 });
 
 Route::middleware(['auth:sanctum', 'admin'])->controller(PendingController::class)->group(function (){
    Route::post('/pending/store','store');
+   Route::post('/pending/update/{uuid}','update');
    Route::post('/exchange_rate/update/{uuid}','update');
 });
 

@@ -24,13 +24,13 @@ class BlogController extends Controller
         'تنبيهات عاجلة','فعاليات','شركات و منظمات','غير ذلك'];
 
         $validate = Validator::make($request->all(), [
-            "title" =>"required|unique|string|min:10|max:200|regex:/^[\p{Arabic}\s]+$/u",
+            "title" =>"required|unique:blogs,title|string|min:10|max:200|regex:/^[\p{Arabic}\s]+$/u",
             "category" => ["required", Rule::in($category)],
             "on_the_other_hand" => "nullable|string|min:0|max:20|regex:/^[\p{Arabic}\s]+$/u",
             "images" => "required|array",
             "images.*" => "image|mimes:jpg,jpeg,png",
             "excerpt" =>"required|string|min:3|max:200|regex:/^[\p{Arabic}\s]+$/u",
-            "content" =>"required|text|regex:/^[\p{Arabic}\s0-9\p{P}\p{S}]+$/u",
+            "content" =>"required|string|regex:/^[\p{Arabic}\s0-9\p{P}\p{S}]+$/u",
         ],[
             'title.unique' => 'هذا العنوان موجود مسيقا',
         ]);
@@ -44,7 +44,7 @@ class BlogController extends Controller
             $images = $this->upload_files($request->file('images'),'Blogs/images');
         }
 
-        /*$blog = Blade::create([
+        $blog = Blog::create([
             'uuid' => Str::uuid(),
             'title' => $request->title,
             'category' => $request->category,
@@ -54,7 +54,7 @@ class BlogController extends Controller
             'images' => $images
         ]);
 
-        return $this->apiResponse(BlogResource::make($blog));*/return 'klnm';
+        return $this->apiResponse(BlogResource::make($blog));
 
     } catch (\Exception $ex) {
         return $this->apiResponse(null, false, $ex->getMessage(), 500);
@@ -64,18 +64,19 @@ class BlogController extends Controller
     public function update(Request $request, $uuid)
     {
     try {
-
+        $blog = Blog::where('uuid', $uuid)->firstOrFail();
         $category = ['أخبار المشاريع','حملات جديدة','تقارير التوزيع','قصص نجاح',
         'تنبيهات عاجلة','فعاليات','شركات و منظمات','غير ذلك'];
 
         $validate = Validator::make($request->all(), [
-            "title" =>"string|unique|min:3|max:200|regex:/^[\p{Arabic}\s]+$/u",
+            "title" =>["string","min:3","max:200","regex:/^[\p{Arabic}\s]+$/u",
+            Rule::unique('blogs', 'title')->ignore($blog->id)],
             "category" => [ Rule::in($category)],
             "on_the_other_hand" => "nullable|string|min:0|max:20|regex:/^[\p{Arabic}\s]+$/u",
             "images" => "array",
             "images.*" => "image|mimes:jpg,jpeg,png",
             "excerpt" =>"string|min:3|max:200|regex:/^[\p{Arabic}\s]+$/u",
-            "content" =>"text|regex:/^[\p{Arabic}\s0-9\p{P}\p{S}]+$/u",
+            "content" =>"string|regex:/^[\p{Arabic}\s0-9\p{P}\p{S}]+$/u",
         ],[
             'title.unique' => 'هذا العنوان موجود مسيقا',
         ]);
@@ -83,20 +84,15 @@ class BlogController extends Controller
         if ($validate->fails()) {
             return $this->requiredField($validate->errors()->first());
         }
-        $blog = Blog::where('uuid', $uuid)->firstOrFail();
 
-        if ( !$request->on_the_other_hand ){
-            $on_the_other_hand = null;
-        }
-
-         if ($request->hasFile('images')) {
-                if ($blog->images) {
-                    $this->delete_files($blog->images);
-                }
-            $images = $this->upload_files($request->file('images'), 'blogs/images');
-            }else{
-                $images = $blog->images;
+        if ($request->hasFile('images')) {
+            if ($blog->images) {
+                $this->delete_files($blog->images);
             }
+            $images = $this->upload_files($request->file('images'), 'blogs/images');
+        }else{
+            $images = $blog->images;
+        }
 
         $data = [
             'title' => $request->title,
@@ -107,7 +103,6 @@ class BlogController extends Controller
             'images' => $images
         ];
         $blog->update($data);
-
         return $this->apiResponse(BlogResource::make($blog));
 
     } catch (\Exception $ex) {
@@ -166,7 +161,7 @@ class BlogController extends Controller
     try{
        $blogs = Blog::latest()->get();
        if( $blogs->isNotEmpty()){
-            return $this->apiResponse($blogs);
+            return $this->apiResponse( BlogResource::collection( $blogs ));
         }else{
             return $this->apiResponse([]);
         }

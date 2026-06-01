@@ -22,6 +22,7 @@ class PendingResource extends JsonResource
         'detail' => DetailResource::make(Detail::findOrFail($this->detail_id)),
         'pending_date' => Carbon::parse($this->pending_date)->format('d M Y'),
         'paid_amount' => $this->paid_amount.' '.'$',
+        'cost' => $this->cost.' '.'$',
         'remaining_amount' => $this->remaining_amount.' '.'$'
        ];
     }
