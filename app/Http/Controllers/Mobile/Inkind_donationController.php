@@ -138,7 +138,16 @@ class Inkind_donationController extends Controller
 
     public function filter(Request $request){
     try{
+        $validate = Validator::make($request->all(), [
+            "name" => "nullable|string|regex:/^[\p{Arabic}\s]+$/u"
+        ]);
+
     $donations = Inkind_donation::query()
+    ->when($request->name, function ($q) use ($request) {
+            $q->whereHas('user', function ($query) use ($request) {
+                $query->where('name', 'LIKE', '%' . $request->name . '%');
+            });
+        })
     ->when($request->governorate_uuid, function ($q) use ($request) {
             $q->where('governorate_uuid', $request->governorate_uuid);
         })

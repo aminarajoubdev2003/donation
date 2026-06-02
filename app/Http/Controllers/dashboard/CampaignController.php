@@ -4,6 +4,7 @@ namespace App\Http\Controllers\dashboard;
 
 use App\Http\Controllers\Controller;
 use App\Http\Resources\CampaignResource;
+use App\Http\Resources\ProjectResource;
 use App\Http\Traits\GeneralTrait;
 use App\Http\Traits\UploadTrait;
 use App\Models\Campaign;
@@ -12,6 +13,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
+use Illuminate\Validation\Rule;
 
 class CampaignController extends Controller
 {
@@ -190,7 +192,16 @@ class CampaignController extends Controller
 
     public function filter(Request $request){
     try{
+        $request->validate([
+        'status' => ['nullable', 'array'],
+        'status.*' => [
+        Rule::in(['جديدة','نشطة','متوقفة','مكتملة', 'منتهية'])],
+        'name' => ['nullable', 'string', 'regex:/^[\p{Arabic}\s]+$/u'],
+        ]);
     $campaigns = Campaign::query()
+    ->when($request->name, function ($q) use ($request) {
+            $q->where('name', 'LIKE', '%' . $request->name . '%');
+        })
 
     ->when($request->governorate_uuid, function ($q) use ($request) {
             $q->whereHas('projects.district.city.governorate', function ($q2) use ($request) {
@@ -213,7 +224,11 @@ class CampaignController extends Controller
             });
         })
         ->when($request->status, function ($q) use ($request) {
-            $q->where('status', $request->status);
+           if (is_array($request->status)) {
+                $q->whereIn('status', $request->status);
+            } else {
+                $q->where('status', $request->status);
+            }
         })
         ->get();
 
@@ -301,6 +316,20 @@ class CampaignController extends Controller
             return $this->apiResponse([]);
         }
     } catch (\Exception $ex) {
+        return $this->apiResponse(null,false,$ex->getMessage(),400);
+    }
+    }
+    public function getProjects(){
+        try{
+        $projects = Project::doesntHave('campaigns')->get();
+         if( $projects ){
+        $projects = ProjectResource::collection($projects);
+        return $this->apiResponse( $projects );
+        }
+        else{
+            return $this->apiResponse([]);
+        }
+    }catch (\Exception $ex) {
         return $this->apiResponse(null,false,$ex->getMessage(),400);
     }
     }

@@ -112,9 +112,23 @@ class BlogController extends Controller
 
     public function filter(Request $request){
     try{
+        $validate = Validator::make($request->all(), [
+        'category' => ['nullable', 'array'],
+        'category.*' => [
+        Rule::in(['أخبار المشاريع','حملات جديدة','تقارير التوزيع','قصص نجاح',
+        'تنبيهات عاجلة','فعاليات','شركات و منظمات','غير ذلك']),
+       "title" => "string|regex:/^[\p{Arabic}\s]+$/u" ]]);
+
     $blogs = Blog::query()
+    ->when($request->title, function ($q) use ($request) {
+            $q->where('title', 'LIKE', '%' . $request->title . '%');
+        })
     ->when($request->category, function ($q) use ($request) {
-            $q->where('category', $request->category);
+            if (is_array($request->category)) {
+                $q->whereIn('category', $request->category);
+            } else {
+                $q->where('category', $request->category);
+            }
         })
         ->get();
 

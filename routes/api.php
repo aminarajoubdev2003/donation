@@ -98,12 +98,14 @@ Route::middleware(['auth:sanctum', 'admin'])->controller(CampaignController::cla
    Route::get('/campaign/appeal/{uuid}','appeal');
    Route::get('/campaign/status','get_status');
    Route::get('/campaign/deleted','deleted');
+   Route::get('/get/projects','getProjects');
 });
 
 Route::middleware(['auth:sanctum', 'admin'])->controller(CampaignProjectController::class)->group(function (){
-   Route::post('/campaign/project/add/{uuid}','store');
+   Route::post('/campaign/project/add/{uuid}','addProjectToCampaign');
+   Route::post('/campaign/project/add/{uuid}','addProjectToCampaign');
    Route::get('/campaign/project/delete/{uuidc}/{uuidp}','delete');
-   Route::get('/campaign/project/restore/{uuidc}/{uuidp}','restore');
+   //Route::get('/campaign/project/restore/{uuidc}/{uuidp}','restore');
    Route::post('/project/campaign/{uuid}', 'addCampaignToProject');
 });
 

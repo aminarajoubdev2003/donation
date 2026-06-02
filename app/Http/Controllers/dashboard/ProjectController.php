@@ -96,7 +96,7 @@ class ProjectController extends Controller
         $sectors = ['تعليمي', 'صحي', 'إغاثي', 'إعمار', 'غير ذلك'];
         $funding_sources = ['رجال أعمال', 'منظمات', 'تبرعات'];
         $status = ['متوقف','قيد التنفيذ','مكتمل','مخطط له'];
-        
+
         $project = Project::where('uuid', $uuid)->firstOrFail();
         $district_id = District::where('uuid', $request->district_uuid)->value('id');
 
@@ -210,7 +210,17 @@ class ProjectController extends Controller
 
     public function filter(Request $request){
     try{
+        $request->validate([
+        'status' => ['nullable', 'array'],
+        'status.*' => [
+        Rule::in(['متوقف','قيد التنفيذ','مكتمل','مخطط له']),
+        'name' => ['nullable', 'string', 'regex:/^[\p{Arabic}\s]+$/u']
+        ]]);
+
     $projects = Project::query()
+    ->when($request->name, function ($q) use ($request) {
+            $q->where('name', 'LIKE', '%' . $request->name . '%');
+        })
     ->when($request->governorate_uuid, function ($q) use ($request) {
             $q->whereHas('district.city.governorate', function ($q2) use ($request) {
                 $q2->where('uuid', $request->governorate_uuid);
@@ -230,7 +240,11 @@ class ProjectController extends Controller
             $q->where('sector', $request->sector);
         })
         ->when($request->status, function ($q) use ($request) {
-            $q->where('status', $request->status);
+            if (is_array($request->status)) {
+                $q->whereIn('status', $request->status);
+            } else {
+                $q->where('status', $request->status);
+            }
         })
         ->when($request->progress_percentage, function ($q) use ($request) {
             $q->where('progress_percentage', $request->progress_percentage);

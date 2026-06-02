@@ -19,67 +19,92 @@ class CampaignProjectController extends Controller
 {
     use GeneralTrait , UploadTrait;
 
-    public function store(Request $request, $uuid)
-    {
-    try {
+    public function addProjectToCampaign(Request $request, $uuid){
+        try {
 
         $validate = Validator::make($request->all(), [
-        "project_uuid" => "array",
-        "project_uuid.*" => "required|string|exists:projects,uuid",
+            "project_uuid" => "required|array",
+            "project_uuid.*" => "required|string|exists:projects,uuid",
         ]);
 
         if ($validate->fails()) {
-
-        return $this->apiResponse(null,false,$validate->errors()->first(),400);
+            return $this->apiResponse(null,false,$validate->errors()->first(),400);
         }
 
-        $campaign = DB::transaction(function () use ($request, $uuid) {
+        DB::transaction(function () use ($request, $uuid) {
+            $campaign = Campaign::where('uuid', $uuid)->firstOrFail();
+            $projectIds = Project::whereIn('uuid',$request->project_uuid)->pluck('id');
 
-            $campaign = Campaign::where('uuid',$uuid)->firstOrFail();
+            foreach ($projectIds as $projectId) {
+                // هل يوجد ربط محذوف مع هذه الحملة؟
+                $deletedRelation = Campaign_project::onlyTrashed()
+                    ->where('campaign_id', $campaign->id)
+                    ->where('project_id', $projectId)
+                    ->first();
+                if ($deletedRelation) {
+                    $deletedRelation->restore();
+                    continue;
+                }
+                // هل المشروع مرتبط حالياً بحملة أخرى غير ملغاة؟
+                $usedProject = Campaign_project::query()
+                    ->join(
+                        'campaigns',
+                        'campaign_projects.campaign_id',
+                        '=',
+                        'campaigns.id'
+                    )
+                    ->where('campaign_projects.project_id', $projectId)
+                    ->whereNull('campaign_projects.deleted_at')
+                    ->where('campaigns.status', '!=', 'ملغاة')
+                    ->exists();
 
-            if ($request->filled('project_uuid')) {
-
-                $projectIds = Project::whereIn('uuid',$request->project_uuid)->pluck('id');
-
-                $usedProjects = DB::table('campaign_projects')
-
-                    ->join('campaigns','campaign_projects.campaign_id','=','campaigns.id')
-
-                    ->whereIn(
-                        'campaign_projects.project_id',$projectIds)
-
-                    ->where('campaigns.status', '!=','ملغاة')->exists();
-
-                if ($usedProjects) {
-
+                if ($usedProject) {
                     throw new \RuntimeException(
-                        'المشاريع التي تضيفها إلى هذه الحملة موجودة في حملات أخرى'
+                        'أحد المشاريع مرتبط بحملة أخرى '
                     );
                 }
 
-                foreach ($projectIds as $projectId) {
+                // هل هو مرتبط بهذه الحملة مسبقاً؟
+                $alreadyAttached = Campaign_project::where(
+                    'campaign_id',
+                    $campaign->id
+                )
+                ->where('project_id', $projectId)
+                ->exists();
 
+                if (!$alreadyAttached) {
                     $campaign->projects()->attach($projectId, [
                         'uuid' => Str::uuid()
                     ]);
                 }
             }
-
-            return $campaign;
         });
 
-        return $this->apiResponse( CampaignResource::make($campaign));
+        $campaign = Campaign::where('uuid', $uuid)->firstOrFail();
 
-    }
+        return $this->apiResponse(
+            CampaignResource::make($campaign->fresh())
+        );
 
-    catch (\RuntimeException $ex) {
-        return $this->apiResponse(null,false,$ex->getMessage(),409);
-    }
+    } catch (\RuntimeException $ex) {
 
-    catch (\Exception $ex) {
-        return $this->apiResponse(null,false,$ex->getMessage(),500);
+        return $this->apiResponse(
+            null,
+            false,
+            $ex->getMessage(),
+            409
+        );
+
+    } catch (\Exception $ex) {
+
+        return $this->apiResponse(
+            null,
+            false,
+            $ex->getMessage(),
+            500
+        );
     }
-}
+    }
 
 
     public function addCampaignToProject(Request $request,$project_uuid)
@@ -167,10 +192,8 @@ class CampaignProjectController extends Controller
     }
     }
 
-    public function restore( $uuidc,$uuidp ){
+    public function restore( $campaign_id, $project_id){
         try{
-        $campaign_id = Campaign::where('uuid',$uuidc)->value('id');
-        $project_id = Project::where('uuid', $uuidp)->value('id');
 
         $campaign_project = Campaign_project::withTrashed()->where('campaign_id' ,$campaign_id)
         ->where('project_id' ,$project_id )->firstOrFail();

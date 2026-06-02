@@ -13,13 +13,7 @@ return new class extends Migration
     {
         Schema::table('campaigns', function (Blueprint $table) {
             $table->enum('status', [
-            'جديدة',
-            'نشطة',
-            'متوقفة',
-            'مكتملة',
-            'منتهية',
-            'ملغاة'
-            ])->default('جديدة')->change();
+            'جديدة','نشطة','متوقفة','مكتملة', 'منتهية','ملغاة'])->default('جديدة')->change();
         });
     }
 
