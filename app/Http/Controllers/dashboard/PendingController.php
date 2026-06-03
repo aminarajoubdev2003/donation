@@ -79,18 +79,8 @@ class PendingController extends Controller
     public function update(Request $request, $uuid)
     {
     try {
-        $currentYear = now()->year;
-        $previousYear = now()->subYear()->year;
 
         $validate = Validator::make($request->all(), [
-        "pending_date" => ["required","date","before_or_equal:today",
-        function ($attribute, $value, $fail) use ($currentYear, $previousYear) {
-            $year = Carbon::parse($value)->year;
-            if ( $year != $currentYear && $year != $previousYear ) {
-                $fail('يجب أن يكون التاريخ ضمن السنة الحالية أو السنة السابقة فقط.');
-            }
-        }
-        ],
         "paid_amount" => "numeric",
         ],[
             "pending_date.before_or_equal:today" => 'تاريخ الدفع يجب أن يكون مماثل لتاريخ اليوم أوقبله'
@@ -109,7 +99,6 @@ class PendingController extends Controller
         }
 
         $data = [
-            'pending_date' => $request->pending_date,
             'paid_amount' => $request->paid_amount,
             'remaining_amount' => round($pending->cost - $request->paid_amount,2)
         ];

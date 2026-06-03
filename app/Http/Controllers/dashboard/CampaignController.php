@@ -70,11 +70,11 @@ class CampaignController extends Controller
 
 
 
-    public function update(Request $request, $uuid, $uuidP)
+    public function update(Request $request, $uuid)
     {
     try {
-
         $campaign = Campaign::where('uuid', $uuid)->firstOrFail();
+        if( $campaign->status == 'جديدة'){
 
         $validate = Validator::make($request->all(),[
             "name" => "string|min:3|max:100|unique:campaigns,name,".$campaign->id."|regex:/^[\p{Arabic}\s]+$/u",
@@ -99,7 +99,6 @@ class CampaignController extends Controller
             return $this->requiredField($validate->errors()->first());
         }
 
-        if( $campaign->status == 'جديدة'){
         if ($request->hasFile('image')) {
             if ($campaign->image) {
                 $this->delete_file($campaign->image);
