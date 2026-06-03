@@ -20,7 +20,7 @@ class DetailResource extends JsonResource
         'uuid' => $this->uuid,
         //'project' => ProjectResource::make(Project::findOrFail($this->project_id)),
         'detail' => $this->detail,
-        'cost' => $this->cost.''.'$'
+        'detail_cost' => $this->cost.''.'$'
        ];
     }
 }

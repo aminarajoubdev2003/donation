@@ -223,17 +223,17 @@ class ProjectController extends Controller
         })
     ->when($request->governorate_uuid, function ($q) use ($request) {
             $q->whereHas('district.city.governorate', function ($q2) use ($request) {
-                $q2->where('uuid', $request->governorate_uuid);
+                $q2->where('governorates.uuid', $request->governorate_uuid);
             });
         })
         ->when($request->city_uuid, function ($q) use ($request) {
             $q->whereHas('district.city', function ($q2) use ($request) {
-                $q2->where('uuid', $request->city_uuid);
+                $q2->where('cities.uuid', $request->city_uuid);
             });
         })
         ->when($request->district_uuid, function ($q) use ($request) {
             $q->whereHas('district', function ($q2) use ($request) {
-                $q2->where('uuid', $request->district_uuid);
+                $q2->where('districts.uuid', $request->district_uuid);
             });
         })
         ->when($request->sector, function ($q) use ($request) {

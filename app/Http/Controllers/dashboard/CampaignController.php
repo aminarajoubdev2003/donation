@@ -8,6 +8,7 @@ use App\Http\Resources\ProjectResource;
 use App\Http\Traits\GeneralTrait;
 use App\Http\Traits\UploadTrait;
 use App\Models\Campaign;
+use App\Models\Campaign_project;
 use App\Models\Project;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -69,7 +70,7 @@ class CampaignController extends Controller
 
 
 
-    public function update(Request $request, $uuid)
+    public function update(Request $request, $uuid, $uuidP)
     {
     try {
 
@@ -78,7 +79,7 @@ class CampaignController extends Controller
         $validate = Validator::make($request->all(),[
             "name" => "string|min:3|max:100|unique:campaigns,name,".$campaign->id."|regex:/^[\p{Arabic}\s]+$/u",
             "target_amount" => "numeric",
-            "start_date" => "date",
+            "start_date" => "date|after:today",
             "end_date" => "date|after:start_date",
             "start_time" => "date_format:H:i",
             "end_time" => "date_format:H:i",
@@ -98,50 +99,59 @@ class CampaignController extends Controller
             return $this->requiredField($validate->errors()->first());
         }
 
+        if( $campaign->status == 'جديدة'){
         if ($request->hasFile('image')) {
-                if ($campaign->image) {
-                    $this->delete_file($campaign->image);
-                }
+            if ($campaign->image) {
+                $this->delete_file($campaign->image);
+            }
             $image = $this->upload_file($request->file('image'), 'campaigns/images');
-            }else{
-                $image = $campaign->image;
+        }else{
+            $image = $campaign->image;
+        }
+
+        if ($request->filled('project_uuid')) {
+        $newProjectIds = Project::whereIn('uuid',$request->project_uuid)->pluck('id')->toArray();
+
+        $currentProjectIds = Campaign_project::where('campaign_id',$campaign->id)
+        ->whereNull('deleted_at')->pluck('project_id')->toArray();
+
+        $toDelete = array_diff($currentProjectIds,$newProjectIds);
+
+        Campaign_project::where('campaign_id', $campaign->id)
+        ->whereIn('project_id', $toDelete)
+        ->delete();
+
+        // المشاريع الجديدة أو المحذوفة سابقاً
+        foreach ($newProjectIds as $projectId) {
+        $pivot = Campaign_project::withTrashed()->where('campaign_id', $campaign->id)
+        ->where('project_id', $projectId)->first();
+
+        if ($pivot) {
+            if ($pivot->trashed()) {
+                $pivot->restore();
             }
-
-        DB::transaction(function () use ($request, $campaign, $image) {
-
-            //  تحقق أولاً قبل أي تعديل
-            if ($request->filled('project_uuid')) {
-
-                $projectIds = Project::whereIn('uuid', $request->project_uuid)->pluck('id');
-
-                $usedProjects = DB::table('campaign_projects')
-                    ->join('campaigns', 'campaign_projects.campaign_id', '=', 'campaigns.id')
-                    ->whereIn('campaign_projects.project_id', $projectIds)
-                    ->where('campaigns.status', '!=', 'ملغاة')
-                    ->where('campaigns.id', '!=', $campaign->id)
-                    ->exists(); //  أفضل من pluck
-
-                if ($usedProjects) {
-                    //throw new \Exception('بعض المشاريع مرتبطة بحملات أخرى');
-                    return $this->requiredField('بعض المشاريع مرتبطة بحملات أخرى');
-                }
-                $campaign->projects()->sync($projectIds);
-            }
-
-            $campaign->update([
-                'name' => $request->name,
-                'target_amount' => $request->target_amount,
-                'start_date' => $request->start_date,
-                'end_date' => $request->end_date,
-                'start_time' => $request->start_time,
-                'end_time' => $request->end_time,
-                'purposes' => $request->purposes,
-                'image' => $image,
+        } else {
+            Campaign_project::create([
+                'uuid' => Str::uuid(),
+                'campaign_id' => $campaign->id,
+                'project_id' => $projectId,
             ]);
-        });
-
-        return $this->apiResponse(CampaignResource::make($campaign));
-
+        }
+    }}
+    $campaign->update([
+        'name' => $request->name,
+        'target_amount' => $request->target_amount,
+        'start_date' => $request->start_date,
+        'end_date' => $request->end_date,
+        'start_time' => $request->start_time,
+        'end_time' => $request->end_time,
+        'purposes' => $request->purposes,
+        'image' => $image,
+    ]);
+    return $this->apiResponse(CampaignResource::make($campaign));
+    }else{
+        return $this->requiredField('لا يمكن تعديل حملة .'. $campaign->status);
+    }
     } catch (\Exception $ex) {
         return $this->apiResponse(null, false, $ex->getMessage(), 400);
     }
@@ -205,22 +215,22 @@ class CampaignController extends Controller
 
     ->when($request->governorate_uuid, function ($q) use ($request) {
             $q->whereHas('projects.district.city.governorate', function ($q2) use ($request) {
-                $q2->where('uuid', $request->governorate_uuid);
+                $q2->where('governorates.uuid', $request->governorate_uuid);
             });
         })
         ->when($request->city_uuid, function ($q) use ($request) {
             $q->whereHas('projects.district.city', function ($q2) use ($request) {
-                $q2->where('uuid', $request->city_uuid);
+                $q2->where('cities.uuid', $request->city_uuid);
             });
         })
         ->when($request->district_uuid, function ($q) use ($request) {
             $q->whereHas('projects.district', function ($q2) use ($request) {
-                $q2->where('uuid', $request->district_uuid);
+                $q2->where('district.uuid', $request->district_uuid);
             });
         })
         ->when($request->project_uuid, function ($q) use ($request) {
             $q->whereHas('projects', function ($q2) use ($request) {
-                $q2->where('uuid', $request->project_uuid);
+                $q2->where('projects.uuid', $request->project_uuid);
             });
         })
         ->when($request->status, function ($q) use ($request) {
