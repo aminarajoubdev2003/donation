@@ -251,8 +251,14 @@ class CampaignController extends Controller
     try{
         $campaign = Campaign::where('uuid', $uuid)->firstOrFail();
 
-        if( $campaign->status == 'جديدة' || $campaign->status == 'ملغاة'
-        || $campaign->status == 'متوقفة'){
+        if( $campaign->status == 'جديدة' || $campaign->status == 'ملغاة' || $campaign->status == 'متوقفة'){
+            $projects = $campaign->projects;
+
+            foreach($projects as $project){
+            $campaign_project = Campaign_project::where('campaign_id' ,$campaign->id)
+            ->where('project_id' ,$project->id )->firstOrFail();
+            $campaign_project->delete();
+            }
             $campaign->delete();
            return $this->index();
         }else{

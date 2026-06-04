@@ -160,6 +160,9 @@ Route::middleware(['auth:sanctum', 'admin'])->controller(PendingController::clas
    Route::post('/pending/store','store');
    Route::post('/pending/update/{uuid}','update');
    Route::post('/exchange_rate/update/{uuid}','update');
+   Route::get('/pendings/all','index');
+   Route::get('/pendings/projects','getProject');
+   Route::get('/pendings/details/{uuid}','getDetails');
 });
 
 Route::middleware(['auth:sanctum', 'admin'])->controller(DashboardController::class)->group(function (){

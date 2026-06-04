@@ -3,14 +3,17 @@
 namespace App\Http\Controllers\dashboard;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\DetailResource;
+use App\Http\Resources\PendingProjectResource;
 use App\Http\Resources\PendingResource;
 use App\Http\Traits\GeneralTrait;
 use App\Models\Detail;
 use App\Models\Pending;
+use App\Models\Project;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
-use Carbon\Carbon;
 
 class PendingController extends Controller
 {
@@ -82,8 +85,6 @@ class PendingController extends Controller
 
         $validate = Validator::make($request->all(), [
         "paid_amount" => "numeric",
-        ],[
-            "pending_date.before_or_equal:today" => 'تاريخ الدفع يجب أن يكون مماثل لتاريخ اليوم أوقبله'
         ]);
 
         if ($validate->fails()) {
@@ -91,11 +92,14 @@ class PendingController extends Controller
         }
 
         $pending = Pending::where('uuid', $uuid)->firstOrFail();
-        $exists = Pending::where('detail_id', $pending->detail_id)
-        ->where('pending_date', $request->pending_date)->whereNot('id', $pending->id)->exists();
+        $latestPending = $pending->detail->latestPending;
+        if ($latestPending->id !== $pending->id) {
+            return $this->requiredField('لا يمكن تعديل دفعة قديمة');
+        }
 
-        if ($exists) {
-        return $this->requiredField( 'لا يمكن إضافة نفس التفصيل بنفس تاريخ الدفع أكثر من مرة.');
+        $today = Carbon::now()->toDateString();
+        if ( $today != Carbon::parse($pending->created_at)->toDateString() ) {
+            return $this->requiredField( 'انتهت مدة الصلاحية على التعديل');
         }
 
         $data = [
@@ -128,12 +132,12 @@ class PendingController extends Controller
     $pendings = Pending::query()
     ->when($request->project_uuid, function ($q) use ($request) {
             $q->whereHas('detail.project', function ($q2) use ($request) {
-                $q2->where('uuid', $request->project_uuid);
+                $q2->where('uuid.projects', $request->project_uuid);
             });
         })
         ->when($request->detail_uuid, function ($q) use ($request) {
             $q->whereHas('detail', function ($q2) use ($request) {
-                $q2->where('uuid', $request->detail_uuid);
+                $q2->where('uuid.details', $request->detail_uuid);
             });
         })
         ->when($request->pending_date, function ($q) use ($request) {
@@ -144,5 +148,32 @@ class PendingController extends Controller
     } catch (\Exception $ex) {
         return $this->apiResponse(null,false,$ex->getMessage(),400);
     }
+    }
+
+    public function getProject(){
+        $projects = Project::with(['details.latestPending'])
+        ->whereHas('details.latestPending', function($query) {
+            $query->where('remaining_amount', '>', 0);
+        })
+        ->get();
+        if( $projects->isNotEmpty()){
+            return $this->apiResponse(PendingProjectResource::collection($projects));
+        }else{
+            return $this->apiResponse([]);
+        }
+    }
+
+    public function getDetails( $uuid ){
+        $project_id = Project::where('uuid', $uuid)->value('id');
+        $details = Detail::where('project_id',$project_id)
+        ->whereHas('latestPending', function($query) {
+            $query->where('remaining_amount', '>', 0);
+        })
+        ->get();
+        if( $details->isNotEmpty()){
+            return $this->apiResponse(DetailResource::collection($details));
+        }else{
+            return $this->apiResponse([]);
+        }
     }
 }
