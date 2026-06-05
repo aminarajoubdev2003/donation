@@ -8,6 +8,7 @@ use App\Http\Resources\ProjectResource;
 use App\Http\Traits\GeneralTrait;
 use App\Http\Traits\UploadTrait;
 use App\Models\Detail;
+use App\Models\Pending;
 use App\Models\Project;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
@@ -109,6 +110,18 @@ class ProjectMediaController extends Controller
     try{
         $project_id = Project::where('uuid', $uuid)->value('id');
 
+        $deletedDetail = Detail::onlyTrashed()
+            ->where('project_id', $project_id)
+            ->where('detail', $request->detail)
+            ->first();
+
+        if ($deletedDetail) {
+            $deletedDetail->restore();
+            $deletedDetail->update(['cost' => $request->cost]);
+            $detail = DetailResource::make($deletedDetail);
+            return $this->apiResponse($detail);
+        }
+
         $validate = Validator::make($request->all(),[
         "detail" => [
         "required",
@@ -118,7 +131,8 @@ class ProjectMediaController extends Controller
         "regex:/^[\p{Arabic}0-9\s\p{P}\p{S}]+$/u",
         Rule::unique('details', 'detail')
             ->where(function ($query) use ($project_id) {
-                return $query->where('project_id',$project_id);
+                return $query->where('project_id',$project_id)
+                 ->whereNull('deleted_at');
         })
         ],
             "cost" => "required|numeric",
@@ -151,6 +165,7 @@ class ProjectMediaController extends Controller
     public function updateDetails( Request $request ,$uuidp, $uuid){
     try{
         $project_id = Project::where('uuid', $uuidp)->value('id');
+        $detail = Detail::where('uuid' , $uuid)->firstOrfail();
 
         $validate = Validator::make($request->all(),[
         "detail" => [
@@ -161,7 +176,7 @@ class ProjectMediaController extends Controller
         Rule::unique('details', 'detail')
             ->where(function ($query) use ($project_id) {
                 return $query->where('project_id',$project_id);
-        })
+        })->ignore($detail->id)
         ],
             "cost" => "numeric",
         ],[
@@ -179,7 +194,6 @@ class ProjectMediaController extends Controller
             'cost' => $request->cost
             ];
 
-            $detail = Detail::where('uuid' , $uuid)->firstOrfail();
             $detail->update($data);
 
         $detail = DetailResource::make($detail);
@@ -208,10 +222,14 @@ class ProjectMediaController extends Controller
     public function delete_detail( $uuidp,$uuid){
     try{
         $detail = Detail::where('uuid', $uuid)->firstOrFail();
-        if( $detail->delete() ){
+        $pending = Pending::where('detail_id',$detail->id)->exists();
+
+        if( $pending ){
+            return $this->requiredField('هذا التفصيل له دفعة سابقة لايمكنك حذفه');
+        }
+       else{
+            $detail->delete();
             return $this->all_details( $uuidp);
-        }else{
-            return $this->apiResponse(null, false, 'Failed to delete project', 400);
         }
     } catch (\Exception $ex) {
         return $this->apiResponse(null, false, $ex->getMessage(), 400);
