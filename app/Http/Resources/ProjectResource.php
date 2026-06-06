@@ -42,7 +42,7 @@ class ProjectResource extends JsonResource
             'funding_source' => $this->funding_source,
             'Implementing_party' => $this->Implementing_party,
             'status' => $this->status,
-            'details' => DetailResource::collection($this->whenLoaded('details')),
+            'details' => DetailResource::collection($this->details),
         ];
     }
 }

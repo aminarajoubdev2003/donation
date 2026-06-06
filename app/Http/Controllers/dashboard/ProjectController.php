@@ -11,7 +11,9 @@ use App\Http\Traits\UploadTrait;
 use App\Http\Traits\GeneralTrait;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\ProjectResource;
+use App\Models\Campaign_project;
 use Illuminate\Support\Facades\Validator;
+use App\Http\Resources\campaign_project as CampaignProjectResource;
 
 class ProjectController extends Controller
 {
@@ -314,8 +316,9 @@ class ProjectController extends Controller
 
     public function show( $uuid ){
     try{
-        $project = Project::with('details')->where('uuid', $uuid)->firstOrFail();
-        return $this->apiResponse(ProjectResource::make($project));
+
+        $project = Project::with(['details','campaigns'])->where('uuid', $uuid)->firstOrFail();
+        return $this->apiResponse(CampaignProjectResource::make($project));
     } catch (\Exception $ex) {
         return $this->apiResponse(null,false,$ex->getMessage(),400);
     }
