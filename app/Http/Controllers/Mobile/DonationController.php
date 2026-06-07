@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Mobile;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\DonatersResource;
 use App\Http\Resources\DonationResource;
 use App\Http\Resources\ImageResource;
 use App\Http\traits\GeneralTrait;
@@ -156,10 +157,10 @@ class DonationController extends Controller
 
         $donation->update([
             'status' => $request->status,
-            'pending' => $pending
+            'pending' => $pending,
         ]);
 
-        return $this->apiResponse( DonationResource::make($donation));
+        return $this->apiResponse( DonatersResource::make($donation));
         }catch (\Exception $ex) {
         return $this->apiResponse(null, false, $ex->getMessage(), 500);
         }
