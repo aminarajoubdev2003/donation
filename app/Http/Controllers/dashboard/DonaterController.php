@@ -94,6 +94,11 @@ class DonaterController extends Controller
 
     public function filter(Request $request){
     try{
+        $validate = Validator::make($request->all(), [
+       "name" => "string|regex:/^[\p{Arabic}\s]+$/u" ]);
+
+       $donate_directly = 0; $pledge_to_donate = 0; $pending=0;
+
     if( filled( $request->method)){
         if( $request->method == 'تبرع'){
             $donate_directly =1;
@@ -111,6 +116,11 @@ class DonaterController extends Controller
         }
     }
     $donations = Donation::query()
+    ->when($request->name, function ($q) use ($request) {
+            $q->whereHas('user', function ($q2) use ($request) {
+                $q2->where('name', 'LIKE', '%' . $request->name . '%');
+            });
+        })
     ->when($request->method, function ($q) use ($pledge_to_donate) {
             $q->where('pledge_to_donate', $pledge_to_donate);
         })

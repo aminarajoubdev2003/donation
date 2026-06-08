@@ -19,6 +19,7 @@ class DonatersResource extends JsonResource
     {
        // return parent::toArray($request);
        return[
+        'uuid' => $this->uuid,
         'user' => UserResource::make(User::findOrFail($this->user_id)),
         'last_donation' => $this->contribution_amount,
         'currency_type' => $this->currency_type,

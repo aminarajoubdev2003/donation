@@ -170,13 +170,15 @@ class DonationController extends Controller
     {
         try{
 
-        $image = Donation::where('uuid', $donation_uuid)->value('image');
+        $donation = Donation::where('uuid', $donation_uuid)->firstOrFail();
 
-        return $this->apiResponse( new ImageResource([
-            'index' => 0,
-            'path' => $image
-            ]),);
-
+        return response()->json([
+        'status' => true,
+        'data' => [
+            'image' => new ImageResource(['index' => 0,'path' => $donation->image]),
+            'contribution_amount' => $donation->contribution_amount,
+            'currency_type' => $donation->currency_type
+        ]], 200);
         }catch (\Exception $ex) {
         return $this->apiResponse(null, false, $ex->getMessage(), 500);
         }

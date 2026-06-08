@@ -17,6 +17,7 @@ class Donater_ShowResource extends JsonResource
     {
         //return parent::toArray($request);
         return[
+        'uuid' => $this->uuid,
         'last_donation' => $this->contribution_amount,
         'currency_type' => $this->currency_type,
         'date' => Carbon::parse($this->created_at)->format('d M Y'),
