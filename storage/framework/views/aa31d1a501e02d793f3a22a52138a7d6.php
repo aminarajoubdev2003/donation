@@ -23,15 +23,16 @@
     <tr>
         <td style="padding:30px; text-align:right;">
 
-            <h2 style="color:#333;">{{ $campaign->name }}</h2>
+            <h2 style="color:#333;"><?php echo e($campaign->name); ?></h2>
 
             <p style="color:#666; line-height:1.8;">
-                {{ $campaign->description }}
+                <?php echo e($campaign->description); ?>
+
             </p>
 
             <!-- Button -->
             <div style="text-align:center; margin:30px 0;">
-                <a href="{{ url('/campaigns/'.$campaign->id) }}"
+                <a href="<?php echo e(url('/campaigns/'.$campaign->id)); ?>"
                    style="background:#014a5b; color:#fff; padding:15px 25px; text-decoration:none; border-radius:5px; font-size:16px;border-radius:99px;">
                  تبرع الآن
                 </a>
@@ -43,7 +44,8 @@
     <!-- Footer -->
     <tr>
         <td style="background:#f1f1f1; padding:15px; text-align:center; font-size:12px; color:#999;">
-            جميع الحقوق محفوظة © {{ date('Y') }}
+            جميع الحقوق محفوظة © <?php echo e(date('Y')); ?>
+
         </td>
     </tr>
 
@@ -55,3 +57,4 @@
 
 </body>
 </html>
+<?php /**PATH C:\laragon\www\donation\resources\views/emails/new_campaign.blade.php ENDPATH**/ ?>

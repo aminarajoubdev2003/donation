@@ -2,16 +2,19 @@
 
 namespace App\Http\Controllers\Api;
 
-use Exception;
-use App\Models\User;
-use Illuminate\Support\Str;
-use Illuminate\Http\Request;
-use App\Http\traits\UploadTrait;
-use App\Http\traits\GeneralTrait;
 use App\Http\Controllers\Controller;
+use App\Http\traits\GeneralTrait;
+use App\Http\traits\UploadTrait;
+use App\Models\PasswordReset;
+use App\Models\User;
+use Carbon\Carbon;
+use Exception;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Str;
 
 class AuthController extends Controller
 {
@@ -44,7 +47,8 @@ class AuthController extends Controller
             'password' => Hash::make($request->password),
             'phone' => $request->phone,
             'type' => $request->type,
-            'contact_info'=> $request->contact_info
+            'contact_info'=> $request->contact_info,
+            'profile' => null
         ]);
         }
         $data['user'] = $user;
@@ -99,5 +103,7 @@ class AuthController extends Controller
     {
     return $request->user()->notifications;
     }
+
+
 }
 

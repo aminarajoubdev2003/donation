@@ -132,12 +132,12 @@ class PendingController extends Controller
     $pendings = Pending::query()
     ->when($request->project_uuid, function ($q) use ($request) {
             $q->whereHas('detail.project', function ($q2) use ($request) {
-                $q2->where('uuid.projects', $request->project_uuid);
+                $q2->where('projects.uuid', $request->project_uuid);
             });
         })
         ->when($request->detail_uuid, function ($q) use ($request) {
             $q->whereHas('detail', function ($q2) use ($request) {
-                $q2->where('uuid.details', $request->detail_uuid);
+                $q2->where('details.uuid', $request->detail_uuid);
             });
         })
         ->when($request->pending_date, function ($q) use ($request) {

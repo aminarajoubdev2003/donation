@@ -16,20 +16,15 @@ return new class extends Migration
             $table->uuid();
             $table->string('name')->unique();
             $table->decimal('target_amount', 15, 2);
-            $table->decimal('total', 15, 2)->default(0);
+            $table->decimal('collected_amount', 15, 2)->default(0);
+            $table->string('image');
             $table->date('start_date');
             $table->date('end_date');
             $table->time('start_time');
             $table->time('end_time');
             $table->text('purposes');
             $table->enum('status', [
-            'مسودة',
-            'نشطة',
-            'متوقفة',
-            'مكتملة',
-            'منتهية',
-            'ملغاة'
-            ])->default('مسودة');
+            'جديدة','نشطة','متوقفة','مكتملة', 'منتهية','ملغاة'])->default('جديدة');
             $table->softDeletes();
             $table->timestamps();
         });

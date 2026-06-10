@@ -111,6 +111,7 @@ class User extends Authenticatable
     return round($total, 2);
     }
 
+
     public function getDonationsCountAttribute(){
         return $this->donations()->count();
     }

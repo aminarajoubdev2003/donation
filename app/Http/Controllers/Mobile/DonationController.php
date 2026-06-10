@@ -24,8 +24,12 @@ class DonationController extends Controller
     public function donate_directly( Request $request)
     {
         try{
+        $unaccepted = Donation::where('user_id',Auth::user()->id)->where('status','غير متوافق')
+        ->exists();
+        if( !$unaccepted )
+        {
         $currency_type = ['USD', 'SYP', 'EUR'];
-        $invalidStatuses = ['مسودة','ملغاة','متوقفة','منتهية'];
+        $invalidStatuses = ['جديدة','ملغاة','متوقفة','منتهية'];
 
         $validate = Validator::make($request->all(),[
             "campaign_uuid" => "required|string|exists:campaigns,uuid",
@@ -59,8 +63,51 @@ class DonationController extends Controller
         return $this->apiResponse( DonationResource::make($donation));
 
         }else{
-            return $this->requiredField('لا يمكن التبرع لحملة غير نشطة ');
+            return $this->requiredField('هذه الحملة لم تبدأ بعد  ');
         }
+        }else{
+            return $this->requiredField(' لديك تبرع غير مكتمل عليك تكملته قبل القيام بتبرع جديد');
+        }
+        }catch (\Exception $ex) {
+        return $this->apiResponse(null, false, $ex->getMessage(), 500);
+        }
+    }
+
+    public function complete( Request $request)
+    {
+        try{
+        $currency_type = ['USD', 'SYP', 'EUR'];
+        $invalidStatuses = ['مسودة','ملغاة','متوقفة','منتهية'];
+
+        $validate = Validator::make($request->all(),[
+            "campaign_uuid" => "required|string|exists:campaigns,uuid",
+            "contribution_amount" => "required|numeric",
+            "contribution_details" => "nullable|string|regex:/^[^\p{Latin}]+$/u",
+            "currency_type" => [ Rule::in($currency_type)],
+            "image" => "required|image|mimes:jpg,jpeg,png",
+        ]);
+
+        if ($validate->fails()) {
+            return $this->requiredField($validate->errors()->first());
+        }
+
+        $campaign = Campaign::where('uuid', $request->campaign_uuid)->firstOrFail();
+        $image = $this->upload_file($request->file('image'),'donations/images');
+
+        $donation = Donation::create([
+            'uuid' => Str::uuid(),
+            'user_id' => Auth::user()->id,
+            'campaign_id' => $campaign->id,
+            'contribution_amount' => $request->contribution_amount,
+            'contribution_details' => $request->contribution_details,
+            'currency_type' => $request->currency_type,
+            'donate_directly' => 1,
+            'image' => $image,
+            'status'=> 'قيد التدقيق',
+            'pending' => 0
+        ]);
+        return $this->apiResponse( DonationResource::make($donation));
+
         }catch (\Exception $ex) {
         return $this->apiResponse(null, false, $ex->getMessage(), 500);
         }
@@ -69,6 +116,11 @@ class DonationController extends Controller
     public function pledge_to_donate( Request $request)
     {
         try{
+        $unaccepted = Donation::where('user_id',Auth::user()->id)->where('status','غير متوافق')
+        ->exists();
+        if( !$unaccepted )
+        {
+        $invalidStatuses = ['مسودة','ملغاة','متوقفة','منتهية'];
         $validate = Validator::make($request->all(),[
             "campaign_uuid" => "required|string|exists:campaigns,uuid",
             "contribution_amount" => "required|numeric",
@@ -79,12 +131,14 @@ class DonationController extends Controller
             return $this->requiredField($validate->errors()->first());
         }
 
-        $campaign_id = Campaign::where('uuid', $request->campaign_uuid)->value('id');
+        $campaign = Campaign::where('uuid', $request->campaign_uuid)->firstOrFail();
+
+        if (!in_array($campaign->status, $invalidStatuses)){
 
         $donation = Donation::create([
             'uuid' => Str::uuid(),
             'user_id' => Auth::user()->id,
-            'campaign_id' => $campaign_id,
+            'campaign_id' => $campaign->id,
             'contribution_amount' => $request->contribution_amount,
             'contribution_details' => $request->contribution_details,
             'pledge_to_donate' => 1,
@@ -92,6 +146,12 @@ class DonationController extends Controller
         ]);
         return $this->apiResponse(DonationResource::make($donation));
 
+        }else{
+            return $this->requiredField('هذه الحملة لم تبدأ بعد  ');
+        }
+        }else{
+            return $this->requiredField(' لديك تبرع غير مكتمل عليك تكملته قبل القيام بتبرع جديد');
+        }
         }catch (\Exception $ex) {
         return $this->apiResponse(null, false, $ex->getMessage(), 500);}
     }
@@ -141,15 +201,10 @@ class DonationController extends Controller
     {
         try{
         $status = ['متوافق', 'غير متوافق'];
-        $pending = 0;
 
         $request->validate([
             "status" => ["required", Rule::in($status)]
         ]);
-
-        if( $request->status == 'متوافق'){
-            $pending = 1;
-        }
 
         $donation = Donation::where('uuid', $donation_uuid)->first();
         $donation->usd_amount = $this->currencyService->
@@ -157,7 +212,7 @@ class DonationController extends Controller
 
         $donation->update([
             'status' => $request->status,
-            'pending' => $pending,
+            'pending' => 1,
         ]);
 
         return $this->apiResponse( DonatersResource::make($donation));

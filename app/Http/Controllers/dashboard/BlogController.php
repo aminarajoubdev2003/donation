@@ -207,6 +207,51 @@ class BlogController extends Controller
     } catch (\Exception $ex) {
         return $this->apiResponse(null,false,$ex->getMessage(),400);
     }
+    }
 
+    public function delete( $uuid ){
+    try{
+        $blog = Blog::where('uuid', $uuid)->firstOrFail();
+        if( $blog->delete() ){
+            return $this->index();
+        }else{
+            return $this->apiResponse(null, false, 'Failed to delete project', 400);
+        }
+    } catch (\Exception $ex) {
+        return $this->apiResponse(null,false,$ex->getMessage(),400);
+    }
+    }
+
+    public function restore( $uuid ){
+    try{
+        $blog = Blog::withTrashed()
+        ->where('uuid', $uuid)
+        ->firstOrFail();
+
+        if($blog->restore()){
+            return $this->index();
+        }else{
+            return $this->apiResponse(null, false, 'Failed to restore project', 400);
+        }
+    } catch (\Exception $ex) {
+        return $this->apiResponse(null,false,$ex->getMessage(),400);
+    }
+    }
+
+
+    public function deleted( ){
+    try{
+        $blogs = Blog::onlyTrashed()->get();
+
+        if( $blogs ){
+        $blogs = BlogResource::collection($blogs);
+        return $this->apiResponse( $blogs );
+        }
+        else{
+            return $this->apiResponse([]);
+        }
+    } catch (\Exception $ex) {
+        return $this->apiResponse(null,false,$ex->getMessage(),400);
+    }
     }
 }

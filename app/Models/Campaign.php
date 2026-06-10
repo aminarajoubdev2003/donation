@@ -62,6 +62,21 @@ class Campaign extends Model
         return $this->hasmany(Donation::class);
     }
 
+    public function getProjectsCountAttribute(){
+        return $this->projects()->count();
+    }
+
+    public function getProgressPercentageAttribute( ){
+        $count = $this->projects->count();
+
+        if( $count == 0 ){
+            return 0;
+        }
+
+        $progreeProjects = $this->projects->sum('progress_percentage');
+        return round(($progreeProjects /$count),2);
+    }
+
     public function refreshStatus()
     {
     $now = now();

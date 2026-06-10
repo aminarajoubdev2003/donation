@@ -22,6 +22,12 @@ class Inkind_donationController extends Controller
     public function store(Request $request)
     {
     try {
+        $Olddonation = Inkind_donation::where('user_id', Auth::user()->id)
+        ->where('status', 'لم يتم استلامه بعد')->exists();
+
+        if( $Olddonation ){
+            return $this->requiredField('لا يمكنك التبرع حتى تسلم ما تبرعت به مسبقا');
+        }else{
 
         $type = ['أثاث' ,'أدوات منزلية', 'أجهزة طبية', 'أجهزة إلكترونية', 'ملابس', 'أدوات مدرسية', 'غير ذلك'];
         $status_of_materail = ['جديدة','مستعملة'];
@@ -43,12 +49,7 @@ class Inkind_donationController extends Controller
 
         $governorate_id = Governorate::where('uuid', $request->governorate_uuid)->value('id');
 
-        $Olddonation = Inkind_donation::where('user_id', Auth::user()->id)
-        ->where('status', 'لم يتم استلامه بعد')->first();
 
-        if( $Olddonation ){
-            return $this->requiredField('لا يمكنك التبرع حتى تسلم ما تبرعت به مسبقا');
-        }else{
         if ($request->hasFile('images')) {
             $images = $this->upload_files($request->file('images'),'inkinds/images');
         }

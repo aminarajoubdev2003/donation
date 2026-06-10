@@ -1,6 +1,9 @@
 <?php
 
 use App\Http\Controllers\Api\AuthController;
+use App\Http\Controllers\Api\CampaignApiController;
+use App\Http\Controllers\Api\PasswordResetController;
+use App\Http\Controllers\Api\ProfileController;
 use App\Http\Controllers\dashboard\BlogController;
 use App\Http\Controllers\dashboard\CampaignController;
 use App\Http\Controllers\dashboard\CampaignProjectController;
@@ -124,10 +127,11 @@ Route::post('/save-fcm-token', [FcmTokenController::class, 'saveFcmToken'])->mid
 /*webRoute*/
 Route::post('/donate/directly', [DonationController::class, 'donate_directly'])->middleware('auth:sanctum');
 Route::get('/donation/qr', [DonationController::class, 'showQR'])->middleware('auth:sanctum');
-Route::post('/verify/{uuid}', [DonationController::class, 'verify'])->middleware('auth:sanctum');
+Route::post('/verify/{uuid}', [DonationController::class, 'verify'])->middleware(['auth:sanctum', 'admin']);
 Route::post('/pledge', [DonationController::class, 'pledge_to_donate'])->middleware('auth:sanctum');
 Route::post('/donate/pledge/{uuid}', [DonationController::class, 'donate_for_pledge'])->middleware('auth:sanctum');
-Route::get('/show/image/{uuid}', [DonationController::class, 'show_img'])->middleware('auth:sanctum');
+Route::get('/show/image/{uuid}', [DonationController::class, 'show_img'])->middleware(['auth:sanctum', 'admin']);
+Route::post('/donate/complete', [DonationController::class, 'complete'])->middleware('auth:sanctum');
 Route::post('/donation/add' , [Inkind_donationController::class, 'store'])->middleware('auth:sanctum');
 
 Route::middleware(['auth:sanctum', 'admin'])->controller(Inkind_donationController::class)->group(function (){
@@ -163,9 +167,26 @@ Route::middleware(['auth:sanctum', 'admin'])->controller(PendingController::clas
    Route::get('/pendings/all','index');
    Route::get('/pendings/projects','getProject');
    Route::get('/pendings/details/{uuid}','getDetails');
+   Route::post('/pendings/filter','filter');
 });
 
 Route::middleware(['auth:sanctum', 'admin'])->controller(DashboardController::class)->group(function (){
    Route::get('/dashboard','__invoke');
    //Route::post('/exchange_rate/update/{uuid}','update');
 });
+Route::middleware('auth:sanctum')->controller( CampaignApiController::class)->group(function (){
+   Route::get('/campaignApi/all','index');
+   Route::post('/campaignApi/filter','filter');
+   Route::get('/campaignApi/status','get_status');
+});
+
+Route::middleware('auth:sanctum')->controller( ProfileController::class)->group(function (){
+   Route::get('/user','getUser');
+   Route::get('/user/donations','getDonations');
+   Route::get('/user/inkinds','getInkindDonations');
+   Route::get('/user/statistics','getStatistics');
+   Route::post('/user/changeProfile','changeProfile');
+});
+
+Route::post('/send-otp',[PasswordResetController::class, 'sendOtp']);
+Route::post('/reset-password',[PasswordResetController::class, 'resetPassword']);
