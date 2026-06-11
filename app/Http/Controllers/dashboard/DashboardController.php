@@ -39,6 +39,7 @@ class DashboardController extends Controller
 
         $forecasts = [
         'project_risks' => $forecastService->projectRisks(),
+        'time_delay_risks' => $forecastService->timeDelayRisks(),
         'funding_gap' => $forecastService->fundingGap(),
         'priority_projects' => $forecastService->priorityProjects(),
         'donation_forecast' => $forecastService->donationForecast(),

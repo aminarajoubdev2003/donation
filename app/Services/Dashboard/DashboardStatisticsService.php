@@ -42,8 +42,8 @@ class DashboardStatisticsService{
                 break;
             }
         }
-        return $count;
         }
+        return $count;
     }
 
     private function calculateOutstandingAmounts(): float {

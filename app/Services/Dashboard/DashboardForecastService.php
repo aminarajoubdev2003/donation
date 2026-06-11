@@ -2,7 +2,9 @@
 namespace App\Services\Dashboard;
 use App\Models\Detail;
 use App\Models\Donation;
+use App\Models\Project;
 use App\Services\Dashboard\DashboardChartService;
+use Carbon\Carbon;
 
 
 
@@ -54,5 +56,51 @@ class DashboardForecastService{
         return [
             'next_month_forecast' => $forecast
         ];
+    }
+
+    public function timeDelayRisks(): array {
+
+    $projects = Project::with(['campaigns','details.pendings'])->get();
+
+    return $projects->map(function ($project) {
+
+        $firstPending = $project->details->flatMap(function ($detail) {
+                return $detail->pendings;
+            })->sortBy('pending_date')->first();
+
+        $campaign = $project->campaigns->first();
+
+        if (!$firstPending || !$campaign) {
+            return [
+                'project' => $project->name,
+                'risk' => 'Unknown',
+                'gap_days' => null,
+                'message' => 'لا توجد بيانات كافية'
+            ];
+        }
+
+        $endDate = Carbon::parse($campaign->end_date);
+
+        $paymentDate = Carbon::parse($firstPending->pending_date);
+
+        $days = $endDate->diffInDays($paymentDate, false);
+
+        $risk = 'Low';
+
+        if ($days > 30) {
+            $risk = 'High';
+        } elseif ($days > 0) {
+            $risk = 'Medium';
+        }
+
+        return [
+            'project' => $project->name,
+            'campaign_end' => $endDate->toDateString(),
+            'first_payment' => $paymentDate->toDateString(),
+            'gap_days' => $days,
+            'risk' => $risk,
+        ];
+
+    })->values()->toArray();
     }
 }

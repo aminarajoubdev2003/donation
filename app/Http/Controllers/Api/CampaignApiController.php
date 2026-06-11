@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Http\Resources\ApiCampaignResource;
+use App\Http\Resources\CampaignResource;
 use App\Http\Traits\GeneralTrait;
 use App\Http\Traits\UploadTrait;
 use App\Models\Campaign;
@@ -74,6 +75,16 @@ class CampaignApiController extends Controller
         return $this->apiResponse($status);
     } catch (\Exception $ex) {
         return $this->apiResponse(null,false,$ex->getMessage(),400);
+    }
+    }
+
+    public function show( $uuid ){
+    try{
+        $campaign = Campaign::with('projects')->where('uuid', $uuid)->firstOrFail();
+        $campaign->refreshStatus();
+        return $this->apiResponse( CampaignResource::make($campaign) );
+    } catch (\Exception $ex) {
+        return $this->apiResponse(null, false, $ex->getMessage(), 400);
     }
     }
 

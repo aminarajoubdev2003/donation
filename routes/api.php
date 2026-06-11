@@ -158,6 +158,9 @@ Route::middleware(['auth:sanctum', 'admin'])->controller(BlogController::class)-
    Route::get('/blogs/old','getOldest');
    Route::get('/blogs/last','getLatest');
    Route::get('/blogs/category','getCategory');
+   Route::get('/blogs/delete/{uuid}','delete');
+   Route::get('/blogs/restore/{uuid}','restore');
+   Route::get('/blogs/deleted','deleted');
 });
 
 Route::middleware(['auth:sanctum', 'admin'])->controller(PendingController::class)->group(function (){
@@ -178,6 +181,7 @@ Route::middleware('auth:sanctum')->controller( CampaignApiController::class)->gr
    Route::get('/campaignApi/all','index');
    Route::post('/campaignApi/filter','filter');
    Route::get('/campaignApi/status','get_status');
+   Route::get('/campaignApi/show/{uuid}','show');
 });
 
 Route::middleware('auth:sanctum')->controller( ProfileController::class)->group(function (){

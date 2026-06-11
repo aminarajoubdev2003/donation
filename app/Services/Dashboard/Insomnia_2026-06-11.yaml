@@ -1,0 +1,4046 @@
+type: collection.insomnia.rest/5.0
+schema_version: "5.1"
+name: donation
+meta:
+  id: wrk_2b9a8ff667af4bb8a9c0ab84cd0cae7d
+  created: 1765556552792
+  modified: 1765556552792
+  description: ""
+collection:
+  - name: governorate
+    meta:
+      id: fld_36dea846b28f4d5e9d54495b486123c0
+      created: 1765556625383
+      modified: 1768720802790
+      sortKey: -1765556625383
+      description: ""
+    children:
+      - url: http://127.0.0.1:8000/api/governorate/add
+        name: add
+        meta:
+          id: req_387b9ef4a34d4df99ad09a8e9e4fc0e9
+          created: 1765556638394
+          modified: 1779380713509
+          isPrivate: false
+          description: ""
+          sortKey: -1765556638394
+        method: POST
+        body:
+          mimeType: multipart/form-data
+          params:
+            - name: governorate_name
+              value: حمص
+              description: ""
+              disabled: false
+        headers:
+          - name: Content-Type
+            value: multipart/form-data
+          - name: User-Agent
+            value: insomnia/12.1.0
+            description: ""
+            disabled: false
+          - name: Accept
+            value: application/json
+            description: ""
+            disabled: false
+        authentication:
+          type: bearer
+          token: 1|B9yp2LfCVXvSl1DwFWXisEZrQhIXiEw0BH9YfzLr07cdfaf2
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: http://127.0.0.1:8000/api/governorate/update/dc687276-665b-4de7-963b-8d4891f7c433
+        name: update
+        meta:
+          id: req_edd72ad45c2c4aa0892286f7167d3cd9
+          created: 1765615892451
+          modified: 1778750872462
+          isPrivate: false
+          description: ""
+          sortKey: -1765615892451
+        method: POST
+        body:
+          mimeType: multipart/form-data
+          params:
+            - name: governorate_name
+              value: حمص
+              description: ""
+              disabled: false
+        headers:
+          - name: Content-Type
+            value: multipart/form-data
+          - name: User-Agent
+            value: insomnia/12.1.0
+            description: ""
+            disabled: false
+          - name: Accept
+            value: application/json
+            description: ""
+            disabled: false
+        authentication:
+          type: bearer
+          token: 1|NmQCIzTgMr22xCmGXLvGuR1OG6cMvOd3FPfonNRQ23579bbf
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: http://127.0.0.1:8000/api/governorates/all
+        name: all
+        meta:
+          id: req_f5c7213fe9344699a3a838c6644582ea
+          created: 1765617993115
+          modified: 1779097944420
+          isPrivate: false
+          description: ""
+          sortKey: -1765617993115
+        method: GET
+        headers:
+          - name: User-Agent
+            value: insomnia/12.1.0
+            description: ""
+            disabled: false
+          - name: Accept
+            value: application/json
+            description: ""
+            disabled: false
+        authentication:
+          type: bearer
+          token: 10|VKBaCXFufXcsl6FjQ6smYLYywWDUmgpT00VpV72d92663f9f
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: http://127.0.0.1:8000/api/governorate/search
+        name: search
+        meta:
+          id: req_d6dc178b136a45468d470eebdbd9c3fd
+          created: 1768650075666
+          modified: 1779560660113
+          isPrivate: false
+          description: ""
+          sortKey: -1768650075666
+        method: POST
+        body:
+          mimeType: multipart/form-data
+          params:
+            - name: governorate_name
+              value: ح
+              description: ""
+              disabled: false
+        headers:
+          - name: Content-Type
+            value: multipart/form-data
+          - name: User-Agent
+            value: insomnia/12.3.0
+            description: ""
+            disabled: false
+          - name: Accept
+            value: application/json
+            description: ""
+            disabled: false
+        authentication:
+          type: bearer
+          token: 10|nHekPoe8eaPuRRepWT4kml7Sw3WTljf1nzlbJYote62744a6
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+  - name: Auth
+    meta:
+      id: fld_da672d732e6049158709fadc73f26c17
+      created: 1765557734837
+      modified: 1765557734837
+      sortKey: -1765557734837
+      description: ""
+    children:
+      - url: http://127.0.0.1:8000/api/register
+        name: register
+        meta:
+          id: req_dfd4b325bfbc45b3b66341bb53232cc4
+          created: 1765557743414
+          modified: 1778923396910
+          isPrivate: false
+          description: ""
+          sortKey: -1765557743414
+        method: POST
+        body:
+          mimeType: multipart/form-data
+          params:
+            - name: name
+              value: دانية سفور
+              description: ""
+              disabled: false
+            - name: email
+              value: daniasaffour@gmail.com
+              description: ""
+              disabled: false
+            - name: password
+              value: back6744
+              description: ""
+              disabled: false
+            - name: password_confirmation
+              value: back6744
+              description: ""
+              disabled: false
+            - name: phone
+              value: "0959391502"
+              description: ""
+              disabled: false
+            - name: type
+              value: فردي
+              description: ""
+              disabled: false
+            - name: contact_info
+              value: ""
+              description: ""
+              disabled: false
+        headers:
+          - name: Content-Type
+            value: multipart/form-data
+          - name: User-Agent
+            value: insomnia/12.1.0
+            description: ""
+            disabled: false
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: http://127.0.0.1:8000/api/login
+        name: login
+        meta:
+          id: req_a602a0319c01483093b7925915e71139
+          created: 1765617328819
+          modified: 1781115561761
+          isPrivate: false
+          description: ""
+          sortKey: -1765617328819
+        method: POST
+        body:
+          mimeType: multipart/form-data
+          params:
+            - name: email
+              value: admin.donation@gmail.com
+              description: ""
+              disabled: false
+            - name: password
+              value: 6744IT#
+              description: ""
+              disabled: false
+            - name: email
+              value: daniasaffour@gmail.com
+              description: ""
+              disabled: true
+            - name: password
+              value: "123456789"
+              description: ""
+              disabled: true
+        headers:
+          - name: Content-Type
+            value: multipart/form-data
+          - name: User-Agent
+            value: insomnia/12.1.0
+            description: ""
+            disabled: false
+        authentication:
+          type: none
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: http://127.0.0.1:8000/api/logout
+        name: logout
+        meta:
+          id: req_88932fc6d51046d78c1ed0c56be01baa
+          created: 1780398939784
+          modified: 1780399176045
+          isPrivate: false
+          description: ""
+          sortKey: -1780398939784
+        method: GET
+        headers:
+          - name: User-Agent
+            value: insomnia/12.3.0
+            description: ""
+            disabled: false
+          - name: Accept
+            value: application/json
+            description: ""
+            disabled: false
+        authentication:
+          type: bearer
+          token: 48|kSkrvi3RxKBkjXVW9drsLeloVemaY4fARw0Z1dew0b4d081d
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+  - name: city
+    meta:
+      id: fld_a4e0c5c6b1174772b49efe3bbe5a6e82
+      created: 1765618282485
+      modified: 1768721771853
+      sortKey: -1765618282485
+      description: ""
+    children:
+      - url: http://127.0.0.1:8000/api/city/add
+        name: add
+        meta:
+          id: req_476fdf4110914b3389c776c3c6d778e3
+          created: 1765618288018
+          modified: 1779380803987
+          isPrivate: false
+          description: ""
+          sortKey: -1765618288018
+        method: POST
+        body:
+          mimeType: multipart/form-data
+          params:
+            - name: city_name
+              value: الخالدية
+              description: ""
+              disabled: false
+            - name: governorate_uuid
+              value: e0e3db0f-5544-4d2f-9d04-073e163f5be3
+              description: ""
+              disabled: false
+        headers:
+          - name: Content-Type
+            value: multipart/form-data
+          - name: User-Agent
+            value: insomnia/12.1.0
+            description: ""
+            disabled: false
+          - name: Accept
+            value: application/json
+            description: ""
+            disabled: false
+        authentication:
+          type: bearer
+          token: 1|B9yp2LfCVXvSl1DwFWXisEZrQhIXiEw0BH9YfzLr07cdfaf2
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: http://127.0.0.1:8000/api/city/update/02ba7691-c84b-44a3-9549-2ac14b7aa1e8
+        name: update
+        meta:
+          id: req_9feedc0c49d94f3985371dbc9750a506
+          created: 1765619560127
+          modified: 1778751440332
+          isPrivate: false
+          description: ""
+          sortKey: -1765619560127
+        method: POST
+        body:
+          mimeType: multipart/form-data
+          params:
+            - name: city_name
+              value: باب السباع
+              description: ""
+              disabled: false
+            - name: governorate_uuid
+              value: dc687276-665b-4de7-963b-8d4891f7c433
+              description: ""
+              disabled: false
+        headers:
+          - name: Content-Type
+            value: multipart/form-data
+          - name: User-Agent
+            value: insomnia/12.1.0
+            description: ""
+            disabled: false
+          - name: Accept
+            value: application/json
+            description: ""
+            disabled: false
+        authentication:
+          type: bearer
+          token: 1|NmQCIzTgMr22xCmGXLvGuR1OG6cMvOd3FPfonNRQ23579bbf
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: http://127.0.0.1:8000/api/city/index
+        name: all
+        meta:
+          id: req_aef2691490a24dfe95edc014058da5d2
+          created: 1765620261771
+          modified: 1778751486776
+          isPrivate: false
+          description: ""
+          sortKey: -1765620261771
+        method: GET
+        headers:
+          - name: User-Agent
+            value: insomnia/12.1.0
+            description: ""
+            disabled: false
+          - name: Accept
+            value: application/json
+            description: ""
+            disabled: false
+        authentication:
+          type: bearer
+          token: 1|NmQCIzTgMr22xCmGXLvGuR1OG6cMvOd3FPfonNRQ23579bbf
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: http://127.0.0.1:8000/api/city/search
+        name: search
+        meta:
+          id: req_b03d3a27fe7f4a8ab7a739313d91945a
+          created: 1765620436116
+          modified: 1778751578159
+          isPrivate: false
+          description: ""
+          sortKey: -1765620436116
+        method: POST
+        body:
+          mimeType: multipart/form-data
+          params:
+            - name: city_name
+              value: الخالدية
+              description: ""
+              disabled: false
+        headers:
+          - name: Content-Type
+            value: multipart/form-data
+          - name: User-Agent
+            value: insomnia/12.1.0
+            description: ""
+            disabled: false
+          - name: Accept
+            value: application/json
+            description: ""
+            disabled: false
+        authentication:
+          type: bearer
+          token: 1|NmQCIzTgMr22xCmGXLvGuR1OG6cMvOd3FPfonNRQ23579bbf
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: http://127.0.0.1:8000/api/city/filter
+        name: filter
+        meta:
+          id: req_1447d2266d8647e8a04243ae120350d1
+          created: 1765643454260
+          modified: 1778751627896
+          isPrivate: false
+          description: ""
+          sortKey: -1765643454260
+        method: POST
+        body:
+          mimeType: multipart/form-data
+          params:
+            - name: governorate_uuid
+              value: dc687276-665b-4de7-963b-8d4891f7c433
+              description: ""
+              disabled: false
+        headers:
+          - name: Content-Type
+            value: multipart/form-data
+          - name: User-Agent
+            value: insomnia/12.1.0
+            description: ""
+            disabled: false
+          - name: Accept
+            value: application/json
+            description: ""
+            disabled: false
+        authentication:
+          type: bearer
+          token: 1|NmQCIzTgMr22xCmGXLvGuR1OG6cMvOd3FPfonNRQ23579bbf
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+  - name: district
+    meta:
+      id: fld_84596503a1cf4ba89babb28409b24c51
+      created: 1765643893333
+      modified: 1765711497897
+      sortKey: -1765643893333
+      description: ""
+    children:
+      - url: http://127.0.0.1:8000/api/district/add
+        name: add
+        meta:
+          id: req_c99c1951620b48ea9a75f47588db3e91
+          created: 1765643904024
+          modified: 1779464109714
+          isPrivate: false
+          description: ""
+          sortKey: -1765643904024
+        method: POST
+        body:
+          mimeType: multipart/form-data
+          params:
+            - name: district_name
+              value: شارع المدارس
+              description: ""
+              disabled: false
+            - name: city_uuid
+              value: 4993b140-5f36-4267-9489-0a053d7b00a8
+              description: ""
+              disabled: false
+        headers:
+          - name: Content-Type
+            value: multipart/form-data
+          - name: User-Agent
+            value: insomnia/12.1.0
+            description: ""
+            disabled: false
+          - name: Accept
+            value: application/json
+            description: ""
+            disabled: false
+        authentication:
+          type: bearer
+          token: 3|uOWv0yMdMntTBMcCT5j4LKj8jUAKYKVlEi0Jg8zJc9c2f6bf
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: http://127.0.0.1:8000/api/district/update/27d50bfd-a456-4be3-a424-19f71b7285d7
+        name: update
+        meta:
+          id: req_194f668c47254ddebf420359af9c0ebf
+          created: 1765644775775
+          modified: 1778753634242
+          isPrivate: false
+          description: ""
+          sortKey: -1765644775775
+        method: POST
+        body:
+          mimeType: multipart/form-data
+          params:
+            - name: district_name
+              value: شارع القاهرة
+              description: ""
+              disabled: false
+            - name: city_uuid
+              value: fba9c14f-51a2-4ab1-9477-90a33fac4f77
+              description: ""
+              disabled: false
+        headers:
+          - name: Content-Type
+            value: multipart/form-data
+          - name: User-Agent
+            value: insomnia/12.1.0
+            description: ""
+            disabled: false
+          - name: Accept
+            value: application/json
+            description: ""
+            disabled: false
+        authentication:
+          type: bearer
+          token: 1|NmQCIzTgMr22xCmGXLvGuR1OG6cMvOd3FPfonNRQ23579bbf
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: http://127.0.0.1:8000/api/district/index
+        name: index
+        meta:
+          id: req_75259ca415be4f72a644944003a4dfc2
+          created: 1765645322505
+          modified: 1778753666069
+          isPrivate: false
+          description: ""
+          sortKey: -1765645322505
+        method: GET
+        headers:
+          - name: User-Agent
+            value: insomnia/12.1.0
+            description: ""
+            disabled: false
+          - name: Accept
+            value: application/json
+            description: ""
+            disabled: false
+        authentication:
+          type: bearer
+          token: 1|NmQCIzTgMr22xCmGXLvGuR1OG6cMvOd3FPfonNRQ23579bbf
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: http://127.0.0.1:8000/api/district/search
+        name: search
+        meta:
+          id: req_807830d9e7d14d57ad608f918af1eeb1
+          created: 1765645542929
+          modified: 1778753696563
+          isPrivate: false
+          description: ""
+          sortKey: -1765645542929
+        method: POST
+        body:
+          mimeType: multipart/form-data
+          params:
+            - name: district_name
+              value: شارع النهضة
+              description: ""
+              disabled: false
+        headers:
+          - name: Content-Type
+            value: multipart/form-data
+          - name: User-Agent
+            value: insomnia/12.1.0
+            description: ""
+            disabled: false
+          - name: Accept
+            value: application/json
+            description: ""
+            disabled: false
+        authentication:
+          type: bearer
+          token: 1|NmQCIzTgMr22xCmGXLvGuR1OG6cMvOd3FPfonNRQ23579bbf
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: http://127.0.0.1:8000/api/district/filter
+        name: filter
+        meta:
+          id: req_b7f244e9d085483c84caf9c5f4111187
+          created: 1765645928459
+          modified: 1778753748086
+          isPrivate: false
+          description: ""
+          sortKey: -1765645928459
+        method: POST
+        body:
+          mimeType: multipart/form-data
+          params:
+            - name: governorate_uuid
+              value: dc687276-665b-4de7-963b-8d4891f7c433
+              description: ""
+              disabled: false
+            - name: city_uuid
+              value: fba9c14f-51a2-4ab1-9477-90a33fac4f77
+              description: ""
+              disabled: false
+        headers:
+          - name: Content-Type
+            value: multipart/form-data
+          - name: User-Agent
+            value: insomnia/12.1.0
+            description: ""
+            disabled: false
+          - name: Accept
+            value: application/json
+            description: ""
+            disabled: false
+        authentication:
+          type: bearer
+          token: 1|NmQCIzTgMr22xCmGXLvGuR1OG6cMvOd3FPfonNRQ23579bbf
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+  - name: project
+    meta:
+      id: fld_253f7cd93f1f49c7be9fc6c3582d64d9
+      created: 1766048751838
+      modified: 1766660876037
+      sortKey: -1766048751838
+      description: ""
+    children:
+      - url: http://127.0.0.1:8000/api/project/add
+        name: add
+        meta:
+          id: req_f1e2691fc61e4270a076435e3c361bcc
+          created: 1766048759366
+          modified: 1780397141605
+          isPrivate: false
+          description: ""
+          sortKey: -1766048759367
+        method: POST
+        body:
+          mimeType: multipart/form-data
+          params:
+            - name: name
+              value: "إعادة تأهيل مطبخ "
+              description: ""
+              disabled: false
+            - name: estimated_cost
+              value: "7000"
+              description: ""
+              disabled: false
+            - name: district_uuid
+              value: 8a357cd9-3485-4291-9df2-6976915cbed8
+              description: ""
+              disabled: false
+            - name: requirements
+              value: |-
+                قروض صغيرة
+                تدريب إداري
+                استشارات مهنية
+              description: ""
+              disabled: false
+              multiline: true
+              type: text
+            - name: sector
+              value: تعليمي
+              description: ""
+              disabled: false
+            - name: funding_source
+              value: منظمات
+              description: ""
+              disabled: false
+            - name: Implementing_party
+              value: مبادرة اقتصاد المجتمع
+              description: ""
+              disabled: false
+            - name: on_the_other_hand
+              value: ""
+              description: ""
+              disabled: false
+            - name: status
+              value: مخطط له
+              description: ""
+              disabled: false
+            - name: progress_percentage
+              value: "25"
+              description: ""
+              disabled: false
+            - name: cover_image
+              value: ""
+              description: ""
+              disabled: false
+              fileName: C:\Users\TECHNO\Pictures\vector_diamonds_backgrounds_shiny_design_574498.jpg
+              type: file
+        headers:
+          - name: Content-Type
+            value: multipart/form-data
+          - name: User-Agent
+            value: insomnia/12.1.0
+            description: ""
+            disabled: false
+          - name: Accept
+            value: application/json
+            description: ""
+            disabled: false
+        authentication:
+          type: bearer
+          token: 47|Q4oDoDYbt1GC4tTP4fG1nPa1Y6UTOPp0eGYe3ADKf2c11455
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: http://127.0.0.1:8000/api/project/update/11bd0985-bed6-4905-921a-459832d078b3
+        name: update
+        meta:
+          id: req_96344c100c864f74bf8ef26eec2a3245
+          created: 1766655762850
+          modified: 1780129351045
+          isPrivate: false
+          description: ""
+          sortKey: -1766655762850
+        method: POST
+        body:
+          mimeType: multipart/form-data
+          params:
+            - name: name
+              value: إعادة تأهيل مدرسة
+              description: ""
+              disabled: false
+            - name: district_uuid
+              value: 8a357cd9-3485-4291-9df2-6976915cbed8
+              description: ""
+              disabled: false
+            - name: estimated_cost
+              value: "6000"
+              description: ""
+              disabled: false
+            - name: progress_percentage
+              value: "25"
+              description: ""
+              disabled: false
+            - name: requirements
+              value: ترميم الصفوف، تركيب نوافذ، تأهيل دورات المياه، تأمين مقاعد مدرسية
+              description: ""
+              disabled: false
+              multiline: true
+              type: text
+            - name: sector
+              value: تعليمي
+              description: ""
+              disabled: false
+            - name: on_the_other_hand
+              value: ""
+              description: ""
+              disabled: false
+            - name: funding_source
+              value: منظمات
+              description: ""
+              disabled: false
+            - name: Implementing_party
+              value: منظمة التعليم للجميع
+              description: ""
+              disabled: false
+            - name: status
+              value: قيد التنفيذ
+              description: ""
+              disabled: false
+            - name: images[]
+              value: ""
+              description: ""
+              disabled: false
+              fileName: C:\Users\TECHNO\Pictures\images (5).jpeg
+              type: file
+            - name: images[]
+              value: ""
+              description: ""
+              disabled: true
+              fileName: C:\Users\TECHNO\Pictures\Saved
+                Pictures\515048025_1129595132645542_8625903112161365299_n.jpg
+              type: file
+            - name: images[]
+              value: ""
+              description: ""
+              disabled: true
+              fileName: C:\Users\TECHNO\Pictures\Saved Pictures\Screenshot 2025-11-07
+                181813.png
+              type: file
+            - name: videos[]
+              value: https://youtu.be/vwvPFuh7ZDs?si=9QNfAb18XXJvXcsS
+              description: ""
+              disabled: false
+            - name: cover_image
+              value: ""
+              description: ""
+              disabled: true
+              fileName: C:\Users\TECHNO\Pictures\Saved Pictures\images (1).jfif
+              type: file
+        headers:
+          - name: Content-Type
+            value: multipart/form-data
+          - name: User-Agent
+            value: insomnia/12.1.0
+            description: ""
+            disabled: false
+          - name: Accept
+            value: application/json
+            description: ""
+            disabled: false
+        authentication:
+          type: bearer
+          token: 32|j7H3ZMIZVnnQpU9raKEQId1WlRbLvm23XznwIRlhb2d711ce
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: http://127.0.0.1:8000/api/projects/filter
+        name: filter
+        meta:
+          id: req_8ca760391a164edda6b5bf95727bb2e1
+          created: 1766660870314
+          modified: 1780477111344
+          isPrivate: false
+          description: ""
+          sortKey: -1766660870314
+        method: POST
+        body:
+          mimeType: multipart/form-data
+          params:
+            - name: governorate_uuid
+              value: e0e3db0f-5544-4d2f-9d04-073e163f5be3
+              description: ""
+              disabled: false
+            - name: city_uuid
+              value: 4993b140-5f36-4267-9489-0a053d7b00a8
+              description: ""
+              disabled: false
+            - name: district_uuid
+              value: 8a357cd9-3485-4291-9df2-6976915cbed8
+              description: ""
+              disabled: false
+            - name: sector
+              value: تعليمي
+              description: ""
+              disabled: false
+            - name: progress_percentage
+              value: "0"
+              description: ""
+              disabled: false
+            - name: funding_source
+              value: رجال أعمال
+              description: ""
+              disabled: true
+            - name: status[]
+              value: مخطط له
+              description: ""
+              disabled: false
+            - name: status[]
+              value: قيد التنفيذ
+              description: ""
+              disabled: false
+            - name: name
+              value: إع
+              description: ""
+              disabled: false
+        headers:
+          - name: Content-Type
+            value: multipart/form-data
+          - name: User-Agent
+            value: insomnia/12.1.0
+            description: ""
+            disabled: false
+          - name: Accept
+            value: application/json
+            description: ""
+            disabled: false
+        authentication:
+          type: bearer
+          token: 50|UPWv5AoDMPeRNfm4N6bUFciCIGxNJBNgPMIUgcE52b1c564f
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: http://127.0.0.1:8000/api/project/index
+        name: all
+        meta:
+          id: req_d10fc25e09af42b4bc0582e7fdacef1e
+          created: 1772714745537
+          modified: 1780999373572
+          isPrivate: false
+          description: ""
+          sortKey: -1772714745537
+        method: GET
+        headers:
+          - name: User-Agent
+            value: insomnia/12.3.0
+            description: ""
+            disabled: false
+          - name: Accept
+            value: application/json
+            description: ""
+            disabled: false
+        authentication:
+          type: bearer
+          token: 55|fSHKqssMSMOpzPkxfXVrupFoOru0YU2Q8frjOj8ocbb38eda
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: http://127.0.0.1:8000/api/project/delete/d279d87c-b367-46a4-85d8-c4fcb42319dc
+        name: delete
+        meta:
+          id: req_8e710df3dd1b40f687c7a203581ec75b
+          created: 1772715242779
+          modified: 1778762632620
+          isPrivate: false
+          description: ""
+          sortKey: -1772715242779
+        method: GET
+        headers:
+          - name: User-Agent
+            value: insomnia/12.3.0
+            description: ""
+            disabled: false
+          - name: Accept
+            value: application/json
+            description: ""
+            disabled: false
+        authentication:
+          type: bearer
+          token: 3|Td5rfIiwcK6qqxJUgkdY8uf1zKm1CQ4v4B4NoRuBe9f47c7f
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: http://127.0.0.1:8000/api/project/restore/d279d87c-b367-46a4-85d8-c4fcb42319dc
+        name: restore
+        meta:
+          id: req_5d1b008b61c14f0fbecf061cb9acf690
+          created: 1772715483957
+          modified: 1778762694010
+          isPrivate: false
+          description: ""
+          sortKey: -1772715483957
+        method: GET
+        headers:
+          - name: User-Agent
+            value: insomnia/12.3.0
+            description: ""
+            disabled: false
+          - name: Accept
+            value: application/json
+            description: ""
+            disabled: false
+        authentication:
+          type: bearer
+          token: 3|Td5rfIiwcK6qqxJUgkdY8uf1zKm1CQ4v4B4NoRuBe9f47c7f
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: http://127.0.0.1:8000/api/projects/details/add/4bbd0d4d-32f0-490e-bd26-46e51790eb2a
+        name: add detail
+        meta:
+          id: req_d1c8ced6c4354d909f242aca2e638f4f
+          created: 1774090549083
+          modified: 1780678120320
+          isPrivate: false
+          description: ""
+          sortKey: -1774090549083
+        method: POST
+        body:
+          mimeType: multipart/form-data
+          params:
+            - name: detail
+              value: تأهيل دورات المياه
+              description: ""
+              disabled: false
+            - name: cost
+              value: "1200"
+              description: ""
+              disabled: false
+        headers:
+          - name: Content-Type
+            value: multipart/form-data
+          - name: User-Agent
+            value: insomnia/12.3.0
+            description: ""
+            disabled: false
+          - name: Accept
+            value: application/json
+            description: ""
+            disabled: false
+        authentication:
+          type: bearer
+          token: 52|rR1YsOyMRAKnLa52GHnJWowm0RnZSJYFdYPDg4zx15d1b59e
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: http://127.0.0.1:8000/api/project/details/update/4bbd0d4d-32f0-490e-bd26-46e51790eb2a/0eafa576-6020-4f5d-9c33-8a8de2e33895
+        name: update detail
+        meta:
+          id: req_6608e1bcc29440dab5e1a15f9e0f496e
+          created: 1774093973217
+          modified: 1780676682604
+          isPrivate: false
+          description: ""
+          sortKey: -1774093973217
+        method: POST
+        body:
+          mimeType: multipart/form-data
+          params:
+            - name: detail
+              value: تأهيل دورات المياه
+              description: ""
+              disabled: false
+            - name: cost
+              value: "1000"
+              description: ""
+              disabled: false
+        headers:
+          - name: Content-Type
+            value: multipart/form-data
+          - name: User-Agent
+            value: insomnia/12.3.0
+            description: ""
+            disabled: false
+          - name: Accept
+            value: application/json
+            description: ""
+            disabled: false
+        authentication:
+          type: bearer
+          token: 52|rR1YsOyMRAKnLa52GHnJWowm0RnZSJYFdYPDg4zx15d1b59e
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: http://127.0.0.1:8000/api/project/sectors
+        name: get sectors
+        meta:
+          id: req_9ea3dd2ffd9345589e1ee717a5af0296
+          created: 1775303954080
+          modified: 1778762826476
+          isPrivate: false
+          description: ""
+          sortKey: -1775303954080
+        method: GET
+        headers:
+          - name: User-Agent
+            value: insomnia/12.3.0
+            description: ""
+            disabled: false
+          - name: Accept
+            value: application/json
+            description: ""
+            disabled: false
+        authentication:
+          type: bearer
+          token: 3|Td5rfIiwcK6qqxJUgkdY8uf1zKm1CQ4v4B4NoRuBe9f47c7f
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: http://127.0.0.1:8000/api/project/status
+        name: get status
+        meta:
+          id: req_f66619e358084827be80446985493cd9
+          created: 1775581369007
+          modified: 1778762852687
+          isPrivate: false
+          description: ""
+          sortKey: -1775581369007
+        method: GET
+        headers:
+          - name: User-Agent
+            value: insomnia/12.3.0
+            description: ""
+            disabled: false
+          - name: Accept
+            value: application/json
+            description: ""
+            disabled: false
+        authentication:
+          type: bearer
+          token: 3|Td5rfIiwcK6qqxJUgkdY8uf1zKm1CQ4v4B4NoRuBe9f47c7f
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: http://127.0.0.1:8000/api/project/show/089c6999-31e5-47b3-ad25-0fefec08e5d7
+        name: show
+        meta:
+          id: req_9496049a687e434bb1d2ef648743c13e
+          created: 1775581589133
+          modified: 1780746895297
+          isPrivate: false
+          description: ""
+          sortKey: -1775581589133
+        method: GET
+        headers:
+          - name: User-Agent
+            value: insomnia/12.3.0
+            description: ""
+            disabled: false
+          - name: Accept
+            value: application/json
+            description: ""
+            disabled: false
+        authentication:
+          type: bearer
+          token: 53|YuYiMj6nY2vVSUc5ZOtTVs8toGezdVhxUXDpX6vX01960d2d
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: http://127.0.0.1:8000/api/details/all/d279d87c-b367-46a4-85d8-c4fcb42319dc
+        name: project_details
+        meta:
+          id: req_5f0a92de37424f8589eaa138af293a14
+          created: 1778923420318
+          modified: 1779101733113
+          isPrivate: false
+          description: ""
+          sortKey: -1778923420318
+        method: GET
+        headers:
+          - name: User-Agent
+            value: insomnia/12.3.0
+            description: ""
+            disabled: false
+        authentication:
+          type: bearer
+          token: 8|oTbUDIGt88Yw5I1CQcTZxL4Ltvf0bc7jlBgnZHmRd95fc00a
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: http://127.0.0.1:8000/api/detail/delete/4bbd0d4d-32f0-490e-bd26-46e51790eb2a/0eafa576-6020-4f5d-9c33-8a8de2e33895
+        name: delete_detail
+        meta:
+          id: req_e7ad3b5f52f3420aac8e948e474783a4
+          created: 1778926783508
+          modified: 1780678092300
+          isPrivate: false
+          description: ""
+          sortKey: -1778926783508
+        method: GET
+        headers:
+          - name: User-Agent
+            value: insomnia/12.3.0
+            description: ""
+            disabled: false
+        authentication:
+          type: bearer
+          token: 52|rR1YsOyMRAKnLa52GHnJWowm0RnZSJYFdYPDg4zx15d1b59e
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: http://127.0.0.1:8000/api/detail/restore/77c436db-5fd7-482e-99cb-b30c301448c2
+        name: restore_detail
+        meta:
+          id: req_ea4220328b064c9886b4f6bba0ae5167
+          created: 1778926797338
+          modified: 1778928563436
+          isPrivate: false
+          description: ""
+          sortKey: -1778926797338
+        method: GET
+        headers:
+          - name: User-Agent
+            value: insomnia/12.3.0
+            description: ""
+            disabled: false
+        authentication:
+          type: bearer
+          token: 8|oTbUDIGt88Yw5I1CQcTZxL4Ltvf0bc7jlBgnZHmRd95fc00a
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: http://127.0.0.1:8000/api/project/fundingsource
+        name: fundingsource
+        meta:
+          id: req_59e2872a281c4645919a971cf50dd16a
+          created: 1779475491811
+          modified: 1779475636188
+          isPrivate: false
+          description: ""
+          sortKey: -1779475491811
+        method: GET
+        headers:
+          - name: User-Agent
+            value: insomnia/12.3.0
+            description: ""
+            disabled: false
+          - name: Accept
+            value: application/json
+            description: ""
+            disabled: false
+        authentication:
+          type: bearer
+          token: 5|wu03r5rccC1ojPNmn2TcBJiaqIgzGD15omAkeMtw3d68cbcc
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: http://127.0.0.1:8000/api/project/deleted
+        name: deleted
+        meta:
+          id: req_22ae3a80f8d147c6a3742876dcab3fa9
+          created: 1779476710037
+          modified: 1779476797202
+          isPrivate: false
+          description: ""
+          sortKey: -1779476710037
+        method: GET
+        headers:
+          - name: User-Agent
+            value: insomnia/12.3.0
+            description: ""
+            disabled: false
+          - name: Accept
+            value: application/json
+            description: ""
+            disabled: false
+        authentication:
+          type: bearer
+          token: 6|eI65iexvK4fC11HQqstGUkO3geKFGr6NFc2g0Sud1694603f
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - name: media
+        meta:
+          id: fld_4bd4cda4adff4742a3e9a1b3184b2733
+          created: 1772748188751
+          modified: 1772748188751
+          sortKey: -1772748188751
+          description: ""
+        children:
+          - url: http://127.0.0.1:8000/api/project/upload/11bd0985-bed6-4905-921a-459832d078b3
+            name: upload
+            meta:
+              id: req_04cdc2fdf9204253b0f31c0f696028ff
+              created: 1772748196283
+              modified: 1780126865241
+              isPrivate: false
+              description: ""
+              sortKey: -1772748196283
+            method: POST
+            body:
+              mimeType: multipart/form-data
+              params:
+                - name: cover_image
+                  value: ""
+                  description: ""
+                  disabled: true
+                  fileName: C:\Users\TECHNO\Pictures\Saved Pictures\images (1).jfif
+                  type: file
+                - name: images[]
+                  value: ""
+                  description: ""
+                  disabled: true
+                  fileName: C:\Users\TECHNO\Pictures\Saved
+                    Pictures\69853374_2291953244246798_1945466287819849728_n.jpg
+                  type: file
+                - name: images[]
+                  value: ""
+                  description: ""
+                  disabled: true
+                  fileName: C:\Users\TECHNO\Pictures\Saved
+                    Pictures\515048025_1129595132645542_8625903112161365299_n.jpg
+                  type: file
+                - name: images[]
+                  value: ""
+                  description: ""
+                  disabled: false
+                  fileName: C:\Users\TECHNO\Pictures\Saved Pictures\Screenshot 2026-05-13
+                    123828.png
+                  type: file
+                - name: videos[]
+                  value: https://www.youtube.com/watch?v=J4dSxVZpN1E
+                  description: ""
+                  disabled: false
+                - name: images[]
+                  value: ""
+                  description: ""
+                  disabled: false
+                  fileName: C:\Users\TECHNO\Pictures\Saved Pictures\Screenshot 2026-01-10
+                    134002.png
+                  type: file
+                - name: images[]
+                  value: ""
+                  description: ""
+                  disabled: true
+                  fileName: C:\Users\TECHNO\Pictures\Saved Pictures\images (3).jfif
+                  type: file
+            headers:
+              - name: Content-Type
+                value: multipart/form-data
+              - name: User-Agent
+                value: insomnia/12.3.0
+                description: ""
+                disabled: false
+              - name: Accept
+                value: application/json
+                description: ""
+                disabled: false
+            authentication:
+              type: bearer
+              token: 30|Gb328TAUL5sk9r8d3CYswLrdzIgoCgztLlTJC1HXf372fc63
+            settings:
+              renderRequestBody: true
+              encodeUrl: true
+              followRedirects: global
+              cookies:
+                send: true
+                store: true
+              rebuildPath: true
+          - name: delete
+            meta:
+              id: fld_b41c729932834be988ea39ee90b9ba9a
+              created: 1772966760135
+              modified: 1775039511250
+              sortKey: -1772966760135
+              description: ""
+            children:
+              - url: http://127.0.0.1:8000/api/images/delete/d279d87c-b367-46a4-85d8-c4fcb42319dc/9
+                name: delete image
+                meta:
+                  id: req_555af2ee38ae4fb58835fbed63c27369
+                  created: 1772968426878
+                  modified: 1778776678420
+                  isPrivate: false
+                  description: ""
+                  sortKey: -1772968426878
+                method: GET
+                headers:
+                  - name: User-Agent
+                    value: insomnia/12.3.0
+                    description: ""
+                    disabled: false
+                  - name: Accept
+                    value: application/json
+                    description: ""
+                    disabled: false
+                authentication:
+                  type: bearer
+                  token: 5|mvdoVTc2bVJN2RQCZ4H51D4hSTObTQbLxMfcezYn131eb32c
+                settings:
+                  renderRequestBody: true
+                  encodeUrl: true
+                  followRedirects: global
+                  cookies:
+                    send: true
+                    store: true
+                  rebuildPath: true
+              - url: http://127.0.0.1:8000/api/videos/delete/7e5f6771-5898-49b6-981b-0dd20d9498fa/0
+                name: delete video
+                meta:
+                  id: req_94d0be1a9a3d48ecbb4c271db442f283
+                  created: 1775297237625
+                  modified: 1775300379790
+                  isPrivate: false
+                  description: ""
+                  sortKey: -1775297237625
+                method: GET
+                headers:
+                  - name: User-Agent
+                    value: insomnia/12.3.0
+                    description: ""
+                    disabled: false
+                  - name: Accept
+                    value: application/json
+                    description: ""
+                    disabled: false
+                authentication:
+                  type: bearer
+                  token: 31|piziM8vSefz3FUHAMhvn7AaAtfaI4gtOEPI29Fm36de33aed
+                settings:
+                  renderRequestBody: true
+                  encodeUrl: true
+                  followRedirects: global
+                  cookies:
+                    send: true
+                    store: true
+                  rebuildPath: true
+  - name: campaign
+    meta:
+      id: fld_54137dfe917f49229fca6eab30359e0f
+      created: 1766898789996
+      modified: 1766898789996
+      sortKey: -1766898789996
+      description: ""
+    children:
+      - url: http://127.0.0.1:8000/api/campaign/add
+        name: add
+        meta:
+          id: req_20892249727b476ab14e6a3a7bd19da5
+          created: 1766898796767
+          modified: 1779648479225
+          isPrivate: false
+          description: ""
+          sortKey: -1766898796767
+        method: POST
+        body:
+          mimeType: multipart/form-data
+          params:
+            - name: name
+              value: "حملة نبض القرابيص "
+              description: ""
+              disabled: false
+            - name: target_amount
+              value: "55000"
+              description: ""
+              disabled: false
+            - name: start_date
+              value: 2026-06-01
+              description: ""
+              disabled: false
+            - name: end_date
+              value: 2026-08-01
+              description: ""
+              disabled: false
+            - name: start_time
+              value: 08:00
+              description: ""
+              disabled: false
+            - name: end_time
+              value: 17:30
+              description: ""
+              disabled: false
+            - name: purposes
+              value: |-
+                تهدف الحملة إلى تحسين البنية التحتية
+                            والخدمات الأساسية في حي القرابيص،
+                            وتشمل:
+                            - إعادة تأهيل الطرق الداخلية
+                            - دعم المدارس والمرافق التعليمية
+                            - تحسين الإنارة العامة
+                            - تأهيل شبكات المياه والصرف الصحي
+                            - إنشاء مركز خدمات مجتمعية
+                            - دعم الأنشطة التجارية الصغيرة
+              description: ""
+              disabled: false
+              multiline: true
+              type: text
+            - name: image
+              value: ""
+              description: ""
+              disabled: false
+              fileName: C:\Users\TECHNO\Pictures\14_1_1.jpg
+              type: file
+        headers:
+          - name: Content-Type
+            value: multipart/form-data
+          - name: User-Agent
+            value: insomnia/12.1.0
+            description: ""
+            disabled: false
+          - name: Accept
+            value: application/json
+            description: ""
+            disabled: false
+        authentication:
+          type: bearer
+          token: 11|zNmV6icSGUKZz9o9zhkOHfNvW6r7FF1yq5hG9QKu27cda58c
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: http://127.0.0.1:8000/api/campaign/index
+        name: all
+        meta:
+          id: req_25af6d8fef9f41dbb62a79a5e09e0dd8
+          created: 1767174818164
+          modified: 1779037463578
+          isPrivate: false
+          description: ""
+          sortKey: -1767174818164
+        method: GET
+        headers:
+          - name: User-Agent
+            value: insomnia/12.1.0
+            description: ""
+            disabled: false
+          - name: Accept
+            value: application/json
+            description: ""
+            disabled: false
+        authentication:
+          type: bearer
+          token: 9|NO6IiBXuuySB4jGHg8cXhcHOXx9KjZfU1PsnMY4g7cb22619
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: http://127.0.0.1:8000/api/campaign/update/f7069989-0b5e-453f-8abf-6560da32534a
+        name: update
+        meta:
+          id: req_f8dbc9a8b64b4b2e90672bfa1ccc1f0e
+          created: 1767265573984
+          modified: 1780480646810
+          isPrivate: false
+          description: ""
+          sortKey: -1767265573984
+        method: POST
+        body:
+          mimeType: multipart/form-data
+          params:
+            - name: name
+              value: حملة إعادة الأمل لحي الخالدية
+              description: ""
+              disabled: false
+            - name: target_amount
+              value: "8000"
+              description: ""
+              disabled: false
+            - name: start_date
+              value: 2026-06-4
+              description: ""
+              disabled: false
+            - name: end_date
+              value: 2026-06-10
+              description: ""
+              disabled: false
+            - name: start_time
+              value: 08:00
+              description: ""
+              disabled: false
+            - name: end_time
+              value: 16:00
+              description: ""
+              disabled: false
+            - name: purposes
+              value: |-
+                تهدف الحملة إلى دعم مشاريع إعادة الإعمار
+                            والخدمات الأساسية في حي الخالدية بمدينة حمص،
+                            وتشمل:
+                            - ترميم المدارس
+                            - دعم المراكز الصحية
+                            - إعادة تأهيل البنية التحتية
+                            - دعم الأسر المحتاجة
+              description: ""
+              disabled: false
+              multiline: true
+              type: text
+            - name: project_uuid[]
+              value: e145094e-e075-405d-a7a2-cc9d95653ee6
+              description: ""
+              disabled: false
+            - name: image
+              value: ""
+              description: ""
+              disabled: false
+              fileName: C:\Users\TECHNO\Pictures\14_1_1.jpg
+              type: file
+        headers:
+          - name: Content-Type
+            value: multipart/form-data
+          - name: User-Agent
+            value: insomnia/12.1.0
+            description: ""
+            disabled: false
+          - name: Accept
+            value: application/json
+            description: ""
+            disabled: false
+        authentication:
+          type: bearer
+          token: 49|o4EoQWLd65pWjIfTiA3VDXWZdbQRNx2WJV8OX6RG33248cc6
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: http://127.0.0.1:8000/api/campaign/show/f7069989-0b5e-453f-8abf-6560da32534a
+        name: show
+        meta:
+          id: req_ba54e72784544b22a1f3fdd132c9ac06
+          created: 1773489848021
+          modified: 1780330785894
+          isPrivate: false
+          description: ""
+          sortKey: -1773489848021
+        method: GET
+        headers:
+          - name: User-Agent
+            value: insomnia/12.3.0
+            description: ""
+            disabled: false
+          - name: Accept
+            value: application/json
+            description: ""
+            disabled: false
+        authentication:
+          type: bearer
+          token: 43|2LnXWJvoICcY12gsHjkV6wSe261T8VvH2SZnx8cSe4b5ae83
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: http://127.0.0.1:8000/api/campaign/filter
+        name: filter
+        meta:
+          id: req_015b82e4d08e447daef652c1368a3dfa
+          created: 1773576006038
+          modified: 1781091105756
+          isPrivate: false
+          description: ""
+          sortKey: -1773576006038
+        method: POST
+        body:
+          mimeType: multipart/form-data
+          params:
+            - name: governorate_uuid
+              value: ""
+              description: ""
+              disabled: false
+            - name: city_uuid
+              value: ""
+              description: ""
+              disabled: false
+            - name: district_uuid
+              value: ""
+              description: ""
+              disabled: false
+            - name: project_uuid
+              value: 4bbd0d4d-32f0-490e-bd26-46e51790eb2a
+              description: ""
+              disabled: false
+            - name: status[]
+              value: نشطة
+              description: ""
+              disabled: false
+            - name: status[]
+              value: ""
+              description: ""
+              disabled: true
+            - name: name
+              value: حم
+              description: ""
+              disabled: true
+        headers:
+          - name: Content-Type
+            value: multipart/form-data
+          - name: User-Agent
+            value: insomnia/12.3.0
+            description: ""
+            disabled: false
+          - name: Accept
+            value: application/json
+            description: ""
+            disabled: false
+        authentication:
+          type: bearer
+          token: 58|aa4qq5IkRHKqWvl8kl7xM4w3cTMfTyXmS18hqNNY118cd838
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: http://127.0.0.1:8000/api/campaign/project/add/c84a8055-91fc-4676-bb79-373419c6a85f
+        name: add project
+        meta:
+          id: req_022c4f4df8a34fdfa087885cbcc0dd5a
+          created: 1774085137682
+          modified: 1780474301340
+          isPrivate: false
+          description: ""
+          sortKey: -1774085137682
+        method: POST
+        body:
+          mimeType: multipart/form-data
+          params:
+            - name: project_uuid[]
+              value: e145094e-e075-405d-a7a2-cc9d95653ee6
+              description: ""
+              disabled: false
+            - name: project_uuid[]
+              value: 11bd0985-bed6-4905-921a-459832d078b3
+              description: ""
+              disabled: true
+            - name: project_uuid[]
+              value: e145094e-e075-405d-a7a2-cc9d95653ee6
+              description: ""
+              disabled: true
+            - name: project_uuid[]
+              value: 11bd0985-bed6-4905-921a-459832d078b3
+              description: ""
+              disabled: true
+        headers:
+          - name: Content-Type
+            value: multipart/form-data
+          - name: User-Agent
+            value: insomnia/12.3.0
+            description: ""
+            disabled: false
+          - name: Accept
+            value: application/json
+            description: ""
+            disabled: false
+        authentication:
+          type: bearer
+          token: 50|UPWv5AoDMPeRNfm4N6bUFciCIGxNJBNgPMIUgcE52b1c564f
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: http://127.0.0.1:8000/api/campaign/project/delete/c84a8055-91fc-4676-bb79-373419c6a85f/11bd0985-bed6-4905-921a-459832d078b3
+        name: delete project
+        meta:
+          id: req_ed7c4ff954504063832d8207bab499f9
+          created: 1774086109708
+          modified: 1780474256199
+          isPrivate: false
+          description: ""
+          sortKey: -1774086109708
+        method: GET
+        headers:
+          - name: User-Agent
+            value: insomnia/12.3.0
+            description: ""
+            disabled: false
+          - name: Accept
+            value: application/json
+            description: ""
+            disabled: false
+        authentication:
+          type: bearer
+          token: 50|UPWv5AoDMPeRNfm4N6bUFciCIGxNJBNgPMIUgcE52b1c564f
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: http://127.0.0.1:8000/api/campaign/delete/c84a8055-91fc-4676-bb79-373419c6a85f
+        name: delete
+        meta:
+          id: req_fd37d6fcf626415686b9f1f1e8b61b18
+          created: 1779039111292
+          modified: 1780586929450
+          isPrivate: false
+          description: ""
+          sortKey: -1779039111292
+        method: GET
+        headers:
+          - name: User-Agent
+            value: insomnia/12.3.0
+            description: ""
+            disabled: false
+        authentication:
+          type: bearer
+          token: 51|GAYJjpEL8TNHoGIXxW9PwVC6Udq1v0ezgJxBiNO52a53b710
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: http://127.0.0.1:8000/api/campaign/restore/c84a8055-91fc-4676-bb79-373419c6a85f
+        name: restore
+        meta:
+          id: req_9651927df8b3470091870d2b153745ce
+          created: 1779094962407
+          modified: 1780127563613
+          isPrivate: false
+          description: ""
+          sortKey: -1779094962407
+        method: GET
+        headers:
+          - name: User-Agent
+            value: insomnia/12.3.0
+            description: ""
+            disabled: false
+        authentication:
+          type: bearer
+          token: 30|Gb328TAUL5sk9r8d3CYswLrdzIgoCgztLlTJC1HXf372fc63
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: http://127.0.0.1:8000/api/campaign/stop/f7069989-0b5e-453f-8abf-6560da32534a
+        name: stop
+        meta:
+          id: req_0565dff6a3254c43ba4857d76353a22e
+          created: 1779475702922
+          modified: 1780140383089
+          isPrivate: false
+          description: ""
+          sortKey: -1779475702922
+        method: GET
+        headers:
+          - name: User-Agent
+            value: insomnia/12.3.0
+            description: ""
+            disabled: false
+          - name: Accept
+            value: application/json
+            description: ""
+            disabled: false
+        authentication:
+          type: bearer
+          token: 33|Hs4zKeNPSVAgU6cIWRWEfuCPD3GOvZ9LKX0GB2446c7c88a1
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: http://127.0.0.1:8000/api/campaign/status
+        name: status
+        meta:
+          id: req_f0f94ed36b664659ac442e52ecb4bd93
+          created: 1779475893781
+          modified: 1779476013148
+          isPrivate: false
+          description: ""
+          sortKey: -1779475893781
+        method: GET
+        headers:
+          - name: User-Agent
+            value: insomnia/12.3.0
+            description: ""
+            disabled: false
+          - name: Accept
+            value: application/json
+            description: ""
+            disabled: false
+        authentication:
+          type: bearer
+          token: 6|eI65iexvK4fC11HQqstGUkO3geKFGr6NFc2g0Sud1694603f
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: http://127.0.0.1:8000/api/campaign/deleted
+        name: deleted
+        meta:
+          id: req_a20275a4e48b40bcbfaccd9022ddcdaf
+          created: 1779476040450
+          modified: 1779476697708
+          isPrivate: false
+          description: ""
+          sortKey: -1779476040450
+        method: GET
+        headers:
+          - name: User-Agent
+            value: insomnia/12.3.0
+            description: ""
+            disabled: false
+          - name: Accept
+            value: application/json
+            description: ""
+            disabled: false
+        authentication:
+          type: bearer
+          token: 6|eI65iexvK4fC11HQqstGUkO3geKFGr6NFc2g0Sud1694603f
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: http://127.0.0.1:8000/api/project/campaign/089c6999-31e5-47b3-ad25-0fefec08e5d7
+        name: New Request
+        meta:
+          id: req_4608f75a82a840bd944a2cadfeafd301
+          created: 1779720735036
+          modified: 1779720958987
+          isPrivate: false
+          description: ""
+          sortKey: -1779720735036
+        method: POST
+        body:
+          mimeType: multipart/form-data
+          params:
+            - name: campaign_uuid
+              value: c84a8055-91fc-4676-bb79-373419c6a85f
+              description: ""
+              disabled: false
+        headers:
+          - name: Content-Type
+            value: multipart/form-data
+          - name: User-Agent
+            value: insomnia/12.3.0
+            description: ""
+            disabled: false
+          - name: Accept
+            value: application/json
+            description: ""
+            disabled: false
+        authentication:
+          type: bearer
+          token: 13|glKZlVoR78zUjFlEKeyFZcFxB2Xu91k67mIq8b9me32fb59e
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: http://127.0.0.1:8000/api/campaign/appeal/f7069989-0b5e-453f-8abf-6560da32534a
+        name: appeal
+        meta:
+          id: req_35126bf3450f413ab6a3bf913a48a51d
+          created: 1780140469452
+          modified: 1780140942595
+          isPrivate: false
+          description: ""
+          sortKey: -1780140469452
+        method: GET
+        headers:
+          - name: User-Agent
+            value: insomnia/12.3.0
+            description: ""
+            disabled: false
+          - name: Accept
+            value: application/json
+            description: ""
+            disabled: false
+        authentication:
+          type: bearer
+          token: 33|Hs4zKeNPSVAgU6cIWRWEfuCPD3GOvZ9LKX0GB2446c7c88a1
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: http://127.0.0.1:8000/api/get/projects
+        name: getProjects
+        meta:
+          id: req_03c3319dd0164820ba6111f424444848
+          created: 1780389237533
+          modified: 1780587011436
+          isPrivate: false
+          description: ""
+          sortKey: -1780389237533
+        method: GET
+        headers:
+          - name: User-Agent
+            value: insomnia/12.3.0
+            description: ""
+            disabled: false
+          - name: Accept
+            value: application/json
+            description: ""
+            disabled: false
+        authentication:
+          type: bearer
+          token: 51|GAYJjpEL8TNHoGIXxW9PwVC6Udq1v0ezgJxBiNO52a53b710
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+  - name: web
+    meta:
+      id: fld_d54d03a6d54543ae891bfe491ec3424c
+      created: 1775820496445
+      modified: 1779095234945
+      sortKey: -1775820496445
+      description: ""
+    children:
+      - url: http://127.0.0.1:8000/api/donate/directly
+        name: donate_directly
+        meta:
+          id: req_a6919bf78b11400788d84a3461b09c4b
+          created: 1778576138037
+          modified: 1781029272480
+          isPrivate: false
+          description: ""
+          sortKey: -1778576138037
+        method: POST
+        body:
+          mimeType: multipart/form-data
+          params:
+            - name: campaign_uuid
+              value: c84a8055-91fc-4676-bb79-373419c6a85f
+              description: ""
+              disabled: false
+            - name: contribution_amount
+              value: "300"
+              description: ""
+              disabled: false
+            - name: currency_type
+              value: USD
+              description: ""
+              disabled: false
+            - name: image
+              value: ""
+              description: ""
+              disabled: false
+              fileName: C:\Users\TECHNO\Pictures\Saved Pictures\20260103_194505.jpg
+              type: file
+            - name: contribution_details
+              value: ""
+              description: ""
+              disabled: false
+        headers:
+          - name: Content-Type
+            value: multipart/form-data
+          - name: User-Agent
+            value: insomnia/12.3.0
+            description: ""
+            disabled: false
+          - name: Accept
+            value: application/json
+            description: ""
+            disabled: false
+        authentication:
+          type: bearer
+          token: 57|zNYEFI6wlfoSzLWT6L0azvFU068r75AeWO91Ecss0ee79562
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: http://127.0.0.1:8000/api/donation/qr
+        name: show_qrcode
+        meta:
+          id: req_ae0aa58045df46c59d3ba5b7476d0d5e
+          created: 1778591599761
+          modified: 1778592034566
+          isPrivate: false
+          description: ""
+          sortKey: -1778591599761
+        method: GET
+        headers:
+          - name: User-Agent
+            value: insomnia/12.3.0
+            description: ""
+            disabled: false
+          - name: Accept
+            value: application/json
+            description: ""
+            disabled: false
+        authentication:
+          type: bearer
+          token: 49|GF0URdZxOdnlVnCIvxp9zGZU9GF6JZpEtgZDJpko3b668e74
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: http://127.0.0.1:8000/api/pledge
+        name: pledge
+        meta:
+          id: req_1e6e1140e4264ef2bc1d8e0cf2cd2b58
+          created: 1778655597054
+          modified: 1781028839829
+          isPrivate: false
+          description: ""
+          sortKey: -1778655597054
+        method: POST
+        body:
+          mimeType: multipart/form-data
+          params:
+            - name: campaign_uuid
+              value: f7069989-0b5e-453f-8abf-6560da32534a
+              description: ""
+              disabled: false
+            - name: contribution_amount
+              value: "10000"
+              description: ""
+              disabled: false
+            - name: contribution_details
+              value: لتحسين التعليم
+              description: ""
+              disabled: false
+        headers:
+          - name: Content-Type
+            value: multipart/form-data
+          - name: User-Agent
+            value: insomnia/12.3.0
+            description: ""
+            disabled: false
+          - name: Accept
+            value: application/json
+            description: ""
+            disabled: false
+        authentication:
+          type: bearer
+          token: 57|zNYEFI6wlfoSzLWT6L0azvFU068r75AeWO91Ecss0ee79562
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: http://127.0.0.1:8000/api/donate/pledge/e8b41694-d3d4-4f08-8238-fc27c240b417
+        name: donate_for_pledge
+        meta:
+          id: req_399d1bd4183c44808014e4f7258b5c71
+          created: 1778655902107
+          modified: 1781028729293
+          isPrivate: false
+          description: ""
+          sortKey: -1778655902107
+        method: POST
+        body:
+          mimeType: multipart/form-data
+          params:
+            - name: image
+              value: ""
+              description: ""
+              disabled: false
+              fileName: C:\Users\TECHNO\Pictures\Screenshots\Screenshot 2026-06-08 153450.png
+              type: file
+        headers:
+          - name: Content-Type
+            value: multipart/form-data
+          - name: User-Agent
+            value: insomnia/12.3.0
+            description: ""
+            disabled: false
+          - name: Accept
+            value: application/json
+            description: ""
+            disabled: false
+        authentication:
+          type: bearer
+          token: 57|zNYEFI6wlfoSzLWT6L0azvFU068r75AeWO91Ecss0ee79562
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: http://127.0.0.1:8000/api/donation/add
+        name: inkind_donation_add
+        meta:
+          id: req_3a0e1ab8ee414bb69e3e31265eac6128
+          created: 1779186536655
+          modified: 1781092760984
+          isPrivate: false
+          description: ""
+          sortKey: -1779186536655
+        method: POST
+        body:
+          mimeType: multipart/form-data
+          params:
+            - name: name_of_material
+              value: شمينتو
+              description: ""
+              disabled: false
+            - name: amount
+              value: "3"
+              description: ""
+              disabled: false
+            - name: governorate_uuid
+              value: e0e3db0f-5544-4d2f-9d04-073e163f5be3
+              description: ""
+              disabled: false
+            - name: type
+              value: أجهزة إلكترونية
+              description: ""
+              disabled: false
+            - name: on_the_other_hand
+              value: ""
+              description: ""
+              disabled: false
+            - name: status_of_materail
+              value: مستعملة
+              description: ""
+              disabled: false
+            - name: images[]
+              value: ""
+              description: ""
+              disabled: false
+              fileName: C:\Users\TECHNO\Pictures\Saved Pictures\20260103_194458.jpg
+              type: file
+            - name: images[]
+              value: ""
+              description: ""
+              disabled: false
+              fileName: C:\Users\TECHNO\Pictures\Saved Pictures\20260103_194416.jpg
+              type: file
+        headers:
+          - name: Content-Type
+            value: multipart/form-data
+          - name: User-Agent
+            value: insomnia/12.3.0
+            description: ""
+            disabled: false
+          - name: Accept
+            value: application/json
+            description: ""
+            disabled: false
+        authentication:
+          type: bearer
+          token: 57|zNYEFI6wlfoSzLWT6L0azvFU068r75AeWO91Ecss0ee79562
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: http://127.0.0.1:8000/api/donate/complete
+        name: complete
+        meta:
+          id: req_2524c7074e42494aa8c61440971fd637
+          created: 1781028952295
+          modified: 1781029228771
+          isPrivate: false
+          description: ""
+          sortKey: -1781028952295
+        method: POST
+        body:
+          mimeType: multipart/form-data
+          params:
+            - name: campaign_uuid
+              value: c84a8055-91fc-4676-bb79-373419c6a85f
+              description: ""
+              disabled: false
+            - name: contribution_amount
+              value: "100"
+              description: ""
+              disabled: false
+            - name: image
+              value: ""
+              description: ""
+              disabled: false
+              fileName: C:\Users\TECHNO\Pictures\Screenshots\Screenshot 2026-06-08 125054.png
+              type: file
+            - name: contribution_details
+              value: ""
+              description: ""
+              disabled: false
+            - name: currency_type
+              value: USD
+              description: ""
+              disabled: false
+        headers:
+          - name: Content-Type
+            value: multipart/form-data
+          - name: User-Agent
+            value: insomnia/12.3.0
+            description: ""
+            disabled: false
+          - name: Accept
+            value: application/json
+            description: ""
+            disabled: false
+        authentication:
+          type: bearer
+          token: 57|zNYEFI6wlfoSzLWT6L0azvFU068r75AeWO91Ecss0ee79562
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - name: campaing
+        meta:
+          id: fld_e8d27d9225114ddab47fa47718bd779d
+          created: 1781029374274
+          modified: 1781029374274
+          sortKey: -1781029374274
+          description: ""
+        children:
+          - url: http://127.0.0.1:8000/api/campaignApi/all
+            name: all
+            meta:
+              id: req_392d9dab329644a6aa0d90d1744c3f67
+              created: 1781029387941
+              modified: 1781080971201
+              isPrivate: false
+              description: ""
+              sortKey: -1781029387941
+            method: GET
+            headers:
+              - name: User-Agent
+                value: insomnia/12.3.0
+                description: ""
+                disabled: false
+              - name: Accept
+                value: application/json
+                description: ""
+                disabled: false
+            authentication:
+              type: bearer
+              token: 57|zNYEFI6wlfoSzLWT6L0azvFU068r75AeWO91Ecss0ee79562
+            settings:
+              renderRequestBody: true
+              encodeUrl: true
+              followRedirects: global
+              cookies:
+                send: true
+                store: true
+              rebuildPath: true
+          - url: http://127.0.0.1:8000/api/campaignApi/filter
+            name: filter
+            meta:
+              id: req_17a0117b70ba49e3a411c525c05b1d7b
+              created: 1781080931756
+              modified: 1781091411844
+              isPrivate: false
+              description: ""
+              sortKey: -1781080931756
+            method: POST
+            body:
+              mimeType: multipart/form-data
+              params:
+                - name: governorate_uuid
+                  value: ""
+                  description: ""
+                  disabled: false
+                - name: city_uuid
+                  value: ""
+                  description: ""
+                  disabled: false
+                - name: district_uuid
+                  value: ""
+                  description: ""
+                  disabled: false
+                - name: project_uuid
+                  value: 4bbd0d4d-32f0-490e-bd26-46e51790eb2a
+                  description: ""
+                  disabled: false
+                - name: status[]
+                  value: نشطة
+                  description: ""
+                  disabled: false
+                - name: status[]
+                  value: ""
+                  description: ""
+                  disabled: true
+            headers:
+              - name: Content-Type
+                value: multipart/form-data
+              - name: User-Agent
+                value: insomnia/12.3.0
+                description: ""
+                disabled: false
+              - name: Accept
+                value: application/json
+                description: ""
+                disabled: false
+            authentication:
+              type: bearer
+              token: 58|aa4qq5IkRHKqWvl8kl7xM4w3cTMfTyXmS18hqNNY118cd838
+            settings:
+              renderRequestBody: true
+              encodeUrl: true
+              followRedirects: global
+              cookies:
+                send: true
+                store: true
+              rebuildPath: true
+          - url: http://127.0.0.1:8000/api/campaignApi/show/f7069989-0b5e-453f-8abf-6560da32534a
+            name: show
+            meta:
+              id: req_2757bbc191ae403387219c61084ad1c9
+              created: 1781200681719
+              modified: 1781200917924
+              isPrivate: false
+              description: ""
+              sortKey: -1781200681719
+            method: GET
+            headers:
+              - name: User-Agent
+                value: insomnia/12.3.0
+                description: ""
+                disabled: false
+              - name: Accept
+                value: application/json
+                description: ""
+                disabled: false
+            authentication:
+              type: bearer
+              token: 61|oWh0W8JdFpLLtjWkXNcJ1mlKdz7M8bfaZhw7UPxld8e0ed08
+            settings:
+              renderRequestBody: true
+              encodeUrl: true
+              followRedirects: global
+              cookies:
+                send: true
+                store: true
+              rebuildPath: true
+      - name: profile
+        meta:
+          id: fld_395ac0dd043d484c9613f4489751e587
+          created: 1781091525521
+          modified: 1781091525521
+          sortKey: -1781091525521
+          description: ""
+        children:
+          - url: http://127.0.0.1:8000/api/user
+            name: getUser
+            meta:
+              id: req_24adbc6e204f463c9633d2dbd23a7d15
+              created: 1781092002008
+              modified: 1781114914386
+              isPrivate: false
+              description: ""
+              sortKey: -1781092002008
+            method: GET
+            headers:
+              - name: User-Agent
+                value: insomnia/12.3.0
+                description: ""
+                disabled: false
+              - name: Accept
+                value: application/json
+                description: ""
+                disabled: false
+            authentication:
+              type: bearer
+              token: 59|WBIvBnqmtJ5K6x0ERiWUKKlztMOxaPqGSWPyOKQffd0fe29e
+            settings:
+              renderRequestBody: true
+              encodeUrl: true
+              followRedirects: global
+              cookies:
+                send: true
+                store: true
+              rebuildPath: true
+          - url: http://127.0.0.1:8000/api/user/donations
+            name: getDonations
+            meta:
+              id: req_6e8f12d6b4324811a40a965654c6908f
+              created: 1781092469707
+              modified: 1781092539069
+              isPrivate: false
+              description: ""
+              sortKey: -1781092469707
+            method: GET
+            headers:
+              - name: User-Agent
+                value: insomnia/12.3.0
+                description: ""
+                disabled: false
+              - name: Accept
+                value: application/json
+                description: ""
+                disabled: false
+            authentication:
+              type: bearer
+              token: 57|zNYEFI6wlfoSzLWT6L0azvFU068r75AeWO91Ecss0ee79562
+            settings:
+              renderRequestBody: true
+              encodeUrl: true
+              followRedirects: global
+              cookies:
+                send: true
+                store: true
+              rebuildPath: true
+          - url: http://127.0.0.1:8000/api/user/inkinds
+            name: getInkindDonations
+            meta:
+              id: req_ab7090ea687c48dd944e021983b085e4
+              created: 1781092791384
+              modified: 1781093066603
+              isPrivate: false
+              description: ""
+              sortKey: -1781092791384
+            method: GET
+            headers:
+              - name: User-Agent
+                value: insomnia/12.3.0
+                description: ""
+                disabled: false
+              - name: Accept
+                value: application/json
+                description: ""
+                disabled: false
+            authentication:
+              type: bearer
+              token: 57|zNYEFI6wlfoSzLWT6L0azvFU068r75AeWO91Ecss0ee79562
+            settings:
+              renderRequestBody: true
+              encodeUrl: true
+              followRedirects: global
+              cookies:
+                send: true
+                store: true
+              rebuildPath: true
+          - url: http://127.0.0.1:8000/api/user/statistics
+            name: getStatistics
+            meta:
+              id: req_c7d43682eeae46428e71904c50645e93
+              created: 1781093823309
+              modified: 1781093937300
+              isPrivate: false
+              description: ""
+              sortKey: -1781093823309
+            method: GET
+            headers:
+              - name: User-Agent
+                value: insomnia/12.3.0
+                description: ""
+                disabled: false
+              - name: Accept
+                value: application/json
+                description: ""
+                disabled: false
+            authentication:
+              type: bearer
+              token: 57|zNYEFI6wlfoSzLWT6L0azvFU068r75AeWO91Ecss0ee79562
+            settings:
+              renderRequestBody: true
+              encodeUrl: true
+              followRedirects: global
+              cookies:
+                send: true
+                store: true
+              rebuildPath: true
+          - url: http://127.0.0.1:8000/api/campaignApi/status
+            name: getStatus
+            meta:
+              id: req_bc2dcc0193d146de94cca54c62637438
+              created: 1781097859535
+              modified: 1781113592582
+              isPrivate: false
+              description: ""
+              sortKey: -1781097859535
+            method: GET
+            headers:
+              - name: User-Agent
+                value: insomnia/12.3.0
+                description: ""
+                disabled: false
+              - name: Accept
+                value: application/json
+                description: ""
+                disabled: false
+            authentication:
+              type: bearer
+              token: 57|zNYEFI6wlfoSzLWT6L0azvFU068r75AeWO91Ecss0ee79562
+            settings:
+              renderRequestBody: true
+              encodeUrl: true
+              followRedirects: global
+              cookies:
+                send: true
+                store: true
+              rebuildPath: true
+          - name: changePass
+            meta:
+              id: fld_39dac7c647f942cf8d012bc8bdf82cbd
+              created: 1781097904766
+              modified: 1781097904766
+              sortKey: -1781097904766
+              description: ""
+            children:
+              - url: http://127.0.0.1:8000/api/send-otp
+                name: sendOTP
+                meta:
+                  id: req_bc74ff4e819643aeb908a8554fcd619a
+                  created: 1781097909204
+                  modified: 1781098162352
+                  isPrivate: false
+                  description: ""
+                  sortKey: -1781097909204
+                method: POST
+                body:
+                  mimeType: multipart/form-data
+                  params:
+                    - name: email
+                      value: daniasaffour@gmail.com
+                      description: ""
+                      disabled: false
+                headers:
+                  - name: Content-Type
+                    value: multipart/form-data
+                  - name: User-Agent
+                    value: insomnia/12.3.0
+                    description: ""
+                    disabled: false
+                  - name: Accept
+                    value: application/json
+                    description: ""
+                    disabled: false
+                authentication:
+                  type: none
+                settings:
+                  renderRequestBody: true
+                  encodeUrl: true
+                  followRedirects: global
+                  cookies:
+                    send: true
+                    store: true
+                  rebuildPath: true
+              - url: http://127.0.0.1:8000/api/reset-password
+                name: resetPassword
+                meta:
+                  id: req_1402a4cf9f8a4b158b6c57235ccf96a4
+                  created: 1781098081487
+                  modified: 1781098352645
+                  isPrivate: false
+                  description: ""
+                  sortKey: -1781098081487
+                method: POST
+                body:
+                  mimeType: multipart/form-data
+                  params:
+                    - name: email
+                      value: daniasaffour@gmail.com
+                      description: ""
+                      disabled: false
+                    - name: otp
+                      value: "891114"
+                      description: ""
+                      disabled: false
+                    - name: password
+                      value: "123456789"
+                      description: ""
+                      disabled: false
+                    - name: password_confirmation
+                      value: "123456789"
+                      description: ""
+                      disabled: false
+                headers:
+                  - name: Content-Type
+                    value: multipart/form-data
+                  - name: User-Agent
+                    value: insomnia/12.3.0
+                    description: ""
+                    disabled: false
+                  - name: Accept
+                    value: application/json
+                    description: ""
+                    disabled: false
+                authentication:
+                  type: none
+                settings:
+                  renderRequestBody: true
+                  encodeUrl: true
+                  followRedirects: global
+                  cookies:
+                    send: true
+                    store: true
+                  rebuildPath: true
+              - url: http://127.0.0.1:8000/api/user/changeProfile
+                name: changeProfile
+                meta:
+                  id: req_bf0373c11cc040a8b420d241e84fa03d
+                  created: 1781113871262
+                  modified: 1781114885262
+                  isPrivate: false
+                  description: ""
+                  sortKey: -1781113871262
+                method: POST
+                body:
+                  mimeType: multipart/form-data
+                  params:
+                    - name: profile
+                      value: ""
+                      description: ""
+                      disabled: false
+                      fileName: C:\laragon\www\designers\3b9fcd1f8620c28e4100a4db6236fabf.jpg
+                      type: file
+                headers:
+                  - name: Content-Type
+                    value: multipart/form-data
+                  - name: User-Agent
+                    value: insomnia/12.3.0
+                    description: ""
+                    disabled: false
+                  - name: Accept
+                    value: application/json
+                    description: ""
+                    disabled: false
+                authentication:
+                  type: bearer
+                  token: 59|WBIvBnqmtJ5K6x0ERiWUKKlztMOxaPqGSWPyOKQffd0fe29e
+                settings:
+                  renderRequestBody: true
+                  encodeUrl: true
+                  followRedirects: global
+                  cookies:
+                    send: true
+                    store: true
+                  rebuildPath: true
+  - name: donation
+    meta:
+      id: fld_dd2e8f374846480fbb0101d1e4f32e88
+      created: 1778590673779
+      modified: 1779886751251
+      sortKey: -1777205585112
+      description: ""
+    children:
+      - url: http://127.0.0.1:8000/api/verify/aa89ddac-cf13-4db2-aeaf-a5556dd0e8cf
+        name: verify
+        meta:
+          id: req_1b45229ce7c4445095fa27c8b41356b3
+          created: 1778590743142
+          modified: 1781029258841
+          isPrivate: false
+          description: ""
+          sortKey: -1778590743142
+        method: POST
+        body:
+          mimeType: multipart/form-data
+          params:
+            - name: status
+              value: " متوافق"
+              description: ""
+              disabled: false
+        headers:
+          - name: Content-Type
+            value: multipart/form-data
+          - name: User-Agent
+            value: insomnia/12.3.0
+            description: ""
+            disabled: false
+          - name: Accept
+            value: application/json
+            description: ""
+            disabled: false
+        authentication:
+          type: bearer
+          token: 58|aa4qq5IkRHKqWvl8kl7xM4w3cTMfTyXmS18hqNNY118cd838
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: http://127.0.0.1:8000/api/donaters/all
+        name: get_individuals
+        meta:
+          id: req_a19eb8f33b2c48438e9e3f2e8dbd3616
+          created: 1779725149335
+          modified: 1780853349315
+          isPrivate: false
+          description: ""
+          sortKey: -1779725149335
+        method: GET
+        headers:
+          - name: User-Agent
+            value: insomnia/12.3.0
+            description: ""
+            disabled: false
+          - name: Accept
+            value: application/json
+            description: ""
+            disabled: false
+        authentication:
+          type: bearer
+          token: 54|0LCFaHHHL4RmtGK71tNRr8nPHcP1U9gMDHwD7tVg88ef3ba3
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: http://127.0.0.1:8000/api/bussinessman/all
+        name: get_bussinessman
+        meta:
+          id: req_c4840004cc0941e6b5f97b2147be70c2
+          created: 1779725291160
+          modified: 1779725394928
+          isPrivate: false
+          description: ""
+          sortKey: -1779725291160
+        method: GET
+        headers:
+          - name: User-Agent
+            value: insomnia/12.3.0
+            description: ""
+            disabled: false
+          - name: Accept
+            value: application/json
+            description: ""
+            disabled: false
+        authentication:
+          type: bearer
+          token: 14|1A0q4URHQJiUzMMkrgnmE058K6FIN1TPZlHI0EW6f6715d87
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: http://127.0.0.1:8000/api/orgnasation/all
+        name: get_orgnasation
+        meta:
+          id: req_5e3b2fda3fc24d7eb3c61e36cd27ddb3
+          created: 1779725502795
+          modified: 1780914588480
+          isPrivate: false
+          description: ""
+          sortKey: -1779725502795
+        method: GET
+        headers:
+          - name: User-Agent
+            value: insomnia/12.3.0
+            description: ""
+            disabled: false
+          - name: Accept
+            value: application/json
+            description: ""
+            disabled: false
+        authentication:
+          type: bearer
+          token: 54|0LCFaHHHL4RmtGK71tNRr8nPHcP1U9gMDHwD7tVg88ef3ba3
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: http://127.0.0.1:8000/api/donaters/filter
+        name: filter
+        meta:
+          id: req_54c79beef7224deb98e6cb620477e291
+          created: 1779728454290
+          modified: 1780920727559
+          isPrivate: false
+          description: ""
+          sortKey: -1779728454290
+        method: POST
+        body:
+          mimeType: multipart/form-data
+          params:
+            - name: method
+              value: تبرع
+              description: ""
+              disabled: false
+            - name: pending
+              value: مدفوع
+              description: ""
+              disabled: true
+            - name: status
+              value: متوافق
+              description: ""
+              disabled: true
+            - name: currency_type
+              value: USD
+              description: ""
+              disabled: true
+            - name: name
+              value: Id
+              description: ""
+              disabled: false
+        headers:
+          - name: Content-Type
+            value: multipart/form-data
+          - name: User-Agent
+            value: insomnia/12.3.0
+            description: ""
+            disabled: false
+          - name: Accept
+            value: application/json
+            description: ""
+            disabled: false
+        authentication:
+          type: bearer
+          token: 54|0LCFaHHHL4RmtGK71tNRr8nPHcP1U9gMDHwD7tVg88ef3ba3
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: http://127.0.0.1:8000/api/donater/show/ee463051-e66c-48d8-b9fb-5d40d751f10b
+        name: show
+        meta:
+          id: req_4d845db3685e410ca9cbedefdf22faf5
+          created: 1779791647256
+          modified: 1780919582400
+          isPrivate: false
+          description: ""
+          sortKey: -1779791647256
+        method: GET
+        headers:
+          - name: User-Agent
+            value: insomnia/12.3.0
+            description: ""
+            disabled: false
+          - name: Accept
+            value: application/json
+            description: ""
+            disabled: false
+        authentication:
+          type: bearer
+          token: 54|0LCFaHHHL4RmtGK71tNRr8nPHcP1U9gMDHwD7tVg88ef3ba3
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: http://127.0.0.1:8000/api/show/image/0418d015-039d-4bf0-8fe2-bf608a1efd5d
+        name: show_verify
+        meta:
+          id: req_db405b5c8e974db6854e27ef8d0a0884
+          created: 1781120215163
+          modified: 1781120351321
+          isPrivate: false
+          description: ""
+          sortKey: -1781120215163
+        method: GET
+        headers:
+          - name: User-Agent
+            value: insomnia/12.3.0
+            description: ""
+            disabled: false
+          - name: Accept
+            value: application/json
+            description: ""
+            disabled: false
+        authentication:
+          type: bearer
+          token: 60|MC218whTbIN9rtWw6uUgrE9xnF4K9KwBvWyh9ZmE06794b9c
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+  - name: inkind_donation
+    meta:
+      id: fld_468055ddf5f54958abd977ca1a358335
+      created: 1779189473280
+      modified: 1779872271359
+      sortKey: -1779189473281
+      description: ""
+    children:
+      - url: http://127.0.0.1:8000/api/donation/all
+        name: all
+        meta:
+          id: req_2323ae6ff5fb4e91b361df646586b236
+          created: 1779189478962
+          modified: 1780477547616
+          isPrivate: false
+          description: ""
+          sortKey: -1779189478962
+        method: GET
+        headers:
+          - name: User-Agent
+            value: insomnia/12.3.0
+            description: ""
+            disabled: false
+          - name: Accept
+            value: application/json
+            description: ""
+            disabled: false
+        authentication:
+          type: bearer
+          token: 50|UPWv5AoDMPeRNfm4N6bUFciCIGxNJBNgPMIUgcE52b1c564f
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: http://127.0.0.1:8000/api/donation/update/572b6b77-02d5-4ec0-8352-68f680f49cea
+        name: update_status
+        meta:
+          id: req_3141527d17174c5ca310edd91bf19633
+          created: 1779189952608
+          modified: 1779813905430
+          isPrivate: false
+          description: ""
+          sortKey: -1779189952608
+        method: POST
+        body:
+          mimeType: multipart/form-data
+          params:
+            - name: status
+              value: تم استلامه
+              description: ""
+              disabled: false
+        headers:
+          - name: Content-Type
+            value: multipart/form-data
+          - name: User-Agent
+            value: insomnia/12.3.0
+            description: ""
+            disabled: false
+          - name: Accept
+            value: application/json
+            description: ""
+            disabled: false
+        authentication:
+          type: bearer
+          token: 17|BxVrD7KZkupAOPaZYy1U5ZHd108uKpbRsqIqxJEr96a1a6a0
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: http://127.0.0.1:8000/api/donation/filter
+        name: filter
+        meta:
+          id: req_86d78dd7538349538905749946989c6d
+          created: 1779814308922
+          modified: 1780387962112
+          isPrivate: false
+          description: ""
+          sortKey: -1779814308922
+        method: POST
+        body:
+          mimeType: multipart/form-data
+          params:
+            - name: governorate_uuid
+              value: ""
+              description: ""
+              disabled: false
+            - name: type
+              value: ""
+              description: ""
+              disabled: false
+            - name: status
+              value: ""
+              description: ""
+              disabled: false
+            - name: status_of_materail
+              value: مستعملة
+              description: ""
+              disabled: false
+            - name: name
+              value: ""
+              description: ""
+              disabled: false
+        headers:
+          - name: Content-Type
+            value: multipart/form-data
+          - name: User-Agent
+            value: insomnia/12.3.0
+            description: ""
+            disabled: false
+          - name: Accept
+            value: application/json
+            description: ""
+            disabled: false
+        authentication:
+          type: bearer
+          token: 45|GzA9AAVAme6DtclVeVCkfpdoXpqig4MytfnVe18Y9db8ce1c
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: http://127.0.0.1:8000/api/donation/statusofmaterail
+        name: getStatusOfmaterail
+        meta:
+          id: req_33b33c81e7674109bb097400767f77de
+          created: 1780255884106
+          modified: 1780256004974
+          isPrivate: false
+          description: ""
+          sortKey: -1780255884106
+        method: GET
+        headers:
+          - name: User-Agent
+            value: insomnia/12.3.0
+            description: ""
+            disabled: false
+          - name: Accept
+            value: application/json
+            description: ""
+            disabled: false
+        authentication:
+          type: bearer
+          token: 38|YW1Cj5jzvoTCP4oMsKlhKv58EbTlyYr51jEcKIq2fce7f09d
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: http://127.0.0.1:8000/api/donation/status
+        name: getStatus
+        meta:
+          id: req_4f05728cae0a46459e80f944dc93c960
+          created: 1780256034125
+          modified: 1780256107747
+          isPrivate: false
+          description: ""
+          sortKey: -1780256034125
+        method: GET
+        headers:
+          - name: User-Agent
+            value: insomnia/12.3.0
+            description: ""
+            disabled: false
+          - name: Accept
+            value: application/json
+            description: ""
+            disabled: false
+        authentication:
+          type: bearer
+          token: 38|YW1Cj5jzvoTCP4oMsKlhKv58EbTlyYr51jEcKIq2fce7f09d
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: http://127.0.0.1:8000/api/donation/type
+        name: getType
+        meta:
+          id: req_fa0cecff9435468287083da5ba5f2e4c
+          created: 1780256134036
+          modified: 1780256211208
+          isPrivate: false
+          description: ""
+          sortKey: -1780256134036
+        method: GET
+        headers:
+          - name: User-Agent
+            value: insomnia/12.3.0
+            description: ""
+            disabled: false
+          - name: Accept
+            value: application/json
+            description: ""
+            disabled: false
+        authentication:
+          type: bearer
+          token: 38|YW1Cj5jzvoTCP4oMsKlhKv58EbTlyYr51jEcKIq2fce7f09d
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+  - name: pending
+    meta:
+      id: fld_bd75693cadbf497d9bc0468a1e5bfe37
+      created: 1779882576718
+      modified: 1779882576718
+      sortKey: -1779882576718
+      description: ""
+    children:
+      - url: http://127.0.0.1:8000/api/pending/store
+        name: add
+        meta:
+          id: req_73c780fe70bd4e549f05b3191b8ef61d
+          created: 1779882582784
+          modified: 1780505613706
+          isPrivate: false
+          description: ""
+          sortKey: -1779882582784
+        method: POST
+        body:
+          mimeType: multipart/form-data
+          params:
+            - name: detail_uuid
+              value: e100f62d-ed3e-4ff0-b9bc-faa6d78aeb5c
+              description: ""
+              disabled: false
+            - name: pending_date
+              value: 2026-06-2
+              description: ""
+              disabled: false
+            - name: paid_amount
+              value: "600"
+              description: ""
+              disabled: false
+        headers:
+          - name: Content-Type
+            value: multipart/form-data
+          - name: User-Agent
+            value: insomnia/12.3.0
+            description: ""
+            disabled: false
+          - name: Accept
+            value: application/json
+            description: ""
+            disabled: false
+        authentication:
+          type: bearer
+          token: 50|UPWv5AoDMPeRNfm4N6bUFciCIGxNJBNgPMIUgcE52b1c564f
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: http://127.0.0.1:8000/api/pending/update/c6c9e5ba-919e-4642-a621-9b24cb048b74
+        name: update
+        meta:
+          id: req_21c6e78e847d40dd97f92b56968f9660
+          created: 1780253824359
+          modified: 1780504899040
+          isPrivate: false
+          description: ""
+          sortKey: -1780253824359
+        method: POST
+        body:
+          mimeType: multipart/form-data
+          params:
+            - name: paid_amount
+              value: "250"
+              description: ""
+              disabled: false
+        headers:
+          - name: Content-Type
+            value: multipart/form-data
+          - name: User-Agent
+            value: insomnia/12.3.0
+            description: ""
+            disabled: false
+          - name: Accept
+            value: application/json
+            description: ""
+            disabled: false
+        authentication:
+          type: bearer
+          token: 50|UPWv5AoDMPeRNfm4N6bUFciCIGxNJBNgPMIUgcE52b1c564f
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: http://127.0.0.1:8000/api/pendings/all
+        name: all
+        meta:
+          id: req_b3d0a3ac40cd4949ba49d9734fb5dd43
+          created: 1780487128994
+          modified: 1780487236443
+          isPrivate: false
+          description: ""
+          sortKey: -1780487128994
+        method: GET
+        headers:
+          - name: User-Agent
+            value: insomnia/12.3.0
+            description: ""
+            disabled: false
+          - name: Accept
+            value: application/json
+            description: ""
+            disabled: false
+        authentication:
+          type: bearer
+          token: 50|UPWv5AoDMPeRNfm4N6bUFciCIGxNJBNgPMIUgcE52b1c564f
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: http://127.0.0.1:8000/api/pendings/projects
+        name: getProjects
+        meta:
+          id: req_03872d215e1a4a748b3bc203932a1f5b
+          created: 1780487249402
+          modified: 1780508656398
+          isPrivate: false
+          description: ""
+          sortKey: -1780487249402
+        method: GET
+        headers:
+          - name: User-Agent
+            value: insomnia/12.3.0
+            description: ""
+            disabled: false
+          - name: Accept
+            value: application/json
+            description: ""
+            disabled: false
+        authentication:
+          type: bearer
+          token: 50|UPWv5AoDMPeRNfm4N6bUFciCIGxNJBNgPMIUgcE52b1c564f
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: http://127.0.0.1:8000/api/pendings/details/4bbd0d4d-32f0-490e-bd26-46e51790eb2a
+        name: getDetails
+        meta:
+          id: req_fba2559fe4524688a52a8633b70067e4
+          created: 1780488887300
+          modified: 1780510125559
+          isPrivate: false
+          description: ""
+          sortKey: -1780488887300
+        method: GET
+        headers:
+          - name: User-Agent
+            value: insomnia/12.3.0
+            description: ""
+            disabled: false
+          - name: Accept
+            value: application/json
+            description: ""
+            disabled: false
+        authentication:
+          type: bearer
+          token: 50|UPWv5AoDMPeRNfm4N6bUFciCIGxNJBNgPMIUgcE52b1c564f
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: http://127.0.0.1:8000/api/pendings/filter
+        name: filter
+        meta:
+          id: req_bfdee1cb7dbd44aebcb21552ebd67b5d
+          created: 1781115387281
+          modified: 1781116155732
+          isPrivate: false
+          description: ""
+          sortKey: -1781115387281
+        method: POST
+        body:
+          mimeType: multipart/form-data
+          params:
+            - name: project_uuid
+              value: 089c6999-31e5-47b3-ad25-0fefec08e5d7
+              description: ""
+              disabled: false
+            - name: detail_uuid
+              value: d7b78539-5278-47eb-96fc-a9d0f9ff0b08
+              description: ""
+              disabled: false
+            - name: pending_date
+              value: 2026-05-27
+              description: ""
+              disabled: false
+        headers:
+          - name: Content-Type
+            value: multipart/form-data
+          - name: User-Agent
+            value: insomnia/12.3.0
+            description: ""
+            disabled: false
+          - name: Accept
+            value: application/json
+            description: ""
+            disabled: false
+        authentication:
+          type: bearer
+          token: 60|MC218whTbIN9rtWw6uUgrE9xnF4K9KwBvWyh9ZmE06794b9c
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+  - name: home_dash
+    meta:
+      id: fld_46afc0731faf4d86a0a53d5485b2ba99
+      created: 1779954793666
+      modified: 1779954793666
+      sortKey: -1779954793666
+      description: ""
+    children:
+      - url: http://127.0.0.1:8000/api/dashboard
+        name: getStatistics
+        meta:
+          id: req_475dace2cc114916992f0480eb05c961
+          created: 1779954798659
+          modified: 1781179468252
+          isPrivate: false
+          description: ""
+          sortKey: -1779954798660
+        method: GET
+        headers:
+          - name: User-Agent
+            value: insomnia/12.3.0
+            description: ""
+            disabled: false
+          - name: Accept
+            value: application/json
+            description: ""
+            disabled: false
+        authentication:
+          type: bearer
+          token: 61|oWh0W8JdFpLLtjWkXNcJ1mlKdz7M8bfaZhw7UPxld8e0ed08
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+  - name: blog
+    meta:
+      id: fld_c0b7ac0b67674dbfab16498b7d0f252f
+      created: 1780044471794
+      modified: 1780044471794
+      sortKey: -1780044471794
+      description: ""
+    children:
+      - url: http://127.0.0.1:8000/api/blog/store
+        name: add
+        meta:
+          id: req_2ec3070e6b2547efa34ee947d0cfa94b
+          created: 1780047896705
+          modified: 1780427035107
+          isPrivate: false
+          description: ""
+          sortKey: -1780047896705
+        method: POST
+        body:
+          mimeType: multipart/form-data
+          params:
+            - name: title
+              value: "الآن ندخل إلى المرحلة التي تجعل كل شيء "
+              description: ""
+              disabled: false
+            - name: category
+              value: "غير ذلك "
+              description: ""
+              disabled: false
+            - name: on_the_other_hand
+              value: عشوائيات
+              description: ""
+              disabled: false
+            - name: excerpt
+              value: وسنقوم بهذا بشكل احترافي داخل
+              description: ""
+              disabled: false
+            - name: content
+              value: وسنقوم بهذا بشكل احترافي داخل amina123
+              description: ""
+              disabled: false
+            - name: images[]
+              value: ""
+              description: ""
+              disabled: false
+              fileName: C:\Users\TECHNO\Pictures\sddefault.jpg
+              type: file
+            - name: images[]
+              value: ""
+              description: ""
+              disabled: false
+              fileName: C:\Users\TECHNO\Pictures\Screenshot 2025-01-11 211451.png
+              type: file
+        headers:
+          - name: Content-Type
+            value: multipart/form-data
+          - name: User-Agent
+            value: insomnia/12.3.0
+            description: ""
+            disabled: false
+          - name: ""
+            value: application/json
+            description: ""
+            disabled: false
+        authentication:
+          type: bearer
+          token: 49|o4EoQWLd65pWjIfTiA3VDXWZdbQRNx2WJV8OX6RG33248cc6
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: http://127.0.0.1:8000/api/blog/update/3a5a1616-d65e-40ea-9717-3e0c829e332f
+        name: update
+        meta:
+          id: req_73465128504c491a93f340f88ed9374f
+          created: 1780245114878
+          modified: 1781200373881
+          isPrivate: false
+          description: ""
+          sortKey: -1780245114878
+        method: POST
+        body:
+          mimeType: multipart/form-data
+          params:
+            - name: title
+              value: الآن ندخل إلى المرحلة التي تجعل منصتك فعلًا
+              description: ""
+              disabled: false
+            - name: category
+              value: فعاليات
+              description: ""
+              disabled: false
+            - name: on_the_other_hand
+              value: ""
+              description: ""
+              disabled: false
+            - name: excerpt
+              value: وسنقوم بهذا بشكل احترافي داخل
+              description: ""
+              disabled: false
+            - name: content
+              value: وسنقوم بهذا بشكل احترافي داخل المنصة
+              description: ""
+              disabled: false
+            - name: images[]
+              value: ""
+              description: ""
+              disabled: false
+              fileName: C:\Users\TECHNO\Pictures\Screenshots\Screenshot 2026-05-31 191204.png
+              type: file
+            - name: images[]
+              value: ""
+              description: ""
+              disabled: false
+              fileName: C:\Users\TECHNO\Pictures\Screenshots\Screenshot 2026-05-31 191817.png
+              type: file
+        headers:
+          - name: Content-Type
+            value: multipart/form-data
+          - name: User-Agent
+            value: insomnia/12.3.0
+            description: ""
+            disabled: false
+          - name: Accept
+            value: application/json
+            description: ""
+            disabled: false
+        authentication:
+          type: bearer
+          token: 36|lTlu2y6JDvBvy4TGNM4ZgsusoCEPjCQTlMORFu2ee463460b
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: http://127.0.0.1:8000/api/blogs/all
+        name: all
+        meta:
+          id: req_ab21ad4b82ce47ada059f575705c5320
+          created: 1780246002527
+          modified: 1780246133072
+          isPrivate: false
+          description: ""
+          sortKey: -1780246002527
+        method: GET
+        headers:
+          - name: User-Agent
+            value: insomnia/12.3.0
+            description: ""
+            disabled: false
+          - name: Accept
+            value: application/json
+            description: ""
+            disabled: false
+        authentication:
+          type: bearer
+          token: 36|lTlu2y6JDvBvy4TGNM4ZgsusoCEPjCQTlMORFu2ee463460b
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: http://127.0.0.1:8000/api/blog/filter
+        name: filter
+        meta:
+          id: req_8144e86d9e1c4de18662e8bb1266e3e8
+          created: 1780252507573
+          modified: 1780389304855
+          isPrivate: false
+          description: ""
+          sortKey: -1780252507573
+        method: POST
+        body:
+          mimeType: multipart/form-data
+          params:
+            - name: category[]
+              value: فعاليات
+              description: ""
+              disabled: false
+            - name: title
+              value: ال
+              description: ""
+              disabled: false
+            - name: category[]
+              value: منظمات
+              description: ""
+              disabled: false
+        headers:
+          - name: Content-Type
+            value: multipart/form-data
+          - name: User-Agent
+            value: insomnia/12.3.0
+            description: ""
+            disabled: false
+          - name: Accept
+            value: application/json
+            description: ""
+            disabled: false
+        authentication:
+          type: bearer
+          token: 45|GzA9AAVAme6DtclVeVCkfpdoXpqig4MytfnVe18Y9db8ce1c
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: http://127.0.0.1:8000/api/blogs/old
+        name: getOldest
+        meta:
+          id: req_31be20baa09a46b68d2db3686d45cbb8
+          created: 1780252979237
+          modified: 1780253347946
+          isPrivate: false
+          description: ""
+          sortKey: -1780252979237
+        method: GET
+        headers:
+          - name: User-Agent
+            value: insomnia/12.3.0
+            description: ""
+            disabled: false
+          - name: Accept
+            value: application/json
+            description: ""
+            disabled: false
+        authentication:
+          type: bearer
+          token: 38|YW1Cj5jzvoTCP4oMsKlhKv58EbTlyYr51jEcKIq2fce7f09d
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: http://127.0.0.1:8000/api/blogs/last
+        name: getLastest
+        meta:
+          id: req_69f5276585f5412fb887dbd9ddc7c294
+          created: 1780253377178
+          modified: 1780253562041
+          isPrivate: false
+          description: ""
+          sortKey: -1780253377178
+        method: GET
+        headers:
+          - name: User-Agent
+            value: insomnia/12.3.0
+            description: ""
+            disabled: false
+          - name: Accept
+            value: application/json
+            description: ""
+            disabled: false
+        authentication:
+          type: bearer
+          token: 38|YW1Cj5jzvoTCP4oMsKlhKv58EbTlyYr51jEcKIq2fce7f09d
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: http://127.0.0.1:8000/api/blogs/category
+        name: getCategory
+        meta:
+          id: req_0fa8f8fa2464419dacef137b271cf396
+          created: 1780253586486
+          modified: 1780253672239
+          isPrivate: false
+          description: ""
+          sortKey: -1780253586486
+        method: GET
+        headers:
+          - name: User-Agent
+            value: insomnia/12.3.0
+            description: ""
+            disabled: false
+          - name: Accept
+            value: application/json
+            description: ""
+            disabled: false
+        authentication:
+          type: bearer
+          token: 38|YW1Cj5jzvoTCP4oMsKlhKv58EbTlyYr51jEcKIq2fce7f09d
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: http://127.0.0.1:8000/api/blogs/delete/11989971-97b8-4b85-a123-c27bda789709
+        name: delete
+        meta:
+          id: req_20a5e50b0f9246f3acbfca716507b5c2
+          created: 1781180100570
+          modified: 1781180765902
+          isPrivate: false
+          description: ""
+          sortKey: -1781180100570
+        method: GET
+        headers:
+          - name: User-Agent
+            value: insomnia/12.3.0
+            description: ""
+            disabled: false
+          - name: Accept
+            value: application/json
+            description: ""
+            disabled: false
+        authentication:
+          type: bearer
+          token: 61|oWh0W8JdFpLLtjWkXNcJ1mlKdz7M8bfaZhw7UPxld8e0ed08
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: http://127.0.0.1:8000/api/blogs/restore/11989971-97b8-4b85-a123-c27bda789709
+        name: restore
+        meta:
+          id: req_e6d94dae564843be8ebb0ef6f5c789a8
+          created: 1781180804432
+          modified: 1781180965727
+          isPrivate: false
+          description: ""
+          sortKey: -1781180804432
+        method: GET
+        headers:
+          - name: User-Agent
+            value: insomnia/12.3.0
+            description: ""
+            disabled: false
+          - name: Accept
+            value: application/json
+            description: ""
+            disabled: false
+        authentication:
+          type: bearer
+          token: 61|oWh0W8JdFpLLtjWkXNcJ1mlKdz7M8bfaZhw7UPxld8e0ed08
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: http://127.0.0.1:8000/api/blogs/deleted
+        name: deleted
+        meta:
+          id: req_d4ccacbcee954420a6a3465a319212d2
+          created: 1781181067785
+          modified: 1781181166570
+          isPrivate: false
+          description: ""
+          sortKey: -1781181067785
+        method: GET
+        headers:
+          - name: User-Agent
+            value: insomnia/12.3.0
+            description: ""
+            disabled: false
+          - name: Accept
+            value: application/json
+            description: ""
+            disabled: false
+        authentication:
+          type: bearer
+          token: 61|oWh0W8JdFpLLtjWkXNcJ1mlKdz7M8bfaZhw7UPxld8e0ed08
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+cookieJar:
+  name: Default Jar
+  meta:
+    id: jar_68dea797d32180eb6cd5769a53ce1b68ba6a86df
+    created: 1765556552802
+    modified: 1765556552802
+environments:
+  name: Base Environment
+  meta:
+    id: env_68dea797d32180eb6cd5769a53ce1b68ba6a86df
+    created: 1765556552799
+    modified: 1765556552799
+    isPrivate: false
