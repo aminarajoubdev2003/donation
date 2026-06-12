@@ -29,6 +29,7 @@ class BlogController extends Controller
             "on_the_other_hand" => "nullable|string|min:0|max:20|regex:/^[\p{Arabic}\s]+$/u",
             "images" => "required|array",
             "images.*" => "image|mimes:jpg,jpeg,png",
+            "cover_image" => "required|image|mimes:jpg,jpeg,png",
             "excerpt" =>"required|string|min:3|max:200|regex:/^[\p{Arabic}\s]+$/u",
             "content" =>"required|string|regex:/^[\p{Arabic}a-zA-Z\s0-9\p{P}\p{S}]+$/u",
         ],[
@@ -37,6 +38,10 @@ class BlogController extends Controller
 
         if ($validate->fails()) {
             return $this->requiredField($validate->errors()->first());
+        }
+
+        if ($request->hasFile('cover_image')) {
+            $cover_image = $this->upload_file($request->file('cover_image'),'Blogs/images');
         }
 
 
@@ -51,6 +56,7 @@ class BlogController extends Controller
             'on_the_other_hand' => $request->on_the_other_hand,
             'excerpt' => $request->excerpt,
             'content' => $request->content,
+            'cover_image' => $cover_image,
             'images' => $images
         ]);
 
@@ -73,8 +79,7 @@ class BlogController extends Controller
             Rule::unique('blogs', 'title')->ignore($blog->id)],
             "category" => [ Rule::in($category)],
             "on_the_other_hand" => "nullable|string|min:0|max:20|regex:/^[\p{Arabic}\s]+$/u",
-            "images" => "array",
-            "images.*" => "image|mimes:jpg,jpeg,png",
+            "cover_image" => "image|mimes:jpg,jpeg,png",
             "excerpt" =>"string|min:3|max:200|regex:/^[\p{Arabic}\s]+$/u",
             "content" =>"string|regex:/^[\p{Arabic}a-zA-Z\s0-9\p{P}\p{S}]+$/u",
         ],[
@@ -85,14 +90,15 @@ class BlogController extends Controller
             return $this->requiredField($validate->errors()->first());
         }
 
-        if ($request->hasFile('images')) {
-            if ($blog->images) {
-                $this->delete_files($blog->images);
+        if ($request->hasFile('cover_image')) {
+            // حذف الصورة القديمة إذا وجدت
+                if ($blog->cover_image) {
+                    $this->delete_file($blog->cover_image);
+                }
+            $cover_image = $this->upload_file($request->file('cover_image'), 'Blogs/images');
+            }else{
+                $cover_image = $blog->cover_image;
             }
-            $images = $this->upload_files($request->file('images'), 'blogs/images');
-        }else{
-            $images = $blog->images;
-        }
 
         $data = [
             'title' => $request->title,
@@ -100,7 +106,7 @@ class BlogController extends Controller
             'on_the_other_hand' => $request->on_the_other_hand,
             'excerpt' => $request->excerpt,
             'content' => $request->content,
-            'images' => $images
+            'cover_image' => $cover_image
         ];
         $blog->update($data);
         return $this->apiResponse(BlogResource::make($blog));
@@ -117,7 +123,9 @@ class BlogController extends Controller
         'category.*' => [
         Rule::in(['أخبار المشاريع','حملات جديدة','تقارير التوزيع','قصص نجاح',
         'تنبيهات عاجلة','فعاليات','شركات و منظمات','غير ذلك']),
-       "title" => "string|regex:/^[\p{Arabic}\s]+$/u" ]]);
+       "title" => "string|regex:/^[\p{Arabic}\s]+$/u" ],
+       'method' =>  Rule::in(['من الأحدث , من الأقدم'])
+       ]);
 
     $blogs = Blog::query()
     ->when($request->title, function ($q) use ($request) {
@@ -130,7 +138,14 @@ class BlogController extends Controller
                 $q->where('category', $request->category);
             }
         })
-        ->get();
+    ->when($request->method == 'من الأحدث', function ($q) {
+            $q->latest();
+        })
+
+    ->when($request->method == 'من الأقدم', function ($q) {
+        $q->oldest();
+    })
+    ->get();
 
     return $this->apiResponse(BlogResource::collection($blogs));
     } catch (\Exception $ex) {
@@ -252,6 +267,67 @@ class BlogController extends Controller
         }
     } catch (\Exception $ex) {
         return $this->apiResponse(null,false,$ex->getMessage(),400);
+    }
+    }
+
+    public function upload( Request $request , $uuid){
+    try {
+        $validate = Validator::make($request->all(), [
+            "images" => "required|array",
+            "images.*" => "image|mimes:jpg,jpeg,png",
+        ]);
+
+
+        if ($validate->fails()) {
+        return $this->requiredField($validate->errors()->first());
+        }
+        else{
+
+        $blog = Blog::where('uuid', $uuid)->firstOrFail();
+        $data = [];
+
+        if ($request->hasFile('images')) {
+            $oldImages = $blog->images ?? [];
+            $newImages = $this->upload_files($request->file('images'),'Blogs/images');
+            $data['images'] = array_merge($oldImages, $newImages);
+        }
+
+
+        if (!empty($data)) {
+            $blog->update($data);
+        }
+            return $this->apiResponse( new BlogResource($blog) );
+        }
+
+    } catch (\Exception $ex){
+        return $this->apiResponse(null, false, $ex->getMessage(), 500);
+    }
+    }
+
+
+    public function deleteImageUsingModel($uuid, $index)
+    {
+    try {
+        $blog = Blog::where('uuid', $uuid)->firstOrFail();
+
+        // استخدام الدالة المساعدة من الموديل
+        $blog->removeImageByIndex($index);
+
+        return $this->apiResponse( new BlogResource($blog) );
+
+    } catch (\Exception $ex) {
+        return $this->apiResponse(null, false, $ex->getMessage(), 500);
+    }
+    }
+
+    public function show( $uuid ){
+        try{
+
+        $blog = Blog::where('uuid', $uuid)->firstOrFail();
+        return $this->apiResponse(BlogResource::make($blog));
+
+        }catch (\Exception $ex) {
+        return $this->apiResponse(null, false, $ex->getMessage(), 500);
     }
     }
 }

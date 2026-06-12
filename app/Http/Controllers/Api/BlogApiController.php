@@ -25,4 +25,15 @@ class BlogApiController extends Controller
     }
     }
 
+    public function show( $uuid ){
+        try{
+
+        $blog = Blog::where('uuid', $uuid)->firstOrFail();
+        return $this->apiResponse(BlogResource::make($blog));
+
+        }catch (\Exception $ex) {
+        return $this->apiResponse(null, false, $ex->getMessage(), 500);
+    }
+    }
+
 }

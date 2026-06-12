@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Api\AuthController;
+use App\Http\Controllers\Api\BlogApiController;
 use App\Http\Controllers\Api\CampaignApiController;
 use App\Http\Controllers\Api\PasswordResetController;
 use App\Http\Controllers\Api\ProfileController;
@@ -153,8 +154,11 @@ Route::middleware(['auth:sanctum', 'admin'])->controller(BlogController::class)-
    Route::post('/blog/store','store');
    Route::post('/blog/update/{uuid}','update');
    Route::get('/blogs/all','index');
+   Route::get('images/blog/delete/{uuid}/{index}','deleteImageUsingModel');
+   Route::get('/blog/show/{uuid}','show');
    Route::post('/blog/search','searchBytitle');
    Route::post('/blog/filter','filter');
+   Route::post('/blog/upload/{uuid}','upload');
    Route::get('/blogs/old','getOldest');
    Route::get('/blogs/last','getLatest');
    Route::get('/blogs/category','getCategory');
@@ -182,6 +186,11 @@ Route::middleware('auth:sanctum')->controller( CampaignApiController::class)->gr
    Route::post('/campaignApi/filter','filter');
    Route::get('/campaignApi/status','get_status');
    Route::get('/campaignApi/show/{uuid}','show');
+});
+
+Route::middleware('auth:sanctum')->controller( BlogApiController::class)->group(function (){
+   Route::get('/blogsApi/all','index');
+   Route::get('/blogApi/show/{uuid}','show');
 });
 
 Route::middleware('auth:sanctum')->controller( ProfileController::class)->group(function (){

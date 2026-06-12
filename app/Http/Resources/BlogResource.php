@@ -5,6 +5,7 @@ namespace App\Http\Resources;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
+use Illuminate\Support\Facades\Storage;
 
 class BlogResource extends JsonResource
 {
@@ -24,6 +25,7 @@ class BlogResource extends JsonResource
         'on_the_other_hand' => $this->on_the_other_hand,
         'excerpt' => $this->excerpt,
         'content' => $this->content,
+        'cover_image' => Storage::url($this->cover_image),
         'images' => collect($this->images ?? [])
             ->values()
             ->map(fn ($image, $index) => new ImageResource([
