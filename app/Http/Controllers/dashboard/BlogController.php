@@ -123,7 +123,8 @@ class BlogController extends Controller
         'category.*' => [
         Rule::in(['أخبار المشاريع','حملات جديدة','تقارير التوزيع','قصص نجاح',
         'تنبيهات عاجلة','فعاليات','شركات و منظمات','غير ذلك']),
-       "title" => "string|regex:/^[\p{Arabic}\s]+$/u" ],
+        ],
+        "title" => "string|regex:/^[\p{Arabic}\s]+$/u" ,
        'method' =>  Rule::in(['من الأحدث , من الأقدم'])
        ]);
 

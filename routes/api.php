@@ -191,6 +191,9 @@ Route::middleware('auth:sanctum')->controller( CampaignApiController::class)->gr
 Route::middleware('auth:sanctum')->controller( BlogApiController::class)->group(function (){
    Route::get('/blogsApi/all','index');
    Route::get('/blogApi/show/{uuid}','show');
+   Route::post('/blogsApi/filter','filter');
+   Route::get('/blogsApi/categories','getCategories');
+   Route::get('/blogsApi/getLatest','getLatest');
 });
 
 Route::middleware('auth:sanctum')->controller( ProfileController::class)->group(function (){

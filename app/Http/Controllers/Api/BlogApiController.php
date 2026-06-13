@@ -45,8 +45,8 @@ class BlogApiController extends Controller
         'category.*' => [
         Rule::in(['أخبار المشاريع','حملات جديدة','تقارير التوزيع','قصص نجاح',
         'تنبيهات عاجلة','فعاليات','شركات و منظمات','غير ذلك']),
-       "title" => "string|regex:/^[\p{Arabic}\s]+$/u" ],
-       'method' =>  Rule::in(['من الأحدث , من الأقدم'])
+        ],
+        "title" => "string|regex:/^[\p{Arabic}\s]+$/u"
        ]);
 
     $blogs = Blog::query()
@@ -71,7 +71,7 @@ class BlogApiController extends Controller
     try{
        $blogs = Blog::latest()->get();
         if( $blogs->isNotEmpty()){
-            return $this->apiResponse($blogs);
+            return $this->apiResponse(BlogResource::collection($blogs));
         }else{
             return $this->apiResponse([]);
         }
@@ -80,13 +80,17 @@ class BlogApiController extends Controller
     }
     }
 
-    public function get_sector(){
+    public function getCategories(){
     try{
-        /*$categories = Blog::whereNotNull('category')->pluck('category');
-        $onTheOtherHand = Project::whereNotNull('on_the_other_hand')->pluck('on_the_other_hand');
-        $allData = $sectors->merge($onTheOtherHand)->unique() ->values();*/
-        $sectors = ['تعليمي', 'صحي', 'إغاثي', 'إعمار', 'غير ذلك'];
-        return $this->apiResponse($sectors);
+        $categories = Blog::where('category', '!=', 'غير ذلك')->whereNotNull('category')
+        ->distinct()->pluck('category')->values();
+
+        $onTheOtherHand = Blog::whereNotNull('on_the_other_hand')->distinct()
+        ->pluck('on_the_other_hand')->values();
+
+        $allData = $categories->merge($onTheOtherHand)->unique() ->values();
+
+        return $this->apiResponse($allData);
     } catch (\Exception $ex) {
         return $this->apiResponse(null,false,$ex->getMessage(),400);
     }
