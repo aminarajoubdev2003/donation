@@ -16,9 +16,9 @@ class DashboardStatisticsService{
         $totalDonors = User::count();
         $totalProjects = Project::count();
         $completedProjects = $this->calculateCompletedProjects();
-        $uncompletedProjects = $this->CountUncompletedProjects();
-        $totalOutstandingAmounts = $this->calculateOutstandingAmounts();
-        $completionRate = $this->calculateCompletionRate();
+        $uncompletedProjects = $this->countUncompletedProjects();
+        $active_details_remaining_amount = $this->calculateOutstandingAmounts();
+        $funding_progress_rate = $this->calculateCompletionRate();
 
         return [
             'total_donations' => round($totalDonations, 2),
@@ -26,24 +26,30 @@ class DashboardStatisticsService{
             'total_projects' => $totalProjects,
             'completed_projects' => $completedProjects,
             'uncompleted_projects' => $uncompletedProjects,
-            'total_outstanding_amounts' => round($totalOutstandingAmounts, 2),
-            'completion_rate' => $completionRate .' '.'%',
+            'active_details_remaining_amount' => round($active_details_remaining_amount, 2),
+            'funding_progress_rate' => $funding_progress_rate .' '.'%',
         ];
     }
 
-    private function CountUncompletedProjects() {
-        $projects = Project::with(['details.latestPending'])->get();
-        $count = 0;
+    private function countUncompletedProjects(): int
+    {
+    $projects = Project::with('details.latestPending')->get();
 
-        foreach ($projects as $project){
-        foreach( $project->details as $detail ){
-            if( $detail->latestPending && $detail->latestPending->remaining_amount > 0){
-                $count++;
-                break;
+    return $projects->filter(function ($project) {
+
+        if ($project->details->isEmpty()) {
+            return true;
+        }
+
+        foreach ($project->details as $detail) {
+            if (!$detail->latestPending ||
+                $detail->latestPending->remaining_amount > 0) {
+                return true;
             }
         }
-        }
-        return $count;
+
+        return false;
+    })->count();
     }
 
     private function calculateOutstandingAmounts(): float {
