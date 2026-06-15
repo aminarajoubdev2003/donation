@@ -30,7 +30,7 @@ class BlogController extends Controller
             "images" => "required|array",
             "images.*" => "image|mimes:jpg,jpeg,png",
             "cover_image" => "required|image|mimes:jpg,jpeg,png",
-            "excerpt" =>"required|string|min:3|max:200|regex:/^[\p{Arabic}\s]+$/u",
+            "excerpt" =>"required|string|min:10|max:200|regex:/^[\p{Arabic}\s]+$/u",
             "content" =>"required|string|regex:/^[\p{Arabic}a-zA-Z\s0-9\p{P}\p{S}]+$/u",
         ],[
             'title.unique' => 'هذا العنوان موجود مسيقا',

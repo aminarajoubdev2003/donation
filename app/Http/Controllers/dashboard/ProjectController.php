@@ -329,8 +329,15 @@ class ProjectController extends Controller
         /*$sectors = Project::whereNotNull('sector')->pluck('sector');
         $onTheOtherHand = Project::whereNotNull('on_the_other_hand')->pluck('on_the_other_hand');
         $allData = $sectors->merge($onTheOtherHand)->unique() ->values();*/
-        $sectors = ['تعليمي', 'صحي', 'إغاثي', 'إعمار', 'غير ذلك'];
-        return $this->apiResponse($sectors);
+        $sectors = Project::where('sector', '!=', 'غير ذلك')->whereNotNull('sector')
+        ->distinct()->pluck('sector')->values();
+
+        $onTheOtherHand = Project::whereNotNull('on_the_other_hand')->distinct()
+        ->pluck('on_the_other_hand')->values();
+
+        $allData = $sectors->merge($onTheOtherHand)->unique() ->values();
+
+        return $this->apiResponse($allData);
     } catch (\Exception $ex) {
         return $this->apiResponse(null,false,$ex->getMessage(),400);
     }
