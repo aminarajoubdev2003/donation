@@ -24,7 +24,7 @@ class BlogController extends Controller
         'تنبيهات عاجلة','فعاليات','شركات و منظمات','غير ذلك'];
 
         $validate = Validator::make($request->all(), [
-            "title" =>"required|unique:blogs,title|string|min:10|max:200|regex:/^[\p{Arabic}\s]+$/u",
+            "title" =>"required|unique:blogs,title|string|min:3|max:100|regex:/^[\p{Arabic}\s]+$/u",
             "category" => ["required", Rule::in($category)],
             "on_the_other_hand" => "nullable|string|min:0|max:20|regex:/^[\p{Arabic}\s]+$/u",
             "images" => "required|array",

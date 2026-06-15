@@ -326,9 +326,6 @@ class ProjectController extends Controller
 
     public function get_sector(){
     try{
-        /*$sectors = Project::whereNotNull('sector')->pluck('sector');
-        $onTheOtherHand = Project::whereNotNull('on_the_other_hand')->pluck('on_the_other_hand');
-        $allData = $sectors->merge($onTheOtherHand)->unique() ->values();*/
         $sectors = Project::where('sector', '!=', 'غير ذلك')->whereNotNull('sector')
         ->distinct()->pluck('sector')->values();
 
