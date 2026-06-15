@@ -175,6 +175,8 @@ Route::middleware(['auth:sanctum', 'admin'])->controller(PendingController::clas
    Route::get('/pendings/projects','getProject');
    Route::get('/pendings/details/{uuid}','getDetails');
    Route::post('/pendings/filter','filter');
+   Route::get('/projects/all','getProjectFilter');
+   Route::get('/details/all','getDetailFilter');
 });
 
 Route::middleware(['auth:sanctum', 'admin'])->controller(DashboardController::class)->group(function (){

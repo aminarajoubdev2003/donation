@@ -4,6 +4,7 @@ namespace App\Services\Dashboard;
 
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Cache;
 
 class SmartInsightAIService
 {
@@ -13,72 +14,96 @@ class SmartInsightAIService
 
         try {
 
-            $response = Http::timeout(60)
-                ->post(
-                    'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=' . env('GEMINI_API_KEY'),
-                    [
-                        'contents' => [
-                            [
-                                'parts' => [
-                                    [
-                                        'text' => $prompt
-                                    ]
+            $response = Http::timeout(60)->post(
+                'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=' . env('GEMINI_API_KEY'),
+                [
+                    'contents' => [
+                        [
+                            'parts' => [
+                                [
+                                    'text' => $prompt
                                 ]
                             ]
                         ]
+                    ],
+                    'generationConfig' => [
+                        'responseMimeType' => 'application/json'
                     ]
-                );
+                ]
+            );
 
             if (!$response->successful()) {
 
-                Log::error('Gemini Error', [
+                Log::error('Gemini API Error', [
                     'status' => $response->status(),
                     'body' => $response->body()
                 ]);
 
-                return [
-                    'summary' => null,
-                    'alerts' => [],
-                    'recommendations' => [],
-                    'opportunities' => []
-                ];
+                return $this->lastInsights();
             }
 
-            $content = $response->json(
+
+            $responseData = $response->json();
+
+
+            if (empty($responseData['candidates'])) {
+
+                Log::error('Gemini No Candidates', [
+                    'response' => $responseData
+                ]);
+
+                return $this->lastInsights();
+            }
+
+
+            $content = data_get(
+                $responseData,
                 'candidates.0.content.parts.0.text'
             );
 
+
             if (!$content) {
 
-                return [
-                    'summary' => null,
-                    'alerts' => [],
-                    'recommendations' => [],
-                    'opportunities' => []
-                ];
+                Log::error('Gemini Empty Content', [
+                    'response' => $responseData
+                ]);
+
+                return $this->lastInsights();
             }
 
-            // إزالة markdown إذا أعاد Gemini JSON داخل ```json
-            $content = preg_replace('/```json|```/', '', $content);
-            $content = trim($content);
 
-            $decoded = json_decode($content, true);
+            $decoded = json_decode(trim($content), true);
+
 
             if (json_last_error() !== JSON_ERROR_NONE) {
 
-                Log::error('Gemini JSON Parse Error', [
+                Log::error('Gemini JSON Decode Error', [
+                    'error' => json_last_error_msg(),
                     'content' => $content
                 ]);
 
-                return [
-                    'summary' => $content,
-                    'alerts' => [],
-                    'recommendations' => [],
-                    'opportunities' => []
-                ];
+                return $this->lastInsights();
             }
 
-            return $decoded;
+
+            $insights = [
+                'summary' => $decoded['summary'] ?? null,
+                'alerts' => $decoded['alerts'] ?? [],
+                'recommendations' => $decoded['recommendations'] ?? [],
+                'opportunities' => $decoded['opportunities'] ?? []
+            ];
+
+
+            // حفظ آخر تحليل ناجح لمدة 7 أيام
+            Cache::put(
+                'dashboard_ai_insights',
+                $insights,
+                now()->addDays(7)
+            );
+
+
+            return $insights;
+
 
         } catch (\Exception $e) {
 
@@ -86,81 +111,192 @@ class SmartInsightAIService
                 'message' => $e->getMessage()
             ]);
 
-            return [
-                'summary' => 'حدث خطأ أثناء توليد التحليلات.',
-                'alerts' => [],
-                'recommendations' => [],
-                'opportunities' => []
-            ];
+            return $this->lastInsights();
         }
-
     }
 
 
-  private function buildPrompt(array $data): string
+    /**
+     * استرجاع آخر تحليل محفوظ
+     */
+    private function lastInsights(): array
+    {
+        return Cache::get(
+            'dashboard_ai_insights',
+            [
+                'summary' => 'لا توجد تحليلات سابقة متاحة.',
+                'alerts' => [],
+                'recommendations' => [],
+                'opportunities' => []
+            ]
+        );
+    }
+
+
+        private function buildPrompt(array $data): string
+
 {
+
     return "
+
 أنت محلل مالي احترافي متخصص في تحليل بيانات منصات التبرعات.
 
-مهم جداً:
+
+
+قواعد الإجابة:
+
 - أجب باللغة العربية الفصحى فقط.
-- لا تستخدم أي كلمات أو جمل باللغة الإنجليزية.
+
+- لا تستخدم أي كلمة أو عبارة باللغة الإنجليزية.
+
 - اعتمد حصراً على البيانات المرسلة إليك.
-- لا تخمن أي أرقام أو معلومات غير موجودة.
-- لا تعتبر اختلاف أنواع المؤشرات تناقضاً.
-- إذا وجدت تناقضاً حقيقياً في الأرقام أو البيانات، اذكره فقط ضمن قسم alerts.
-- اجعل التحليل مناسباً للعرض داخل لوحة تحكم إدارية Dashboard.
+
+- لا تخمن أي رقم أو معلومة غير موجودة في البيانات.
+
+- لا تنشئ إجماليات مالية جديدة من خلال جمع قيم المشاريع.
+
+- لا تستخدم تقديرات أو أحكاماً عامة غير مدعومة بالأرقام الموجودة.
+
+- لا تصف أي قيمة مالية أو عدد متبرعين بأنه مرتفع أو منخفض أو كبير أو صغير إلا إذا كانت البيانات تحتوي على معيار واضح للمقارنة.
+
+- لا تعتبر اختلاف طبيعة المؤشرات المالية تناقضاً.
+
+- إذا وجدت تناقضاً رقمياً حقيقياً داخل البيانات، اذكره فقط داخل قسم alerts.
+
+- اجعل التحليل مناسباً للعرض داخل لوحة تحكم إدارية.
+
 - اجعل الملخص واضحاً ومختصراً من 3 إلى 5 أسطر.
+
 - اجعل التنبيهات والتوصيات والفرص على شكل نقاط عملية ومباشرة.
-- ركز على الوضع المالي، حالة المشاريع، المخاطر، وفرص تحسين الأداء.
 
-مهم لفهم البيانات:
-- عدد المشاريع المكتملة وغير المكتملة يعبر عن حالة المشاريع ككيانات مستقلة.
-- نسبة الإنجاز تعبر عن نسبة التمويل المنجز من إجمالي تكلفة تفاصيل المشاريع، وليست نسبة عدد المشاريع المكتملة.
-- إجمالي المبالغ المتبقية يعبر عن المبالغ المتبقية في التفاصيل التي بدأت عمليات دفع فعلية فقط، وليس إجمالي العجز المالي لجميع المشاريع.
-- المشاريع الأكثر تعثراً تعرض مقدار العجز والتمويل المتبقي لكل مشروع على حدة.
+- يجب أن تكون جميع الملاحظات مبنية مباشرة على البيانات المقدمة فقط.
 
-أعد النتيجة بصيغة JSON صحيحة فقط بدون أي شرح أو نص إضافي.
 
-يجب أن يكون شكل JSON كالتالي تماماً:
+
+قواعد تحليل المشاريع:
+
+- عدد المشاريع المكتملة وغير المكتملة يعبر فقط عن حالة المشاريع ككيانات مستقلة.
+
+- عدم وجود مشاريع مكتملة لا يعني فشل التمويل أو ضعف الأداء ما لم توجد بيانات تدعم ذلك.
+
+- نسبة التقدم في التمويل تعبر عن نسبة التمويل المحقق من إجمالي تكلفة تفاصيل المشاريع، ولا تمثل نسبة المشاريع المكتملة.
+
+- وجود نسبة تمويل مرتفعة أو متوسطة لا يتعارض مع عدم اكتمال المشاريع.
+
+- لا تستنتج وجود أزمة مالية أو نقص في التبرعات إلا إذا كانت البيانات تحتوي على مؤشر صريح على ذلك.
+
+- قيمة المبلغ المتبقي للتفاصيل النشطة تمثل فقط التفاصيل التي بدأت عمليات دفع فعلية، ولا تمثل إجمالي العجز المالي لجميع المشاريع.
+
+- المبالغ المتبقية داخل قائمة المشاريع الأكثر تعثراً تعبر عن احتياج كل مشروع على حدة، ولا يجوز جمعها للحصول على إجمالي احتياج المنصة.
+
+- المبلغ المتبقي للتفاصيل النشطة مؤشر مستقل عن المبالغ المتبقية للمشاريع الأكثر تعثراً.
+
+- لا تقارن بين المبلغ المتبقي للتفاصيل النشطة والمبالغ المتبقية للمشاريع الأكثر تعثراً، ولا تعتبر الفرق بينهما مشكلة أو تناقضاً.
+
+- لا تذكر الحاجة إلى توضيح هذا الاختلاف ضمن التنبيهات.
+
+- لا تعتبر المشروع غير ممول إلا إذا كانت قيمة total_paid تساوي صفر.
+
+- وجود مبلغ مدفوع للمشروع يعني أنه تلقى تمويلاً حتى لو كانت نسبة التأخر مرتفعة.
+
+- ارتفاع نسبة التأخر يعني وجود احتياج تمويلي متبقٍ في ذلك المشروع فقط، ولا يعني فشل المشروع أو توقفه.
+
+- لا تذكر أن جميع المشاريع المتعثرة تحتاج تدخلاً عاجلاً إلا إذا كان ذلك مستنداً إلى بيانات صريحة.
+
+
+
+قواعد تحليل الحملات:
+
+- يمكن الإشارة إلى الحملات ذات أعلى التبرعات كحملات ذات أداء أفضل مقارنة ببقية الحملات الموجودة في البيانات فقط.
+
+- لا تفترض أن نجاح حملة معينة يعني نجاح استراتيجية معينة ما لم توجد بيانات توضح أسباب هذا النجاح.
+
+
+
+تعليمات الإخراج:
+
+- أعد النتيجة بصيغة JSON صحيحة فقط بدون أي شرح إضافي.
+
+- لا تكتب أي نص قبل أو بعد JSON.
+
+- لا تستخدم تنسيق markdown مثل ```json.
+
+- يجب أن يكون شكل JSON بالشكل التالي تماماً:
+
+
 
 {
+
   \"summary\": \"...\",
+
   \"alerts\": [
+
     \"...\"
+
   ],
+
   \"recommendations\": [
+
     \"...\"
+
   ],
+
   \"opportunities\": [
+
     \"...\"
+
   ]
+
 }
 
-لا تكتب أي شيء قبل أو بعد JSON.
+
 
 البيانات:
 
+
+
 الإحصائيات العامة:
+
 - إجمالي التبرعات: {$data['total_donations']}
+
 - عدد المتبرعين: {$data['total_donors']}
+
 - عدد المشاريع: {$data['total_projects']}
+
 - عدد المشاريع المكتملة: {$data['completed_projects']}
+
 - عدد المشاريع غير المكتملة: {$data['uncompleted_projects']}
+
 - نسبة التقدم في التمويل: {$data['funding_progress_rate']}
-- إجمالي المبالغ المتبقية للمشاريع النشطة: {$data['active_details_remaining_amount']}
+
+- المبلغ المتبقي للتفاصيل النشطة: {$data['active_details_funding_gap']}
+
+
 
 المشاريع الأكثر تعثراً:
+
 " . json_encode(
+
         $data['most_delayed_projects'],
+
         JSON_UNESCAPED_UNICODE
+
     ) . "
 
-أفضل الحملات من حيث حجم التبرعات:
+
+
+أفضل الحملات حسب حجم التبرعات:
+
 " . json_encode(
+
         $data['top_campaigns'],
+
         JSON_UNESCAPED_UNICODE
+
     ) . "
+
 ";
+
 }
+
 }

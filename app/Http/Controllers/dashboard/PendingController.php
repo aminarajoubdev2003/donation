@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Resources\DetailResource;
 use App\Http\Resources\PendingProjectResource;
 use App\Http\Resources\PendingResource;
+use App\Http\Resources\ProjectResource;
 use App\Http\Traits\GeneralTrait;
 use App\Models\Detail;
 use App\Models\Pending;
@@ -151,6 +152,7 @@ class PendingController extends Controller
     }
 
     public function getProject(){
+        try{
         $projects = Project::with(['details.latestPending'])
         ->whereHas('details.latestPending', function($query) {
             $query->where('remaining_amount', '>', 0);
@@ -161,9 +163,13 @@ class PendingController extends Controller
         }else{
             return $this->apiResponse([]);
         }
+        }catch (\Exception $ex) {
+        return $this->apiResponse(null,false,$ex->getMessage(),400);
+        }
     }
 
     public function getDetails( $uuid ){
+        try{
         $project_id = Project::where('uuid', $uuid)->value('id');
         $details = Detail::where('project_id',$project_id)
         ->whereHas('latestPending', function($query) {
@@ -175,5 +181,38 @@ class PendingController extends Controller
         }else{
             return $this->apiResponse([]);
         }
+        }catch (\Exception $ex) {
+        return $this->apiResponse(null,false,$ex->getMessage(),400);
+        }
     }
+
+    public function getProjectFilter(){
+    try{
+        $projects = Project::all();
+
+        if( $projects ){
+        $projects = ProjectResource::collection($projects);
+        return $this->apiResponse( $projects );
+        }
+        else{
+            return $this->apiResponse([]);
+        }
+    } catch (\Exception $ex) {
+        return $this->apiResponse(null,false,$ex->getMessage(),400);
+    }
+    }
+
+    public function getDetailFilter(  ){
+    try{
+        $details = Detail::all();
+        if( $details ){
+            return $this->apiResponse( DetailResource::collection($details) );
+        }else{
+            return $this->apiResponse([]);
+        }
+    } catch (\Exception $ex) {
+        return $this->apiResponse(null, false, $ex->getMessage(), 400);
+    }
+    }
+
 }

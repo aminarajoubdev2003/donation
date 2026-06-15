@@ -4,6 +4,7 @@ namespace App\Services\Dashboard;
 
 use App\Models\Detail;
 use App\Models\Donation;
+use App\Models\Inkind_donation;
 use App\Models\Pending;
 use App\Models\Project;
 use App\Models\User;
@@ -17,8 +18,9 @@ class DashboardStatisticsService{
         $totalProjects = Project::count();
         $completedProjects = $this->calculateCompletedProjects();
         $uncompletedProjects = $this->countUncompletedProjects();
-        $active_details_remaining_amount = $this->calculateOutstandingAmounts();
+        $active_details_funding_gap = $this->calculateOutstandingAmounts();
         $funding_progress_rate = $this->calculateCompletionRate();
+        $total_inkind_donation = $this->calculateInkindDonationsCount();
 
         return [
             'total_donations' => round($totalDonations, 2),
@@ -26,8 +28,9 @@ class DashboardStatisticsService{
             'total_projects' => $totalProjects,
             'completed_projects' => $completedProjects,
             'uncompleted_projects' => $uncompletedProjects,
-            'active_details_remaining_amount' => round($active_details_remaining_amount, 2),
+            'active_details_funding_gap' => round($active_details_funding_gap, 2),
             'funding_progress_rate' => $funding_progress_rate .' '.'%',
+            'total_inkind_donation' => $total_inkind_donation,
         ];
     }
 
@@ -94,5 +97,11 @@ class DashboardStatisticsService{
         }
 
         return round(($totalPaid / $totalCost) * 100, 2);
+    }
+
+    private function calculateInkindDonationsCount(): float
+    {
+        $inkindDonations = Inkind_donation::where('status','تم استلامه')->count();
+        return $inkindDonations;
     }
 }
