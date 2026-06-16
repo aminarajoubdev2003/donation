@@ -24,12 +24,13 @@ class BlogController extends Controller
         'تنبيهات عاجلة','فعاليات','شركات و منظمات','غير ذلك'];
 
         $validate = Validator::make($request->all(), [
-            "title" =>"required|unique:blogs,title|string|min:3|max:100|regex:/^[\p{Arabic}\s]+$/u",
+            "title" => ["required","string","min:3","max:100","regex:/^[\p{Arabic}\s]+$/u",
+            Rule::unique('blogs', 'title')->whereNull('deleted_at')],
             "category" => ["required", Rule::in($category)],
             "on_the_other_hand" => "nullable|string|min:0|max:20|regex:/^[\p{Arabic}\s]+$/u",
             "images" => "required|array",
             "images.*" => "image|mimes:jpg,jpeg,png",
-            "cover_image" => "required|image|mimes:jpg,jpeg,png",
+            "cover_image" => "nullable|image|mimes:jpg,jpeg,png",
             "excerpt" =>"required|string|min:10|max:200|regex:/^[\p{Arabic}\s]+$/u",
             "content" =>"required|string|regex:/^[\p{Arabic}a-zA-Z\s0-9\p{P}\p{S}]+$/u",
         ],[
@@ -76,7 +77,7 @@ class BlogController extends Controller
 
         $validate = Validator::make($request->all(), [
             "title" =>["string","min:3","max:200","regex:/^[\p{Arabic}\s]+$/u",
-            Rule::unique('blogs', 'title')->ignore($blog->id)],
+            Rule::unique('blogs', 'title')->whereNull('deleted_at')->ignore($blog->id)],
             "category" => [ Rule::in($category)],
             "on_the_other_hand" => "nullable|string|min:0|max:20|regex:/^[\p{Arabic}\s]+$/u",
             "cover_image" => "image|mimes:jpg,jpeg,png",

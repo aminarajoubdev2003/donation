@@ -99,7 +99,7 @@ class PendingController extends Controller
         }
 
         $today = Carbon::now()->toDateString();
-        if ( $today != Carbon::parse($pending->created_at)->toDateString() ) {
+        if ( $today != Carbon::parse($pending->pending_date)->toDateString() ) {
             return $this->requiredField( 'انتهت مدة الصلاحية على التعديل');
         }
 
