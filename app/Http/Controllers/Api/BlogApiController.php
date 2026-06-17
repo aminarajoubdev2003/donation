@@ -82,13 +82,13 @@ class BlogApiController extends Controller
 
     public function getCategories(){
     try{
-        $categories = Blog::where('category', '!=', 'غير ذلك')->whereNotNull('category')
-        ->distinct()->pluck('category')->values();
+        $category = ['أخبار المشاريع','حملات جديدة','تقارير التوزيع','قصص نجاح',
+        'تنبيهات عاجلة','فعاليات','شركات و منظمات'];
 
         $onTheOtherHand = Blog::whereNotNull('on_the_other_hand')->distinct()
         ->pluck('on_the_other_hand')->values();
 
-        $allData = $categories->merge($onTheOtherHand)->unique() ->values();
+        $allData = collect($category)->merge($onTheOtherHand)->unique()->values();
 
         return $this->apiResponse($allData);
     } catch (\Exception $ex) {

@@ -28,9 +28,9 @@ class BlogController extends Controller
             Rule::unique('blogs', 'title')->whereNull('deleted_at')],
             "category" => ["required", Rule::in($category)],
             "on_the_other_hand" => "nullable|string|min:0|max:20|regex:/^[\p{Arabic}\s]+$/u",
-            "images" => "required|array",
+            "images" => "nullable|array",
             "images.*" => "image|mimes:jpg,jpeg,png",
-            "cover_image" => "nullable|image|mimes:jpg,jpeg,png",
+            "cover_image" => "required|image|mimes:jpg,jpeg,png",
             "excerpt" =>"required|string|min:10|max:200|regex:/^[\p{Arabic}\s]+$/u",
             "content" =>"required|string|regex:/^[\p{Arabic}a-zA-Z\s0-9\p{P}\p{S}]+$/u",
         ],[
@@ -182,7 +182,13 @@ class BlogController extends Controller
     try{
         $category = ['أخبار المشاريع','حملات جديدة','تقارير التوزيع','قصص نجاح',
         'تنبيهات عاجلة','فعاليات','شركات و منظمات','غير ذلك'];
-        return $this->apiResponse($category);
+
+        $onTheOtherHand = Blog::whereNotNull('on_the_other_hand')->distinct()
+        ->pluck('on_the_other_hand')->values();
+
+        $allData = collect($category)->merge($onTheOtherHand)->unique()->values();
+
+        return $this->apiResponse($allData);
     } catch (\Exception $ex) {
         return $this->apiResponse(null,false,$ex->getMessage(),400);
     }
