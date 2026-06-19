@@ -152,7 +152,7 @@ class PendingController extends Controller
     }
 
     public function getProject(){
-        /*try{
+        try{
         $projects = Project::with(['details.latestPending'])
         ->whereHas('details.latestPending', function($query) {
             $query->where('remaining_amount', '>', 0);
@@ -165,7 +165,7 @@ class PendingController extends Controller
         }
         }catch (\Exception $ex) {
         return $this->apiResponse(null,false,$ex->getMessage(),400);
-        }*/echo 'helloWorId';
+        }
     }
 
     public function getDetails( $uuid ){
