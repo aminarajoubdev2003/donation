@@ -3,6 +3,7 @@
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\BlogApiController;
 use App\Http\Controllers\Api\CampaignApiController;
+use App\Http\Controllers\Api\Inkind_donationApiController;
 use App\Http\Controllers\Api\PasswordResetController;
 use App\Http\Controllers\Api\ProfileController;
 use App\Http\Controllers\dashboard\BlogController;
@@ -134,6 +135,8 @@ Route::post('/donate/pledge/{uuid}', [DonationController::class, 'donate_for_ple
 Route::get('/show/image/{uuid}', [DonationController::class, 'show_img'])->middleware(['auth:sanctum', 'admin']);
 Route::post('/donate/complete', [DonationController::class, 'complete'])->middleware('auth:sanctum');
 Route::post('/donation/add' , [Inkind_donationController::class, 'store'])->middleware('auth:sanctum');
+Route::get('/inkinddonation/statusmaterail' , [Inkind_donationApiController::class, 'get_status_of_materail'])->middleware('auth:sanctum');
+
 
 Route::middleware(['auth:sanctum', 'admin'])->controller(Inkind_donationController::class)->group(function (){
    Route::get('/donation/all','index');
