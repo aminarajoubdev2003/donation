@@ -109,11 +109,16 @@ class Inkind_donationController extends Controller
 
     public function get_type(){
     try{
-        /*$type = Inkind_donation::whereNotNull('type')->pluck('type');
-        $onTheOtherHand = Inkind_donation::whereNotNull('on_the_other_hand')->pluck('on_the_other_hand');
-        $allData = $type->merge($onTheOtherHand)->unique() ->values();*/
+
         $type = ['أثاث' ,'أدوات منزلية', 'أجهزة طبية', 'أجهزة إلكترونية', 'ملابس', 'أدوات مدرسية', 'غير ذلك'];
-        return $this->apiResponse($type);
+
+        $onTheOtherHand = Inkind_donation::whereNotNull('on_the_other_hand')->distinct()
+        ->pluck('on_the_other_hand')->values();
+
+        $allData = collect($type)->merge($onTheOtherHand)->unique()
+        ->reject(fn($item) => $item === 'غير ذلك')->values()->push('غير ذلك');
+
+        return $this->apiResponse($allData);
     } catch (\Exception $ex) {
         return $this->apiResponse(null,false,$ex->getMessage(),400);
     }

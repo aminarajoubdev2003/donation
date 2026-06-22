@@ -58,7 +58,7 @@ class DonationController extends Controller
             'donate_directly' => 1,
             'image' => $image,
             'status'=> 'قيد التدقيق',
-            'pending' => 0
+            'pending' => 1
         ]);
         return $this->apiResponse( DonationResource::make($donation));
 

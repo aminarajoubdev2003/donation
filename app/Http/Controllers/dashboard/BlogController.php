@@ -186,7 +186,8 @@ class BlogController extends Controller
         $onTheOtherHand = Blog::whereNotNull('on_the_other_hand')->distinct()
         ->pluck('on_the_other_hand')->values();
 
-        $allData = collect($category)->merge($onTheOtherHand)->unique()->values();
+        $allData = collect($category)->merge($onTheOtherHand)->unique()
+        ->reject(fn($item) => $item === 'غير ذلك')->values()->push('غير ذلك');
 
         return $this->apiResponse($allData);
     } catch (\Exception $ex) {

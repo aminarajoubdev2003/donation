@@ -326,14 +326,15 @@ class ProjectController extends Controller
 
     public function get_sector(){
     try{
-        
+
         $sectors = ['تعليمي','صحي','إغاثي','إعمار','غير ذلك'];
 
         $onTheOtherHand = Project::whereNotNull('on_the_other_hand')->distinct()
         ->pluck('on_the_other_hand')->values();
 
-        $allData = collect($sectors)->merge($onTheOtherHand)->unique()->values();
-
+        $allData = collect($sectors)->merge($onTheOtherHand)->unique()
+        ->reject(fn($item) => $item === 'غير ذلك')->values()->push('غير ذلك');
+        
         return $this->apiResponse($allData);
     } catch (\Exception $ex) {
         return $this->apiResponse(null,false,$ex->getMessage(),400);
