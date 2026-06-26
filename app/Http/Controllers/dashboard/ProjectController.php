@@ -23,7 +23,6 @@ class ProjectController extends Controller
     {
     try {
         $district_id = District::where('uuid', $request->district_uuid)->value('id');
-        $sectors = ['تعليمي', 'صحي', 'إغاثي', 'إعمار', 'غير ذلك'];
         $funding_sources = ['رجال أعمال', 'منظمات', 'تبرعات'];
         $status = ['متوقف','قيد التنفيذ','مكتمل','مخطط له'];
 
@@ -45,7 +44,7 @@ class ProjectController extends Controller
             "district_uuid" => "required|string|exists:districts,uuid",
             "estimated_cost" => "required|numeric",
             "requirements" => "required|string|regex:/^[\p{Arabic}\s0-9\p{P}\p{S}]+$/u",
-            "sector" => ["required", Rule::in($sectors)],
+            "sector" => ["required"],
             "on_the_other_hand" => "nullable|string|min:0|max:20|regex:/^[\p{Arabic}\s]+$/u",
             "funding_source" => ["required", Rule::in($funding_sources)],
             "Implementing_party" => "required|string|min:3|max:50",
@@ -95,7 +94,6 @@ class ProjectController extends Controller
 
     public function update( Request $request , $uuid){
     try{
-        $sectors = ['تعليمي', 'صحي', 'إغاثي', 'إعمار', 'غير ذلك'];
         $funding_sources = ['رجال أعمال', 'منظمات', 'تبرعات'];
         $status = ['متوقف','قيد التنفيذ','مكتمل','مخطط له'];
 
@@ -119,7 +117,6 @@ class ProjectController extends Controller
             "estimated_cost" => "numeric",
             "progress_percentage" => "nullable|integer|min:0|max:100",
             "requirements" => "string|regex:/^[\p{Arabic}\s0-9\p{P}\p{S}]+$/u",
-            "sector" => [ Rule::in($sectors)],
             "funding_source" => [ Rule::in($funding_sources)],
             "Implementing_party" => "string|regex:/^[\p{Arabic}\s]+$/u|min:3|max:50",
             "on_the_other_hand" => "nullable|string|min:0|max:20|regex:/^[\p{Arabic}\s]+$/u",
@@ -327,19 +324,30 @@ class ProjectController extends Controller
     public function get_sector(){
     try{
 
-        $sectors = ['تعليمي','صحي','إغاثي','إعمار','غير ذلك'];
+        $sectors = ['تعليمي','صحي','إغاثي','إعمار','خدمي','غير ذلك'];
+        return $this->apiResponse($sectors);
+        
+    } catch (\Exception $ex) {
+        return $this->apiResponse(null,false,$ex->getMessage(),400);
+    }
+    }
+
+    /*public function get_sector(){
+    try{
+
+        $sectors = ['تعليمي','صحي','إغاثي','إعمار','خدمي','غير ذلك'];
 
         $onTheOtherHand = Project::whereNotNull('on_the_other_hand')->distinct()
         ->pluck('on_the_other_hand')->values();
 
         $allData = collect($sectors)->merge($onTheOtherHand)->unique()
         ->reject(fn($item) => $item === 'غير ذلك')->values()->push('غير ذلك');
-        
+
         return $this->apiResponse($allData);
     } catch (\Exception $ex) {
         return $this->apiResponse(null,false,$ex->getMessage(),400);
     }
-    }
+    }*/
     public function get_status(){
     try{
         $status = ['متوقف','قيد التنفيذ','مكتمل','مخطط له'];

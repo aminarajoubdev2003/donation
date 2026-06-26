@@ -104,7 +104,7 @@ class DonationController extends Controller
             'donate_directly' => 1,
             'image' => $image,
             'status'=> 'قيد التدقيق',
-            'pending' => 0
+            'pending' => 1
         ]);
         return $this->apiResponse( DonationResource::make($donation));
 
@@ -142,7 +142,7 @@ class DonationController extends Controller
             'contribution_amount' => $request->contribution_amount,
             'contribution_details' => $request->contribution_details,
             'pledge_to_donate' => 1,
-            'status'=> 'قيد التدقيق'
+            'status'=> 'قيد التدقيق',
         ]);
         return $this->apiResponse(DonationResource::make($donation));
 
@@ -172,6 +172,7 @@ class DonationController extends Controller
 
         $donation->update([
            'image' => $image,
+           'pending' => 1
         ]);
         return $this->apiResponse(DonationResource::make($donation));
 

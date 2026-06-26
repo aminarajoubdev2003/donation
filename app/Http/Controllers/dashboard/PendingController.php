@@ -154,10 +154,15 @@ class PendingController extends Controller
     public function getProject(){
         try{
         $projects = Project::with(['details.latestPending'])
-        ->whereHas('details.latestPending', function($query) {
-            $query->where('remaining_amount', '>', 0);
-        })
-        ->get();
+            ->whereHas('details', function($query) {
+                $query->whereHas('latestPending', function($subQuery) {
+                    $subQuery->where('remaining_amount', '>', 0);
+                });
+            })
+            ->orWhereHas('details', function($query) {
+                $query->doesntHave('pendings');
+            })
+            ->get();
         if( $projects->isNotEmpty()){
             return $this->apiResponse(PendingProjectResource::collection($projects));
         }else{

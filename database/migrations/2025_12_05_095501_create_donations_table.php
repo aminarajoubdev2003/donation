@@ -23,9 +23,10 @@ return new class extends Migration
             $table->text('contribution_details')->nullable();
             $table->boolean('pledge_to_donate')->default(0);
             $table->boolean('donate_directly')->default(0);
+            $table->decimal('usd_amount', 15, 2)->default(0);
             $table->string('image')->default('null');
             $table->enum('status', ['متوافق', 'غير متوافق', 'قيد التدقيق']);
-            //$table->boolean('pending');
+            $table->boolean('pending')->default(0);
             $table->timestamps();
         });
     }

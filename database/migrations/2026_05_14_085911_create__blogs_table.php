@@ -15,9 +15,18 @@ return new class extends Migration
             $table->id();
             $table->uuid();
             $table->string('title');
+            $table->string('cover_image');
+            $table->enum('category', [
+            'أخبار المشاريع','حملات جديدة',
+            'تقارير التوزيع','قصص نجاح',
+            'تنبيهات عاجلة','فعاليات',
+            'شركات و منظمات','غير ذلك'
+            ]);
+            $table->string('on_the_other_hand')->nullable();
             $table->string('excerpt');
             $table->text('content');
             $table->json('images');
+            $table->softDeletes();
             $table->timestamps();
         });
     }

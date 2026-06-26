@@ -14,7 +14,7 @@ class DashboardStatisticsService{
 
     public function getStatistics() {
         $totalDonations = Donation::sum('usd_amount');
-        $totalDonors = User::count();
+        $totalDonors = User::where('type','!=','أدمن')->count();
         $totalProjects = Project::count();
         $completedProjects = $this->calculateCompletedProjects();
         $uncompletedProjects = $this->countUncompletedProjects();

@@ -16,7 +16,6 @@ return new class extends Migration
             $table->uuid();
             $table->string('name')->unique();
             $table->decimal('target_amount', 15, 2);
-            $table->decimal('collected_amount', 15, 2)->default(0);
             $table->string('image');
             $table->date('start_date');
             $table->date('end_date');
@@ -25,6 +24,7 @@ return new class extends Migration
             $table->text('purposes');
             $table->enum('status', [
             'جديدة','نشطة','متوقفة','مكتملة', 'منتهية','ملغاة'])->default('جديدة');
+            $table->decimal('collected_amount', 15, 2)->default(0);
             $table->softDeletes();
             $table->timestamps();
         });

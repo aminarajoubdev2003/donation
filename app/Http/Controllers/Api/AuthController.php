@@ -22,11 +22,11 @@ class AuthController extends Controller
 
     public function register( Request $request ){
     try{
-        $validTypes = ['منظمات','رجال أعمال','فردي'];
+        $validTypes = ['منظمات','رجال أعمال','فردي','أدمن'];
 
         $validate = Validator::make($request->all(),[
             "name" => "required|string|min:3|max:30|regex:/^[\p{Arabic}\s]+$/u",
-            'password' => 'required|min:8|confirmed|regex:/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/',
+            'password' => 'required|min:8|confirmed|regex:/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d@$!%*#?&]+$/',
             'email' => 'required|email|unique:users,email',
             'phone' => 'required|digits:10|unique:users,phone|regex:/^(09)[0-9]{8}$/',
             'type' => 'required|in:' . implode(',', $validTypes),
@@ -48,7 +48,6 @@ class AuthController extends Controller
             'phone' => $request->phone,
             'type' => $request->type,
             'contact_info'=> $request->contact_info,
-            'profile' => null
         ]);
         }
         $data['user'] = $user;
@@ -63,7 +62,7 @@ class AuthController extends Controller
     public function login( Request $request ) {
     try{
         $validatedData = Validator::make($request->all(),[
-            'password' => 'required|min:8|confirmed',
+            'password' => 'required|min:8',
             'email' => 'required|email',
         ]);
 
