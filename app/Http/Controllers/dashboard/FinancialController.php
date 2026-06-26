@@ -14,9 +14,9 @@ class FinancialController extends Controller
     use GeneralTrait;
 
     public function update(Request $request , $uuid)
-    {
+    {return 'kdj';
         try{
-        $currency = ['SYP', 'EUR'];
+        $currency = ['USD', 'EUR'];
 
         $request->validate([
             "currency" => ["required", Rule::in($currency)],
@@ -40,7 +40,7 @@ class FinancialController extends Controller
         try{
         $exchanges = ExchangeRate::all();
         $exchanges = ExchangeRateResource::collection($exchanges);
-        
+
         if( $exchanges ){
             return $this->apiResponse( $exchanges );
         }else{
