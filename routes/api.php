@@ -173,7 +173,6 @@ Route::middleware(['auth:sanctum', 'admin'])->controller(BlogController::class)-
 Route::middleware(['auth:sanctum', 'admin'])->controller(PendingController::class)->group(function (){
    Route::post('/pending/store','store');
    Route::post('/pending/update/{uuid}','update');
-   Route::post('/exchange_rate/update/{uuid}','update');
    Route::get('/pendings/all','index');
    Route::get('/pendings/projects','getProject');
    Route::get('/pendings/details/{uuid}','getDetails');

@@ -178,7 +178,7 @@ class BlogController extends Controller
     }
 
 
-    public function getCategory(){
+   /* public function getCategory(){
     try{
         $category = ['أخبار المشاريع','حملات جديدة','تقارير التوزيع','قصص نجاح',
         'تنبيهات عاجلة','فعاليات','شركات و منظمات','غير ذلك'];
@@ -190,6 +190,17 @@ class BlogController extends Controller
         ->reject(fn($item) => $item === 'غير ذلك')->values()->push('غير ذلك');
 
         return $this->apiResponse($allData);
+    } catch (\Exception $ex) {
+        return $this->apiResponse(null,false,$ex->getMessage(),400);
+    }
+    }*/
+
+    public function getCategory(){
+    try{
+        $category = ['أخبار المشاريع','حملات جديدة','تقارير التوزيع','قصص نجاح',
+        'تنبيهات عاجلة','فعاليات','شركات و منظمات','غير ذلك'];
+
+        return $this->apiResponse($category);
     } catch (\Exception $ex) {
         return $this->apiResponse(null,false,$ex->getMessage(),400);
     }

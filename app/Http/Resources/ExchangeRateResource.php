@@ -18,7 +18,7 @@ class ExchangeRateResource extends JsonResource
         return[
         'uuid' => $this->uuid,
         'currency' => $this->currency,
-        'rate' => $this->rate .' '.'SYR',
+        'rate' => $this->rate .' '.'USD',
         ];
     }
 }

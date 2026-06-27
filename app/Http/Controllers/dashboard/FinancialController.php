@@ -14,19 +14,15 @@ class FinancialController extends Controller
     use GeneralTrait;
 
     public function update(Request $request , $uuid)
-    {return 'kdj';
+    {
         try{
-        $currency = ['USD', 'EUR'];
 
         $request->validate([
-            "currency" => ["required", Rule::in($currency)],
             "rate" => "required|numeric",
         ]);
 
-        $exchange = ExchangeRate::where('uuid', $uuid)->firstOrFail();
-
+        $exchange = ExchangeRate::where('uuid',$uuid)->firstOrfail();
         $exchange->update([
-            'currency' => $request->currency,
             'rate' => $request->rate
         ]);
 
