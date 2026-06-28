@@ -136,6 +136,8 @@ Route::get('/show/image/{uuid}', [DonationController::class, 'show_img'])->middl
 Route::post('/donate/complete', [DonationController::class, 'complete'])->middleware('auth:sanctum');
 Route::post('/donation/add' , [Inkind_donationController::class, 'store'])->middleware('auth:sanctum');
 Route::get('/inkinddonation/statusmaterail' , [Inkind_donationApiController::class, 'get_status_of_materail'])->middleware('auth:sanctum');
+Route::get('/inkinddonation/type' , [Inkind_donationApiController::class, 'get_type'])->middleware('auth:sanctum');
+
 
 
 Route::middleware(['auth:sanctum', 'admin'])->controller(Inkind_donationController::class)->group(function (){
