@@ -32,7 +32,8 @@ class Inkind_donationResource extends JsonResource
             ->map(fn ($image, $index) => new ImageResource([
             'index' => $index,
             'path' => $image
-            ]))
+            ])),
+            'notes' => $this->notes
         ];
     }
 }

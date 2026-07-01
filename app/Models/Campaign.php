@@ -77,6 +77,10 @@ class Campaign extends Model
         return round(($progreeProjects /$count),2);
     }
 
+    public function getDonationsCountAttribute(){
+        return $this->donations()->count();
+    }
+
     public function refreshStatus()
     {
     $now = now();

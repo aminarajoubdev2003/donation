@@ -22,3 +22,11 @@
 Homestead.json
 Homestead.yaml
 Thumbs.db
+
+storage/app/public/campaigns/images/
+storage/app/public/Blogs/images/
+storage/app/public/donations/images/
+storage/app/public/inkinds/images/
+storage/app/public/projects/images/
+storage/app/public/users/profiles/
+storage/app/private/dashboard_ai_insights.json

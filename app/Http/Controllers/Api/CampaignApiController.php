@@ -5,10 +5,13 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\ApiCampaignResource;
 use App\Http\Resources\CampaignResource;
+use App\Http\Resources\ProjectResource;
 use App\Http\Traits\GeneralTrait;
 use App\Http\Traits\UploadTrait;
 use App\Models\Campaign;
+use App\Models\Project;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
 
 class CampaignApiController extends Controller
@@ -69,6 +72,29 @@ class CampaignApiController extends Controller
     }
     }
 
+    public function searchByname( Request $request){
+    try{
+        $validate = Validator::make($request->all(), [
+        "name" => "string|regex:/^[\p{Arabic}\s]+$/u" ]);
+
+        if ($validate->fails()) {
+        return $this->requiredField($validate->errors()->first());
+        }
+
+        $campaigns = Campaign::where('name', 'LIKE', '%' . $request->name . '%')->get();
+
+        if( $campaigns->isNotEmpty() ){
+        $campaign = CampaignResource::collection($campaigns);
+        return $this->apiResponse($campaign);
+        }
+        else{
+            return $this->apiResponse([]);
+        }
+    } catch (\Exception $ex) {
+        return $this->apiResponse(null, false, $ex->getMessage(), 400);
+    }
+    }
+
     public function get_status(){
     try{
         $status = ['جديدة','نشطة','متوقفة','مكتملة','منتهية'];
@@ -82,10 +108,27 @@ class CampaignApiController extends Controller
     try{
         $campaign = Campaign::with('projects')->where('uuid', $uuid)->firstOrFail();
         $campaign->refreshStatus();
-        return $this->apiResponse( CampaignResource::make($campaign) );
+        return $this->apiResponse( ApiCampaignResource::make($campaign) );
     } catch (\Exception $ex) {
         return $this->apiResponse(null, false, $ex->getMessage(), 400);
     }
     }
+
+    public function getProjects(){
+    try{
+        $projects = Project::all();
+
+        if( $projects ){
+        $projects = ProjectResource::collection($projects);
+        return $this->apiResponse( $projects );
+        }
+        else{
+            return $this->apiResponse([]);
+        }
+    } catch (\Exception $ex) {
+        return $this->apiResponse(null,false,$ex->getMessage(),400);
+    }
+    }
+
 
 }

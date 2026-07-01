@@ -3,6 +3,7 @@
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\BlogApiController;
 use App\Http\Controllers\Api\CampaignApiController;
+use App\Http\Controllers\Api\HomeController;
 use App\Http\Controllers\Api\Inkind_donationApiController;
 use App\Http\Controllers\Api\PasswordResetController;
 use App\Http\Controllers\Api\ProfileController;
@@ -73,6 +74,7 @@ Route::middleware(['auth:sanctum', 'admin'])->controller(ProjectController::clas
    Route::get('/project/show/{uuid}','show');
    Route::get('/project/fundingsource','get_funding_source');
    Route::get('/project/deleted','deleted');
+   Route::get('/project/sectorfilter','get_sector_filter');
 });
 
 
@@ -137,6 +139,7 @@ Route::post('/donate/complete', [DonationController::class, 'complete'])->middle
 Route::post('/donation/add' , [Inkind_donationController::class, 'store'])->middleware('auth:sanctum');
 Route::get('/inkinddonation/statusmaterail' , [Inkind_donationApiController::class, 'get_status_of_materail'])->middleware('auth:sanctum');
 Route::get('/inkinddonation/type' , [Inkind_donationApiController::class, 'get_type'])->middleware('auth:sanctum');
+Route::get('/inkinddonation/governorates' , [Inkind_donationApiController::class, 'getGovernorates'])->middleware('auth:sanctum');
 
 
 
@@ -192,6 +195,8 @@ Route::middleware('auth:sanctum')->controller( CampaignApiController::class)->gr
    Route::post('/campaignApi/filter','filter');
    Route::get('/campaignApi/status','get_status');
    Route::get('/campaignApi/show/{uuid}','show');
+   Route::post('/campaignApi/search','searchByname');
+   Route::get('/campaignApi/projects','getProjects');
 });
 
 Route::middleware('auth:sanctum')->controller( BlogApiController::class)->group(function (){
@@ -212,3 +217,7 @@ Route::middleware('auth:sanctum')->controller( ProfileController::class)->group(
 
 Route::post('/send-otp',[PasswordResetController::class, 'sendOtp']);
 Route::post('/reset-password',[PasswordResetController::class, 'resetPassword']);
+
+Route::controller( HomeController::class)->group(function (){
+   Route::get('/projects','getProjects');
+});

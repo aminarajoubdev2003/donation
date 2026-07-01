@@ -58,12 +58,13 @@ class ProfileController extends Controller
 
     public function getStatistics( ){
     try{
-        $total = Donation::where('user_id',Auth::user()->id)->sum('usd_amount');
+        $inkindDonations = Inkind_donation::where('user_id',Auth::user()->id)->
+        where('status','تم استلامه')->count();
         $count = Donation::where('user_id',Auth::user()->id)->distinct('campaign_id')
         ->count('campaign_id');
 
         return $this->apiResponse([
-            'total' => $total.' '.'%',
+            'inkind_donations_count' => $inkindDonations,
             'campaigns_count' => $count
         ]);
 

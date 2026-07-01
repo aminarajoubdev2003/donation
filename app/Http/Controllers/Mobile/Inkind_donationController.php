@@ -39,8 +39,9 @@ class Inkind_donationController extends Controller
             "type" => ["required", Rule::in($type)],
             "on_the_other_hand" => "nullable|string|min:0|max:20|regex:/^[\p{Arabic}\s]+$/u",
             "images" => "required|array",
-            "images.*" => "image|mimes:jpg,jpeg,png",
+            "images.*" => "image|mimes:jpg,jpeg,png,jfif,webp,gif,bmp,avif",
             "status_of_materail" => ["required", Rule::in($status_of_materail)],
+            "notes" => "nullable|string|regex:/^[\p{Arabic}\s0-9\p{P}\p{S}]+$/u",
         ]);
 
         if ($validate->fails()) {
@@ -65,7 +66,8 @@ class Inkind_donationController extends Controller
             'on_the_other_hand' => $request->on_the_other_hand,
             'status_of_materail' => $request->status_of_materail,
             'status' => 'لم يتم استلامه بعد',
-            'images' => $images
+            'images' => $images,
+            'notes' => $request->notes
         ]);
 
         return $this->apiResponse(Inkind_donationResource::make($donation));

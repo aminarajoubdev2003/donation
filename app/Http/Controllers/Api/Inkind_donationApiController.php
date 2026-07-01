@@ -3,8 +3,10 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\GovernorateResource;
 use App\Http\Traits\GeneralTrait;
 use App\Http\Traits\UploadTrait;
+use App\Models\Governorate;
 use App\Models\Inkind_donation;
 use Illuminate\Http\Request;
 
@@ -28,7 +30,7 @@ class Inkind_donationApiController extends Controller
         return $this->apiResponse(null,false,$ex->getMessage(),400);
     }
     }
-    
+
 
     public function get_status_of_materail(){
     try{
@@ -38,4 +40,21 @@ class Inkind_donationApiController extends Controller
         return $this->apiResponse(null,false,$ex->getMessage(),400);
     }
     }
+
+    public function getGovernorates(){
+    try{
+        $governorates = Governorate::all();
+        $governorates = GovernorateResource::collection($governorates);
+        if( $governorates ){
+            return $this->apiResponse( $governorates );
+        }else{
+            return $this->apiResponse([]);
+        }
+    } catch (\Exception $ex) {
+        return $this->apiResponse(null, false, $ex->getMessage(), 500);
+    }
+    }
+
+
+
 }

@@ -19,7 +19,8 @@ class Inkind_donation extends Model
         'images',
         'status_of_materail',
         'delivery_method',
-        'status'
+        'status',
+        'notes'
     ];
 
     protected $casts = [

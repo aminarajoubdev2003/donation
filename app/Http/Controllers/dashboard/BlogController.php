@@ -48,7 +48,7 @@ class BlogController extends Controller
 
         if ($request->hasFile('images')) {
             $images = $this->upload_files($request->file('images'),'Blogs/images');
-        }
+        
 
         $blog = Blog::create([
             'uuid' => Str::uuid(),
@@ -62,6 +62,20 @@ class BlogController extends Controller
         ]);
 
         return $this->apiResponse(BlogResource::make($blog));
+        }
+        else{
+            $blog = Blog::create([
+            'uuid' => Str::uuid(),
+            'title' => $request->title,
+            'category' => $request->category,
+            'on_the_other_hand' => $request->on_the_other_hand,
+            'excerpt' => $request->excerpt,
+            'content' => $request->content,
+            'cover_image' => $cover_image,
+        ]);
+
+        return $this->apiResponse(BlogResource::make($blog));
+        }
 
     } catch (\Exception $ex) {
         return $this->apiResponse(null, false, $ex->getMessage(), 500);
