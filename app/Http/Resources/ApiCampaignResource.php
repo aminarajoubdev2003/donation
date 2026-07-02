@@ -19,7 +19,8 @@ class ApiCampaignResource extends JsonResource
         return[
             'campaing' => CampaignResource::make(Campaign::findOrFail($this->id)),
             'projects_count' => $this->projects_count,
-            'progresspercentage' => $this->progress_percentage.' '.'%'
+            'progresspercentage' => $this->progress_percentage.' '.'%',
+            'donations_count' => $this->donations_count
         ];
     }
 }

@@ -36,7 +36,13 @@ class PendingController extends Controller
             }
         }
         ],
-        "paid_amount" => "required|numeric",
+        "paid_amount" => ["required","numeric",
+        function ($attribute, $value, $fail) use ($request) {
+            $cost = Detail::where('uuid',$request->detail_uuid)->value('cost');
+            if ( $request->paid_amount > $cost ) {
+                $fail('يجب ألا يكون المبلغ المدفوع أكبر من كلفة التفصيل.');
+            }
+        }],
         ]);
 
         if ($validate->fails()) {
@@ -85,7 +91,13 @@ class PendingController extends Controller
     try {
 
         $validate = Validator::make($request->all(), [
-        "paid_amount" => "numeric",
+        "paid_amount" => ["required","numeric",
+        function ($attribute, $value, $fail) use ($request) {
+            $cost = Detail::where('uuid',$request->detail_uuid)->value('cost');
+            if ( $request->paid_amount > $cost ) {
+                $fail('يجب ألا يكون المبلغ المدفوع أكبر من كلفة التفصيل.');
+            }
+        }],
         ]);
 
         if ($validate->fails()) {
