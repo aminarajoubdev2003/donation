@@ -213,6 +213,7 @@ Route::middleware('auth:sanctum')->controller( ProfileController::class)->group(
    Route::get('/user/inkinds','getInkindDonations');
    Route::get('/user/statistics','getStatistics');
    Route::post('/user/changeProfile','changeProfile');
+   Route::post('/user/updatepass','updatePass');
 });
 
 Route::post('/send-otp',[PasswordResetController::class, 'sendOtp']);

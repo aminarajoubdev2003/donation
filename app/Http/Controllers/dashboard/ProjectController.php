@@ -122,10 +122,10 @@ class ProjectController extends Controller
             "on_the_other_hand" => "nullable|string|min:0|max:20|regex:/^[\p{Arabic}\s]+$/u",
             "status" => [ Rule::in($status)],
             "cover_image" => "nullable|image|mimes:jpg,jpeg,png",
-            "images" => "nullable|array",
-            "images.*" => "image|mimes:jpg,jpeg,png",
-            "videos" => "nullable|array",
-            "videos.*" => "nullable|url",
+           // "images" => "nullable|array",
+           // "images.*" => "image|mimes:jpg,jpeg,png",
+            //"videos" => "nullable|array",
+           // "videos.*" => "nullable|url",
         ],[
             'name.unique' => 'هذا المشروع موجود مسبقًا ضمن نفس المنطقة.',
         ]);

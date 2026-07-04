@@ -13,7 +13,9 @@ use App\Models\Inkind_donation;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\Rule;
 
 class ProfileController extends Controller
 {
@@ -93,6 +95,47 @@ class ProfileController extends Controller
         $user->update([
            'profile' => $profile,
         ]);
+        return $this->apiResponse(UserResource::make($user));
+
+        }catch (\Exception $ex) {
+        return $this->apiResponse(null, false, $ex->getMessage(), 500);
+        }
+    }
+
+    public function updatePass( Request $request)
+    {
+
+        try{
+        $validate = Validator::make($request->all(),[
+            'oldpassword' => ['required','min:8'],
+            'newpassword' => 'required|min:8|confirmed|regex:/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d@$!%*#?&]+$/',
+        ],[
+            'oldpassword.required' => 'كلمة المرور الحالية مطلوبة',
+            'oldpassword.min' => 'كلمة المرور الحالية يجب أن تكون 8 أحرف على الأقل',
+            'newpassword.required' => 'كلمة المرور الجديدة مطلوبة',
+            'newpassword.min' => 'كلمة المرور الجديدة يجب أن تكون 8 أحرف على الأقل',
+            'newpassword.confirmed' => 'تأكيد كلمة المرور الجديدة غير متطابق',
+            'newpassword.regex' => 'كلمة المرور الجديدة يجب أن تحتوي على حرف ورقم على الأقل',
+        ]);
+
+        if ($validate->fails()) {
+            return $this->requiredField($validate->errors()->first());
+        }
+
+        $user = Auth::user();
+
+        if (!Hash::check($request->oldpassword, $user->password)) {
+            return $this->requiredField('كلمة المرور الحالية غير صحيحة');
+        }
+
+        if (Hash::check($request->newpassword, $user->password)) {
+            return $this->requiredField('لا يمكنك استخدام كلمة المرور القديمة نفسها');
+        }
+
+        $user->update([
+           'password' => Hash::make($request->newpassword)
+        ]);
+
         return $this->apiResponse(UserResource::make($user));
 
         }catch (\Exception $ex) {

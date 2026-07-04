@@ -32,8 +32,20 @@ class AuthController extends Controller
             'type' => 'required|in:' . implode(',', $validTypes),
             'contact_info' => 'nullable|string'
         ],[
-            'email.unique' => 'هذا الايميل موجود مسبقا',
-            'password.regex' => 'Password must contain at least one letter and one number.',
+            'name.required' => 'الاسم مطلوب',
+            'name.regex' => 'الاسم يجب أن يحتوي على أحرف عربية فقط',
+            'password.required' => 'كلمة المرور مطلوبة',
+            'password.min' => 'كلمة المرور يجب أن تكون 8 أحرف على الأقل',
+            'password.confirmed' => 'تأكيد كلمة المرور غير متطابق',
+            'password.regex' => 'كلمة المرور يجب أن تحتوي على حرف ورقم على الأقل',
+            'email.required' => 'البريد الإلكتروني مطلوب',
+            'email.email' => 'صيغة البريد الإلكتروني غير صحيحة',
+            'email.unique' => 'البريد الإلكتروني مستخدم مسبقاً',
+            'phone.required' => 'رقم الهاتف مطلوب',
+            'phone.digits' => 'رقم الهاتف يجب أن يتكون من 10 أرقام',
+            'phone.unique' => 'رقم الهاتف مستخدم مسبقاً',
+            'phone.regex' => 'رقم الهاتف يجب أن يبدأ بـ 09 ويتكون من 10 أرقام',
+            'type.required' => 'نوع المستخدم مطلوب',
         ]);
 
         if ($validate->fails()) {

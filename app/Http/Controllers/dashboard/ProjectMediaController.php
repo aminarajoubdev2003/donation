@@ -23,7 +23,7 @@ class ProjectMediaController extends Controller
     try {
         $validate = Validator::make($request->all(), [
             "images" => "nullable|array",
-            "images.*" => "image|mimes:jpg,jpeg,png,jfif",
+            "images.*" => "image|mimes:jpg,jpeg,png,jfif,webp",
             "videos" => "nullable|array",
             "videos.*" => "nullable|url",
         ]);
