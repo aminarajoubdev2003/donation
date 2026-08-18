@@ -129,7 +129,7 @@ class PendingController extends Controller
 
     public function index(){
     try{
-       $pendings = Pending::latest()->get();
+       $pendings = Pending::Oldest()->get();
        if( $pendings->isNotEmpty()){
             return $this->apiResponse( PendingResource::collection( $pendings ));
         }else{

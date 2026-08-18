@@ -50,7 +50,7 @@ class ProjectController extends Controller
             "Implementing_party" => "required|string|min:3|max:50",
             "status" => ["required", Rule::in($status)],
             "progress_percentage" => "nullable|integer|min:0|max:100",
-            "cover_image" => "required|image|mimes:jpg,jpeg,png",
+            "cover_image" => "required|image|mimes:jpg,jpeg,png,jfif,webp",
         ],[
             'name.unique' => 'هذا المشروع موجود مسبقًا ضمن نفس المنطقة.',
         ]);
@@ -121,7 +121,7 @@ class ProjectController extends Controller
             "Implementing_party" => "string|regex:/^[\p{Arabic}\s]+$/u|min:3|max:50",
             "on_the_other_hand" => "nullable|string|min:0|max:20|regex:/^[\p{Arabic}\s]+$/u",
             "status" => [ Rule::in($status)],
-            "cover_image" => "nullable|image|mimes:jpg,jpeg,png",
+            "cover_image" => "nullable|image|mimes:jpg,jpeg,png,jfif,webp",
            // "images" => "nullable|array",
            // "images.*" => "image|mimes:jpg,jpeg,png",
             //"videos" => "nullable|array",

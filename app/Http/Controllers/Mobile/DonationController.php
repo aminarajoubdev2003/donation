@@ -36,7 +36,7 @@ class DonationController extends Controller
             "contribution_amount" => "required|numeric",
             "contribution_details" => "nullable|string|regex:/^[^\p{Latin}]+$/u",
             "currency_type" => [ Rule::in($currency_type)],
-            "image" => "required|image|mimes:jpg,jpeg,png",
+           "file" => "required|file|mimes:pdf|max:100",
         ]);
 
         if ($validate->fails()) {

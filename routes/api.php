@@ -190,7 +190,7 @@ Route::middleware(['auth:sanctum', 'admin'])->controller(DashboardController::cl
    Route::get('/dashboard','__invoke');
    //Route::post('/exchange_rate/update/{uuid}','update');
 });
-Route::middleware('auth:sanctum')->controller( CampaignApiController::class)->group(function (){
+Route::controller( CampaignApiController::class)->group(function (){
    Route::get('/campaignApi/all','index');
    Route::post('/campaignApi/filter','filter');
    Route::get('/campaignApi/status','get_status');

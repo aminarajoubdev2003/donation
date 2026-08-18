@@ -22,7 +22,7 @@ class Donation extends Model
         'pledge_to_donate',
         'donate_directly',
         'status',
-        'image',
+        'file',
         'pending'
     ];
 
