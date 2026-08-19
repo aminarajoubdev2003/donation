@@ -25,7 +25,7 @@ class AuthController extends Controller
         $validTypes = ['منظمات','رجال أعمال','فردي','أدمن'];
 
         $validate = Validator::make($request->all(),[
-            "name" => "required|string|min:3|max:30|regex:/^[\p{Arabic}\s]+$/u",
+            "name" => "required|string|min:3|max:100|regex:/^[\p{Arabic}\s]+$/u",
             'password' => 'required|min:8|confirmed|regex:/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d@$!%*#?&]+$/',
             'email' => 'required|email|unique:users,email',
             'phone' => 'required|digits:10|unique:users,phone|regex:/^(09)[0-9]{8}$/',

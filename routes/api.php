@@ -199,7 +199,7 @@ Route::controller( CampaignApiController::class)->group(function (){
    Route::get('/campaignApi/projects','getProjects');
 });
 
-Route::middleware('auth:sanctum')->controller( BlogApiController::class)->group(function (){
+Route::controller( BlogApiController::class)->group(function (){
    Route::get('/blogsApi/all','index');
    Route::get('/blogApi/show/{uuid}','show');
    Route::post('/blogsApi/filter','filter');
