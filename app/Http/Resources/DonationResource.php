@@ -6,6 +6,7 @@ use App\Models\Campaign;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
+use Illuminate\Support\Facades\Storage;
 
 class DonationResource extends JsonResource
 {
@@ -24,7 +25,7 @@ class DonationResource extends JsonResource
             'contribution_amount' => $this->contribution_amount,
             'currency_type' => $this->currency_type,
             'contribution_details' => $this->contribution_details,
-            'file' => $this->file,
+            'file' => '/storage/' . str_replace('donations/', '', $this->file),
             'status' => $this->status,
             'pending' => $this->pending,
             'usd_amount' => $this->usd_amount.' '.$this->currency_type

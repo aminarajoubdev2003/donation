@@ -260,7 +260,7 @@ class DonationController extends Controller
         return response()->json([
         'status' => true,
         'data' => [
-            'file' => $donation->file,
+            'file' => '/storage/' . str_replace('donations/', '', $donation->file),
             'contribution_amount' => $donation->contribution_amount,
             'currency_type' => $donation->currency_type,
             'paiding_date' => Carbon::parse($donation->created_at)->format('d M Y')
