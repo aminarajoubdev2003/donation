@@ -14,6 +14,7 @@ use App\Services\CurrencyConverterService;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
@@ -260,7 +261,7 @@ class DonationController extends Controller
         return response()->json([
         'status' => true,
         'data' => [
-            'file' => '/storage/' . str_replace('donations/', '', $donation->file),
+            'file' => Storage::url($donation->file),
             'contribution_amount' => $donation->contribution_amount,
             'currency_type' => $donation->currency_type,
             'paiding_date' => Carbon::parse($donation->created_at)->format('d M Y')

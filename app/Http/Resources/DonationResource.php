@@ -25,7 +25,7 @@ class DonationResource extends JsonResource
             'contribution_amount' => $this->contribution_amount,
             'currency_type' => $this->currency_type,
             'contribution_details' => $this->contribution_details,
-            'file' => '/storage/' . str_replace('donations/', '', $this->file),
+            'file' => Storage::url($this->file),
             'status' => $this->status,
             'pending' => $this->pending,
             'usd_amount' => $this->usd_amount.' '.$this->currency_type
