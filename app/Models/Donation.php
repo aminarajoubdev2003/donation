@@ -23,7 +23,10 @@ class Donation extends Model
         'donate_directly',
         'status',
         'file',
-        'pending'
+        'pending',
+        'reason',
+        'remaining_amount',
+        'on_the_other_hand'
     ];
 
     public function campaign(): BelongsTo

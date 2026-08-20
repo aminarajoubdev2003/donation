@@ -124,6 +124,7 @@ Route::middleware(['auth:sanctum', 'admin'])->controller(DonaterController::clas
    Route::post('/donaters/search','searchByname');
    Route::post('/donaters/filter','filter');
    Route::get('/donater/show/{uuid}','show');
+   Route::get('/reasons/show','get_reasons');
 });
 
 Route::post('/save-fcm-token', [FcmTokenController::class, 'saveFcmToken'])->middleware('auth:sanctum');

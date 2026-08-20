@@ -24,13 +24,10 @@ class DonationResource extends JsonResource
             'contribution_amount' => $this->contribution_amount,
             'currency_type' => $this->currency_type,
             'contribution_details' => $this->contribution_details,
-            'image' => new ImageResource([
-            'index' => 0,
-            'path' => $this->image
-            ]),
+            'file' => $this->file,
             'status' => $this->status,
             'pending' => $this->pending,
-            'usd_amount' => $this->usd_amount.' '.'$'
+            'usd_amount' => $this->usd_amount.' '.$this->currency_type
         ];
     }
 }

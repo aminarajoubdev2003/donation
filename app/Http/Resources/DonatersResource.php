@@ -28,6 +28,8 @@ class DonatersResource extends JsonResource
         'method' => ($this->donate_directly==1) ? 'تبرع' : 'تعهد ',
         'status' => $this->status,
         'pending' => ($this->pending==1) ? 'مدفوع' : 'غير مدفوع',
+        'remaining_amount' => $this->remaining_amount .' '.$this->currency_type,
+        'reason' => $this->reason
        ];
     }
 }

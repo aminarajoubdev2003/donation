@@ -217,4 +217,13 @@ class DonaterController extends Controller
         return $this->apiResponse(null,false,$ex->getMessage(),400);
     }
     }
+
+    public function get_reasons(){
+    try{
+        $reasons = ['عدم التطابق بين تاريخ الدفع وتاريخ الملف ', 'عدم التطابق بين المبلغ المدفوع والمبلغ الموجود داخل الملف'];
+        return $this->apiResponse($reasons);
+    } catch (\Exception $ex) {
+        return $this->apiResponse(null,false,$ex->getMessage(),400);
+    }
+    }
 }

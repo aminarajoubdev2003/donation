@@ -10,12 +10,13 @@ use App\Http\traits\GeneralTrait;
 use App\Http\traits\UploadTrait;
 use App\Models\Campaign;
 use App\Models\Donation;
+use App\Services\CurrencyConverterService;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
-use App\Services\CurrencyConverterService;
 
 class DonationController extends Controller
 {
@@ -44,7 +45,7 @@ class DonationController extends Controller
         }
 
         $campaign = Campaign::where('uuid', $request->campaign_uuid)->firstOrFail();
-        $image = $this->upload_file($request->file('image'),'donations/images');
+        $file = $this->upload_file($request->file('file'),'donations/files');
 
         if (!in_array($campaign->status, $invalidStatuses))
         {
@@ -56,7 +57,7 @@ class DonationController extends Controller
             'contribution_details' => $request->contribution_details,
             'currency_type' => $request->currency_type,
             'donate_directly' => 1,
-            'image' => $image,
+            'file' => $file,
             'status'=> 'قيد التدقيق',
             'pending' => 1
         ]);
@@ -202,20 +203,48 @@ class DonationController extends Controller
     {
         try{
         $status = ['متوافق', 'غير متوافق'];
+        $reasons = ['عدم التطابق بين تاريخ الدفع وتاريخ الملف',
+        'عدم التطابق بين المبلغ المدفوع والمبلغ الموجود داخل الملف'];
 
-        $request->validate([
-            "status" => ["required", Rule::in($status)]
+        $validate = Validator::make($request->all(),[
+            "status" => ["required", Rule::in($status)],
+            "reason" => ["nullable", Rule::in($reasons)],
+            "on_the_other_hand" => "nullable|string|min:0|max:20|regex:/^[\p{Arabic}\s]+$/u",
+            "remaining_amount" => "nullable|numeric"
         ]);
+        if ($validate->fails()) {
+            return $this->requiredField($request->validate->errors()->first());
+        }
 
         $donation = Donation::where('uuid', $donation_uuid)->first();
         $donation->usd_amount = $this->currencyService->
         convertToUsd($donation->contribution_amount,$donation->currency_type);
 
+        if( $request->status == 'متوافق'){
+            $donation->update([
+            'status' => $request->status,
+            'pending' => 1,
+            'remaining_amount' => 0
+            ]);
+        }
+        elseif( $request->status == 'غير متوافق' && $request->reason == 'عدم التطابق بين تاريخ الدفع وتاريخ الملف'){
         $donation->update([
             'status' => $request->status,
             'pending' => 1,
+            'reason' => $request->reason,
+            'on_the_other_hand' => $request->on_the_other_hand,
+            'remaining_amount' => 0
         ]);
-
+        }
+        else{
+            $donation->update([
+            'status' => $request->status,
+            'pending' => 1,
+            'reason' => $request->reason,
+            'on_the_other_hand' => $request->on_the_other_hand,
+            'remaining_amount' => $request->remaining_amount
+            ]);
+        }
         return $this->apiResponse( DonatersResource::make($donation));
         }catch (\Exception $ex) {
         return $this->apiResponse(null, false, $ex->getMessage(), 500);
@@ -231,9 +260,10 @@ class DonationController extends Controller
         return response()->json([
         'status' => true,
         'data' => [
-            'image' => new ImageResource(['index' => 0,'path' => $donation->image]),
+            'file' => $donation->file,
             'contribution_amount' => $donation->contribution_amount,
-            'currency_type' => $donation->currency_type
+            'currency_type' => $donation->currency_type,
+            'paiding_date' => Carbon::parse($donation->created_at)->format('d M Y')
         ]], 200);
         }catch (\Exception $ex) {
         return $this->apiResponse(null, false, $ex->getMessage(), 500);
