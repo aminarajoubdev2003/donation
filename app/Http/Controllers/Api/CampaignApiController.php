@@ -5,10 +5,16 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\ApiCampaignResource;
 use App\Http\Resources\CampaignResource;
+use App\Http\Resources\CityResource;
+use App\Http\Resources\DistrictResource;
+use App\Http\Resources\GovernorateResource;
 use App\Http\Resources\ProjectResource;
 use App\Http\Traits\GeneralTrait;
 use App\Http\Traits\UploadTrait;
 use App\Models\Campaign;
+use App\Models\City;
+use App\Models\District;
+use App\Models\Governorate;
 use App\Models\Project;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
@@ -128,6 +134,40 @@ class CampaignApiController extends Controller
     } catch (\Exception $ex) {
         return $this->apiResponse(null,false,$ex->getMessage(),400);
     }
+    }
+
+    public function getGovernorates(){
+    try{
+        $governorates = Governorate::all();
+        $governorates = GovernorateResource::collection($governorates);
+        if( $governorates ){
+            return $this->apiResponse( $governorates );
+        }else{
+            return $this->apiResponse([]);
+        }
+    } catch (\Exception $ex) {
+        return $this->apiResponse(null, false, $ex->getMessage(), 500);
+    }
+    }
+
+    public function getCities(){
+        $cities = City::all();
+        $cities = CityResource::collection($cities);
+        if( $cities ){
+            return $this->apiResponse( $cities );
+        }else{
+            return $this->apiResponse([]);
+        }
+    }
+
+    public function getDistricts(){
+        $districts = District::all();
+        $districts = DistrictResource::collection($districts);
+        if( $districts ){
+            return $this->apiResponse( $districts );
+        }else{
+            return $this->apiResponse([]);
+        }
     }
 
 

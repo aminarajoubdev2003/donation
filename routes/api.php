@@ -142,7 +142,7 @@ Route::get('/getamount/{uuid}', [DonationController::class, 'getAmount'])->middl
 Route::post('/donation/add' , [Inkind_donationController::class, 'store'])->middleware('auth:sanctum');
 Route::get('/inkinddonation/statusmaterail' , [Inkind_donationApiController::class, 'get_status_of_materail'])->middleware('auth:sanctum');
 Route::get('/inkinddonation/type' , [Inkind_donationApiController::class, 'get_type'])->middleware('auth:sanctum');
-Route::get('/inkinddonation/governorates' , [Inkind_donationApiController::class, 'getGovernorates']);
+Route::get('/inkinddonation/governorates' , [Inkind_donationApiController::class, 'getGovernorates'])->middleware('auth:sanctum');
 
 
 
@@ -200,6 +200,9 @@ Route::controller( CampaignApiController::class)->group(function (){
    Route::get('/campaignApi/show/{uuid}','show');
    Route::post('/campaignApi/search','searchByname');
    Route::get('/campaignApi/projects','getProjects');
+   Route::get('/campaignApi/governorates','getGovernorates');
+   Route::get('/campaignApi/cities','getCities');
+   Route::get('/campaignApi/districts','getDistricts');
 });
 
 Route::controller( BlogApiController::class)->group(function (){
