@@ -7,6 +7,7 @@ use App\Http\Controllers\Api\HomeController;
 use App\Http\Controllers\Api\Inkind_donationApiController;
 use App\Http\Controllers\Api\PasswordResetController;
 use App\Http\Controllers\Api\ProfileController;
+use App\Http\Controllers\Api\ProjectApiController;
 use App\Http\Controllers\dashboard\BlogController;
 use App\Http\Controllers\dashboard\CampaignController;
 use App\Http\Controllers\dashboard\CampaignProjectController;
@@ -211,6 +212,11 @@ Route::controller( BlogApiController::class)->group(function (){
    Route::post('/blogsApi/filter','filter');
    Route::get('/blogsApi/categories','getCategories');
    Route::get('/blogsApi/getLatest','getLatest');
+});
+
+Route::controller( ProjectApiController::class)->group(function (){
+   Route::get('/project/detail/{uuid}','getProjectDetail');
+   
 });
 
 Route::middleware('auth:sanctum')->controller( ProfileController::class)->group(function (){

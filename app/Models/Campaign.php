@@ -84,15 +84,12 @@ class Campaign extends Model
     public function refreshStatus()
     {
     $now = now();
-
     if ($this->status === 'ملغاة') {
         return;
     }
-
     if ($this->status === 'متوقفة') {
         return;
     }
-
     if (
         $this->target_amount &&
         $this->collected_amount >= $this->target_amount
@@ -100,18 +97,14 @@ class Campaign extends Model
         $this->update(['status' => 'مكتملة']);
         return;
     }
-
     $start = $this->start_date->copy()->setTimeFrom($this->start_time);
     $end   = $this->end_date->copy()->setTimeFrom($this->end_time);
-
     if ($now->greaterThan($end)) {
         $this->update(['status' => 'منتهية']);
     }
-
     elseif ($now->between($start,$end)) {
         $this->update(['status' => 'نشطة']);
     }
-
     }
 
 }
