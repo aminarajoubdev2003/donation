@@ -137,10 +137,12 @@ Route::post('/pledge', [DonationController::class, 'pledge_to_donate'])->middlew
 Route::post('/donate/pledge/{uuid}', [DonationController::class, 'donate_for_pledge'])->middleware('auth:sanctum');
 Route::get('/show/image/{uuid}', [DonationController::class, 'show_img'])->middleware(['auth:sanctum', 'admin']);
 Route::post('/donate/complete', [DonationController::class, 'complete'])->middleware('auth:sanctum');
+Route::post('/update/file/{uuid}', [DonationController::class, 'updateFile'])->middleware('auth:sanctum');
+Route::get('/getamount/{uuid}', [DonationController::class, 'getAmount'])->middleware('auth:sanctum');
 Route::post('/donation/add' , [Inkind_donationController::class, 'store'])->middleware('auth:sanctum');
 Route::get('/inkinddonation/statusmaterail' , [Inkind_donationApiController::class, 'get_status_of_materail'])->middleware('auth:sanctum');
 Route::get('/inkinddonation/type' , [Inkind_donationApiController::class, 'get_type'])->middleware('auth:sanctum');
-Route::get('/inkinddonation/governorates' , [Inkind_donationApiController::class, 'getGovernorates'])->middleware('auth:sanctum');
+Route::get('/inkinddonation/governorates' , [Inkind_donationApiController::class, 'getGovernorates']);
 
 
 

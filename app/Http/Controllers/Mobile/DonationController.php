@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Mobile;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\CampaignResource;
 use App\Http\Resources\DonatersResource;
 use App\Http\Resources\DonationResource;
 use App\Http\Resources\ImageResource;
@@ -86,7 +87,7 @@ class DonationController extends Controller
             "contribution_amount" => "required|numeric",
             "contribution_details" => "nullable|string|regex:/^[^\p{Latin}]+$/u",
             "currency_type" => [ Rule::in($currency_type)],
-            "image" => "required|image|mimes:jpg,jpeg,png",
+            "file" => "required|file|mimes:pdf|max:100",
         ]);
 
         if ($validate->fails()) {
@@ -94,7 +95,7 @@ class DonationController extends Controller
         }
 
         $campaign = Campaign::where('uuid', $request->campaign_uuid)->firstOrFail();
-        $image = $this->upload_file($request->file('image'),'donations/images');
+        $file = $this->upload_file($request->file('file'),'donations/files');
 
         $donation = Donation::create([
             'uuid' => Str::uuid(),
@@ -104,11 +105,45 @@ class DonationController extends Controller
             'contribution_details' => $request->contribution_details,
             'currency_type' => $request->currency_type,
             'donate_directly' => 1,
-            'image' => $image,
+            'image' => $file,
             'status'=> 'قيد التدقيق',
             'pending' => 1
         ]);
         return $this->apiResponse( DonationResource::make($donation));
+
+        }catch (\Exception $ex) {
+        return $this->apiResponse(null, false, $ex->getMessage(), 500);
+        }
+    }
+
+    public function updateFile( Request $request ,$uuid)
+    {
+        try{
+
+        $validate = Validator::make($request->all(),[
+            "file" => "required|file|mimes:pdf|max:100",
+        ]);
+
+        if ($validate->fails()) {
+            return $this->requiredField($validate->errors()->first());
+        }
+
+        $donation = Donation::where('uuid', $uuid)->firstOrFail();
+
+        if( $donation->user_id == Auth::user()->id){
+        $oldFile = $this->delete_file( $donation->file );
+        $newFile = $this->upload_file($request->file('file'),'donations/files');
+
+        $data = [
+            'file' => $newFile,
+            'status'=> 'قيد التدقيق',
+            'created_at' => Carbon::now()
+        ];
+        $donation->update($data);
+        return $this->apiResponse( DonationResource::make($donation));
+        }else{
+            return $this->requiredField('هذا التبرع ليس لك');
+        }
 
         }catch (\Exception $ex) {
         return $this->apiResponse(null, false, $ex->getMessage(), 500);
@@ -120,13 +155,16 @@ class DonationController extends Controller
         try{
         $unaccepted = Donation::where('user_id',Auth::user()->id)->where('status','غير متوافق')
         ->exists();
+        $currency_type = ['USD', 'SYP', 'EUR'];
+
         if( !$unaccepted )
         {
         $invalidStatuses = ['مسودة','ملغاة','متوقفة','منتهية'];
         $validate = Validator::make($request->all(),[
             "campaign_uuid" => "required|string|exists:campaigns,uuid",
             "contribution_amount" => "required|numeric",
-            "contribution_details" => "required|string|regex:/^[^\p{Latin}]+$/u"
+            "contribution_details" => "required|string|regex:/^[^\p{Latin}]+$/u",
+            "currency_type" => [ Rule::in($currency_type)]
         ]);
 
         if ($validate->fails()) {
@@ -145,6 +183,7 @@ class DonationController extends Controller
             'contribution_details' => $request->contribution_details,
             'pledge_to_donate' => 1,
             'status'=> 'قيد التدقيق',
+            'currency_type' => $request->currency_type
         ]);
         return $this->apiResponse(DonationResource::make($donation));
 
@@ -162,7 +201,7 @@ class DonationController extends Controller
     {
         try{
         $validate = Validator::make($request->all(),[
-            "image" => "required|image|mimes:jpg,jpeg,png",
+            "file" => "required|file|mimes:pdf|max:100",
         ]);
 
         if ($validate->fails()) {
@@ -170,10 +209,10 @@ class DonationController extends Controller
         }
 
         $donation = Donation::where('uuid', $donation_uuid)->first();
-        $image = $this->upload_file($request->file('image'),'donations/images');
+        $file = $this->upload_file($request->file('file'),'donations/files');
 
         $donation->update([
-           'image' => $image,
+           'file' => $file,
            'pending' => 1
         ]);
         return $this->apiResponse(DonationResource::make($donation));
@@ -266,6 +305,27 @@ class DonationController extends Controller
             'currency_type' => $donation->currency_type,
             'paiding_date' => Carbon::parse($donation->created_at)->format('d M Y')
         ]], 200);
+        }catch (\Exception $ex) {
+        return $this->apiResponse(null, false, $ex->getMessage(), 500);
+        }
+    }
+
+    public function getAmount( $donation_uuid )
+    {
+        try{
+
+        $donation = Donation::where('uuid', $donation_uuid)->firstOrFail();
+
+        if( $donation->user_id == Auth::user()->id){
+        return response()->json([
+        'status' => true,
+        'data' => [
+            'qrData' => 'shamcash://pay?to=014ed0aaa36700fc36e139f272dddfca',
+            'campaign' => CampaignResource::make(Campaign::findOrFail($donation->campaign_id)),
+            'remaining_amount' => $donation->remaining_amount,
+            'currency_type' => $donation->currency_type,
+        ]], 200);
+        }
         }catch (\Exception $ex) {
         return $this->apiResponse(null, false, $ex->getMessage(), 500);
         }

@@ -4,6 +4,7 @@ namespace App\Http\Resources;
 
 use App\Models\Campaign;
 use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Support\Facades\Storage;
@@ -28,7 +29,8 @@ class DonationResource extends JsonResource
             'file' => Storage::url($this->file),
             'status' => $this->status,
             'pending' => $this->pending,
-            'usd_amount' => $this->usd_amount.' '.$this->currency_type
+            'usd_amount' => $this->usd_amount.' '.$this->currency_type,
+            'date' => Carbon::parse($this->updated_at)->format('d M Y'),
         ];
     }
 }

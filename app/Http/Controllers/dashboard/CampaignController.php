@@ -74,7 +74,7 @@ class CampaignController extends Controller
     {
     try {
         $campaign = Campaign::where('uuid', $uuid)->firstOrFail();
-        if( $campaign->status == 'جديدة'){
+        if( $campaign->status == 'جديدة' || $campaign->status == 'منتهية'){
 
         $validate = Validator::make($request->all(),[
             "name" => "string|min:3|max:100|unique:campaigns,name,".$campaign->id."|regex:/^[\p{Arabic}\s]+$/u",
