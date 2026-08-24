@@ -330,4 +330,25 @@ class DonationController extends Controller
         return $this->apiResponse(null, false, $ex->getMessage(), 500);
         }
     }
+
+    public function getPledge( $pledge_uuid )
+    {
+        try{
+
+        $donation = Donation::where('uuid', $pledge_uuid)->firstOrFail();
+
+        if( $donation->user_id == Auth::user()->id){
+        return response()->json([
+        'status' => true,
+        'data' => [
+            'qrData' => 'shamcash://pay?to=014ed0aaa36700fc36e139f272dddfca',
+            'campaign' => CampaignResource::make(Campaign::findOrFail($donation->campaign_id)),
+            'contribution_amount' => $donation->contribution_amount,
+            'currency_type' => $donation->currency_type,
+        ]], 200);
+        }
+        }catch (\Exception $ex) {
+        return $this->apiResponse(null, false, $ex->getMessage(), 500);
+        }
+    }
 }
