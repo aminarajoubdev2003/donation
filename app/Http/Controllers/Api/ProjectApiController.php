@@ -12,10 +12,12 @@ use Illuminate\Http\Request;
 class ProjectApiController extends Controller
 {
     use GeneralTrait , UploadTrait;
-    
+
     public function getProjectDetail( $uuid ){
     try{
-        $project = Project::where('uuid', $uuid)->firstOrFail();
+        //$project = Project::where('uuid', $uuid)->firstOrFail();
+        $project = Project::with([ 'district', 'details.pendings', ])
+        ->where('uuid', $uuid) ->firstOrFail();
 
         if( $project ){
         $project = ProjectDetailResource::make($project);

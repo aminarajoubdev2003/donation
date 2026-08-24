@@ -163,7 +163,7 @@ class DonationController extends Controller
         $validate = Validator::make($request->all(),[
             "campaign_uuid" => "required|string|exists:campaigns,uuid",
             "contribution_amount" => "required|numeric",
-            "contribution_details" => "required|string|regex:/^[^\p{Latin}]+$/u",
+            "contribution_details" => "string|regex:/^[^\p{Latin}]+$/u",
             "currency_type" => [ Rule::in($currency_type)]
         ]);
 

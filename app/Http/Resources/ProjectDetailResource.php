@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources;
 
+use App\Http\Resources\PendingProResource;
 use App\Models\District;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
@@ -23,6 +24,7 @@ class ProjectDetailResource extends JsonResource
             'district' => DistrictResource::make(District::findOrFail($this->district_id)),
             'estimated_cost' => $this->estimated_cost.' ' .'$',
             'progress_percentage' => ($this->progress_percentage ?? 0) . ' %',
+            'status' => $this->status,
             'requirements' => $this->requirements,
             'cover_image' => !empty($this->cover_image) ? Storage::url($this->cover_image) : 'لا يوجد صورة بعد لهذا المشروع',
             'sector' => $this->sector,
@@ -42,8 +44,10 @@ class ProjectDetailResource extends JsonResource
             'funding_source' => $this->funding_source,
             'Implementing_party' => $this->Implementing_party,
             'status' => $this->status,
-            'details' => DetailResource::collection($this->details),
-           
+            'details' => DetailProResource::collection($this->details),
+            //'payments' => PendingProResource::collection( $this->whenLoaded('details')
+            //->flatMap(fn ($detail) => $detail->pendings) ),
+
         ];
     }
 }
