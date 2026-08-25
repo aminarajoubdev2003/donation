@@ -351,4 +351,20 @@ class DonationController extends Controller
         return $this->apiResponse(null, false, $ex->getMessage(), 500);
         }
     }
+
+    public function getActiveCampaign(){
+    try{
+        $campaigns = Campaign::where('status','نشطة')->get();
+
+        if( $campaigns ){
+        $campaigns = CampaignResource::collection($campaigns);
+        return $this->apiResponse( $campaigns );
+        }
+        else{
+            return $this->apiResponse([]);
+        }
+    } catch (\Exception $ex) {
+        return $this->apiResponse(null,false,$ex->getMessage(),400);
+    }
+    }
 }

@@ -25,6 +25,7 @@ class Donater_ShowResource extends JsonResource
         'date' => Carbon::parse($this->created_at)->format('d M Y'),
         'method' => ($this->donate_directly==1) ? 'تبرع' : 'تعهد ',
         'status' => $this->status,
+        'reason' => $this->reason,
         'pending' => ($this->pending==1) ? 'مدفوع' : 'غير مدفوع',
        ];
     }
